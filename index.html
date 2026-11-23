@@ -241,6 +241,24 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 .screen .list span { display: grid; grid-template-columns: 14px 1fr; gap: 6px; align-items: start; }
 .screen .list i { width: 8px; height: 8px; border-radius: 2px; margin-top: 6px; background: var(--t-gray-l); }
 .screen .list i.a { background: var(--accent); }
+
+/* ---- Experience band ---- */
+.exp { display: grid; grid-template-columns: 300px 1fr; border: 1px solid var(--line); border-radius: 20px; overflow: hidden; margin: 0 0 64px; }
+.exp .who { background: var(--pill); padding: 24px 28px; display: flex; flex-direction: column; gap: 6px; justify-content: center; }
+.exp .who .tag { font-size: 11px; font-weight: 600; letter-spacing: .08em; color: var(--muted); }
+.exp .who b { font-size: 17px; line-height: 1.3; }
+.exp .who span { font-size: 13px; color: var(--muted); }
+.exp .hits { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.exp .hits a { display: flex; flex-direction: column; justify-content: center; gap: 4px; padding: 22px 24px; border-left: 1px solid var(--line); text-decoration: none; color: var(--ink); }
+.exp .hits a:hover { background: var(--pill); }
+.exp .hits b { font-size: 20px; letter-spacing: -.3px; font-variant-numeric: tabular-nums; }
+.exp .hits span { font-size: 13px; color: var(--body); line-height: 1.5; }
+.exp .hits small { font-size: 12px; color: var(--muted); margin-top: 4px; }
+@media (max-width: 760px) {
+  .exp { grid-template-columns: 1fr; }
+  .exp .hits { grid-template-columns: 1fr; }
+  .exp .hits a { border-left: 0; border-top: 1px solid var(--line); }
+}
 </style>
 </head>
 <body>
@@ -254,9 +272,23 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
   </header>
 
   <section class="hero">
-    <p class="kicker"><b>김시연</b> · IT 서비스 운영 · AX 기획 · 업무 자동화</p>
-    <h1>반복되는 문의에서 문제를 찾고,<br>AI로 풀 지점을 설계합니다.</h1>
-    <p class="sub">한국감정평가사협회 IT정보센터에서 1년 6개월간 회원 문의와 시스템을 운영했고, 지금은 RAG · 에이전트 기반 서비스를 기획하며 n8n으로 알림 · 리포트 · 데이터 수집 자동화를 직접 만듭니다.</p>
+    <p class="kicker"><b>김시연</b> · IT 서비스 운영 · 업무 자동화 · AI 에이전트</p>
+    <h1>문의를 2,700건 받아본 자동화 담당자 —<br>작게 고치고, 넓게 남깁니다.</h1>
+    <p class="sub">협회 IT정보센터에서 1년 5개월간 비개발 사용자의 문의를 직접 받으며 회원사 업무 시스템을 운영했고, 지금은 그 경험에서 나온 기준으로 n8n · LangGraph · SQL 에이전트를 직접 만듭니다.</p>
+  </section>
+
+  <section class="exp" aria-label="경력">
+    <div class="who">
+      <span class="tag">EXPERIENCE</span>
+      <b>한국감정평가사협회<br>IT정보센터 · 사원</b>
+      <span>2024.05 – 2025.10 · 1년 5개월</span>
+      <span>회원사 업무 시스템 6종 운영 · 연간 문의 약 4,500건 중 60% 처리</span>
+    </div>
+    <div class="hits">
+      <a href="#work-root"><b>월 10건 → 1~2건</b><span>전자서명 오류 문의, 시스템이 아니라 사용 환경이 원인 — 안내 문구 한 줄로</span><small>상세 보기 →</small></a>
+      <a href="#work-data"><b>4,500건 분석</b><span>‘FAQ가 있어도 못 찾는다’ — 오류 메시지에 해결 링크, 반복 문의 10%↓</span><small>상세 보기 →</small></a>
+      <a href="#work-aitool"><b>5명 → 20명</b><span>사내 AI 툴, 요청 처리에서 관리 대장·신청 절차로 — 비용은 실사용 기준</span><small>상세 보기 →</small></a>
+    </div>
   </section>
 
   <h2 class="sectitle" id="projects-title">Projects</h2>
@@ -357,13 +389,218 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
   </section>
 
   <footer class="site">
-    <div><b>김시연</b><p>IT 서비스 운영 · AX 기획 · 업무 자동화</p></div>
+    <div><b>김시연</b><p>IT 서비스 운영 · 업무 자동화 · AI 에이전트</p></div>
+    <div><h3>Work</h3><ul><li><a href="#work-root">전자서명 오류 원인 추적</a></li><li><a href="#work-data">문의 4,500건 분석</a></li><li><a href="#work-aitool">AI 툴 운영 체계</a></li></ul></div>
     <div><h3>Projects</h3><ul><li><a href="#chatbot">찾아드림</a></li><li><a href="#sunscreen">선크림 추천 RAG</a></li><li><a href="#meetup">우리 어디서 봐?</a></li><li><a href="#qrcheck">QR캡처체리</a></li></ul></div>
     <div><h3>Automation</h3><ul><li><a href="#weather">캘린더 에이전트</a></li><li><a href="#news">뉴스 요약 리포트</a></li><li><a href="#sqlagent">SQL 리포트 에이전트</a></li><li><a href="#playbook">자동화 판단 기준</a></li></ul></div>
     <div><h3>Contact</h3><ul><li>moonjungkim99@gmail.com</li></ul></div>
   </footer>
 </div>
 </main>
+
+<!-- ========== WORK 1: 전자서명 오류 원인 추적 ========== -->
+<article id="v-work-root" data-view hidden>
+  <div class="casenav wrap"><nav class="pills" aria-label="목차">
+    <a href="#">← Projects</a>
+    <button class="on" type="button" data-jump="w1-pb">문제</button><button type="button" data-jump="w1-dc">판단</button><button type="button" data-jump="w1-ac">조치</button><button type="button" data-jump="w1-rs">결과</button>
+  </nav></div>
+  <div class="wrap">
+    <header class="casehead">
+      <p class="eyebrow">한국감정평가사협회 IT정보센터 · 실무 · 2024</p>
+      <h1>매달 10건씩 오던 문의를 줄인 것은 문장 하나였다</h1>
+      <p class="lede">회원사 업무 시스템의 '전자서명 오류' 문의가 매달 반복됐습니다. 시스템이 아니라 사용자의 작업 환경이 원인임을 확인하고, 오류 안내 문구 한 줄을 바꿔 문의를 월 1~2건으로 줄였습니다.</p>
+    </header>
+    <dl class="facts">
+      <div><dt>내 역할</dt><dd>사용자 지원 · 원인 분석 · 개선 요청</dd></div>
+      <div><dt>대상</dt><dd>회원사 업무 시스템 · 전자서명 기능</dd></div>
+      <div><dt>협업</dt><dd>개발팀 · 회원사 사용자</dd></div>
+      <div><dt>산출물</dt><dd>문구 변경 요청 · FAQ 항목 · 응대 절차</dd></div>
+    </dl>
+
+    <section class="sec" id="w1-pb">
+      <p class="label">문제</p>
+      <h2>문의는 반복됐고, 해결은 매번 사람이 붙어야 했다</h2>
+      <p>회원사(전국 감정평가법인·사무소)가 쓰는 업무 시스템 6종의 사용자 지원을 맡고 있었습니다. "전자서명이 안 됩니다"라는 문의가 매달 10건씩 왔고, 그때마다 담당자가 개별로 붙어 해결해 주는 식으로 처리되고 있었습니다.</p>
+      <div class="cards">
+        <div><h3>재현 불가</h3><p>내 환경에서 여러 조건으로 시도해도 오류가 나지 않는다.</p></div>
+        <div><h3>공통점 없음</h3><p>문의자의 PC 사양·OS 버전이 제각각이다.</p></div>
+        <div><h3>사람 의존</h3><p>매 건 담당자가 대응 — 시간이 그대로 소모된다.</p></div>
+      </div>
+    </section>
+
+    <section class="sec" id="w1-dc">
+      <p class="label">판단</p>
+      <h2>실마리는 한 사용자의 '밖에서 작업 중'이라는 말이었다</h2>
+      <p>문의 관리 프로그램에서 해당 건만 추려 환경을 비교했지만 공통점이 없었습니다. 그러다 한 사용자가 지나가듯 "밖에서 작업 중"이라고 했습니다. 전자서명은 허용된 접속 환경에서만 동작하도록 되어 있었습니다. 그 뒤로 문의마다 작업 장소를 먼저 물었고, 원인이 시스템이 아니라 <b>허용되지 않은 환경에서 시도한 것</b>임을 확정했습니다.</p>
+      <div class="split">
+        <div><h3>처음 가설</h3><p>프로그램 버그 또는 특정 OS·브라우저 호환 문제 → 환경 비교로 검증 → 기각</p></div>
+        <div class="good"><h3>확정 원인</h3><p>사용자가 조건에 맞지 않는 환경에서 시도 → 오류 문구만 뜨고, 왜 안 되는지는 알려주지 않음</p></div>
+      </div>
+    </section>
+
+    <section class="sec" id="w1-ac">
+      <p class="label">조치</p>
+      <h2>시스템을 고치지 않고 문구를 고쳤다</h2>
+      <div class="flow">
+        <div><span class="step">1 · 개발팀 요청</span><h3>오류 팝업에 조건 명시</h3><p>동작 조건을 알려주는 문구로 변경 요청. 재현 결과와 문의 건수를 근거로 제시했습니다.</p></div>
+        <div><span class="step">2 · FAQ 등록</span><h3>응대법을 남긴다</h3><p>다른 담당자도 같은 답을 하도록 FAQ에 등록했습니다.</p></div>
+        <div><span class="step">3 · 절차 변경</span><h3>환경부터 확인</h3><p>전자서명 문의는 작업 환경을 먼저 확인하는 순서로 매뉴얼을 고쳤습니다.</p></div>
+      </div>
+    </section>
+
+    <section class="sec" id="w1-rs">
+      <p class="label">결과</p>
+      <h2>사용자가 스스로 해결하면서 문의와 개별 대응이 함께 사라졌다</h2>
+      <div class="results">
+        <div><b>월 10건 → 1~2건</b><span>전자서명 오류 문의</span></div>
+        <div><b>0회</b><span>시스템 수정</span></div>
+        <div><b>1줄</b><span>바뀐 것</span></div>
+      </div>
+      <p class="note" style="margin-top:24px;font-size:16px;color:var(--body)"><b>배운 것.</b> 문의는 증상이고 원인은 프로세스에 있습니다. 시스템 오류가 아니라 "사용자가 조건을 모르는 것"이 원인인 경우가 많고, 그럴 때 가장 싼 해결책이 가장 큰 효과를 냅니다. 이후 자동화를 설계할 때도 코드보다 먼저 "어디서 사람이 막히는가"를 봅니다.</p>
+      <p class="note">※ 접속 환경 구성은 보안상 일반화해 적었습니다.</p>
+    </section>
+  </div>
+  <div class="wrap"><div class="casefoot"><a href="#">← 전체 프로젝트</a><a href="#work-data">다음 · 문의 4,500건 분석 →</a></div></div>
+</article>
+
+<!-- ========== WORK 2: 문의 4,500건 분석 ========== -->
+<article id="v-work-data" data-view hidden>
+  <div class="casenav wrap"><nav class="pills" aria-label="목차">
+    <a href="#">← Projects</a>
+    <button class="on" type="button" data-jump="w2-pb">문제</button><button type="button" data-jump="w2-dc">판단</button><button type="button" data-jump="w2-ds">설계</button><button type="button" data-jump="w2-rs">결과</button>
+  </nav></div>
+  <div class="wrap">
+    <header class="casehead">
+      <p class="eyebrow">한국감정평가사협회 IT정보센터 · 실무 · 2025</p>
+      <h1>문의 4,500건 속 답은 이미 있었다. 닿지 않았을 뿐</h1>
+      <p class="lede">12개월간 쌓인 문의를 유형·빈도별로 분류해 "FAQ가 있어도 사용자가 찾지 못한다"는 구조적 원인을 찾고, 전화·담당자 기억에 의존하던 흐름을 프로그램 안에서 스스로 해결하는 흐름으로 다시 설계해 제안했습니다.</p>
+    </header>
+    <dl class="facts">
+      <div><dt>내 역할</dt><dd>데이터 분류 · 원인 도출 · To-Be 제안</dd></div>
+      <div><dt>데이터</dt><dd>12개월 · 약 4,500건 (60% 직접 처리)</dd></div>
+      <div><dt>협업</dt><dd>개발팀 · 팀장</dd></div>
+      <div><dt>산출물</dt><dd>유형 분류표 · As-Is/To-Be 개선안</dd></div>
+    </dl>
+
+    <section class="sec" id="w2-pb">
+      <p class="label">문제</p>
+      <h2>같은 증상인데 의뢰처마다 답이 달랐다</h2>
+      <p>업무 시스템은 복수의 외부 기관과 의뢰 데이터를 주고받습니다. 기관마다 접수·발송 절차가 달라 "접수가 안 돼요"라는 같은 질문에도 해결법이 달랐고, 사용자는 매번 전화로 물었습니다. 접수 시스템에 유형별 통계가 쌓이고 있었지만 아무도 그 데이터를 개선에 쓰지 않았습니다.</p>
+      <div class="cards">
+        <div><h3>전화 의존</h3><p>막히면 전화 → 담당자가 기억으로 답변.</p></div>
+        <div><h3>FAQ 무용</h3><p>FAQ는 있지만 프로그램 안에서는 보이지 않는다.</p></div>
+        <div><h3>오류 메시지</h3><p>"오류가 발생했습니다"만 뜨고 다음 행동을 알려주지 않는다.</p></div>
+      </div>
+    </section>
+
+    <section class="sec" id="w2-dc">
+      <p class="label">판단</p>
+      <h2>지식이 없는 게 아니라 필요한 순간에 닿지 않는 것이었다</h2>
+      <p>4,500건을 유형·빈도·의뢰처별로 나눴습니다. 다수가 프로그램 오류가 아니라 "의뢰처별 절차를 몰라서" 생긴 문의였고, 그 답은 이미 FAQ에 있었습니다. 문제는 지식이 아니라 전달 경로였습니다.</p>
+      <div class="split">
+        <div><h3>As-Is</h3><p>막힘 → 전화 → 담당자 기억 → 구두 안내<br>같은 질문이 사람과 날짜만 바뀌어 반복</p></div>
+        <div class="good"><h3>To-Be</h3><p>막힘 → 오류 메시지에 해결 링크 → 프로그램 내 FAQ 버튼 → 의뢰처별 FAQ<br>사람을 거치지 않고 그 자리에서 해결</p></div>
+      </div>
+    </section>
+
+    <section class="sec" id="w2-ds">
+      <p class="label">설계</p>
+      <h2>큰 제안이 막히자 작은 단위로 쪼개 우회했다</h2>
+      <p>개발팀에 프로그램 내 FAQ 버튼을 제안했지만 개발 리소스 문제로 보류됐습니다. 그래서 가장 빈도 높은 오류 메시지에 해결 방법 링크를 붙이는 것부터 먼저 반영하도록 요청했습니다 — 개발 공수가 작고, 효과는 바로 측정되는 쪽부터.</p>
+      <div class="flow">
+        <div><span class="step">1 · 분류</span><h3>유형 × 빈도 × 의뢰처</h3><p>표로 정리하고 상위 유형부터 원인을 태깅했습니다.</p></div>
+        <div><span class="step">2 · 제안</span><h3>3단계 개선안</h3><p>FAQ 버튼 · 의뢰처별 FAQ · 오류 메시지 링크를 문서화했습니다.</p></div>
+        <div><span class="step">3 · 우회</span><h3>작은 것부터</h3><p>보류된 FAQ 버튼 대신 오류 메시지 개선을 먼저 반영했습니다.</p></div>
+      </div>
+    </section>
+
+    <section class="sec" id="w2-rs">
+      <p class="label">결과</p>
+      <h2>반복 문의 약 10% 감소, 그리고 RAG 챗봇의 출발점</h2>
+      <div class="results">
+        <div><b>약 10%↓</b><span>반복 문의 (오류 메시지 개선 후)</span></div>
+        <div><b>4,500건</b><span>유형·빈도·의뢰처별 분류</span></div>
+        <div><b>3단계</b><span>To-Be 개선안</span></div>
+      </div>
+      <p class="note" style="margin-top:24px;font-size:16px;color:var(--body)"><b>배운 것.</b> 운영 데이터는 이미 쌓여 있고, 안 보고 있을 뿐입니다. "지식이 있는가"보다 "필요한 순간에 꺼내 쓸 수 있는가"가 업무 혁신의 본질이라는 걸 여기서 배웠고, 이후 '근거가 없으면 답하지 않는' RAG 챗봇 <a href="#chatbot">「찾아드림」</a>을 기획한 출발점이 됐습니다.</p>
+      <p class="note">※ 연계 기관명과 시스템 구성은 보안상 일반화해 적었습니다.</p>
+    </section>
+  </div>
+  <div class="wrap"><div class="casefoot"><a href="#work-root">← 이전 · 전자서명 오류 원인 추적</a><a href="#work-aitool">다음 · 사내 AI 툴 운영 체계 →</a></div></div>
+</article>
+
+<!-- ========== WORK 3: 사내 AI 툴 운영 체계 ========== -->
+<article id="v-work-aitool" data-view hidden>
+  <div class="casenav wrap"><nav class="pills" aria-label="목차">
+    <a href="#">← Projects</a>
+    <button class="on" type="button" data-jump="w3-pb">문제</button><button type="button" data-jump="w3-dc">판단</button><button type="button" data-jump="w3-ds">체계</button><button type="button" data-jump="w3-rs">결과</button>
+  </nav></div>
+  <div class="wrap">
+    <header class="casehead">
+      <p class="eyebrow">한국감정평가사협회 IT정보센터 · 실무 · 2025</p>
+      <h1>AI 툴 도입을 '요청 처리'에서 '운영 체계'로</h1>
+      <p class="lede">구독 요청이 올 때마다 결제해 주던 방식을, 수요 조사 → 업무별 툴 매핑 → 관리 대장·신청 절차 → 월별 지출결의로 바꿨습니다. 안 쓰는 계정을 정리한 비용으로 사용자를 5명에서 약 20명으로 늘렸습니다.</p>
+    </header>
+    <dl class="facts">
+      <div><dt>내 역할</dt><dd>수요 조사 · 툴 매핑 · 대장·절차 설계 · 예산</dd></div>
+      <div><dt>대상</dt><dd>생성형 AI · AI 코딩 도구 · 개발 도구</dd></div>
+      <div><dt>협업</dt><dd>총무팀 · 각 부서 사용자 · 팀장</dd></div>
+      <div><dt>산출물</dt><dd>관리 대장 · 신청 절차 · 지출결의 체계</dd></div>
+    </dl>
+
+    <section class="sec" id="w3-pb">
+      <p class="label">문제</p>
+      <h2>누가 어떤 툴을 쓰는지, 얼마가 나가는지 아무도 몰랐다</h2>
+      <p>AI 툴 구독 요청이 늘고 있었지만 사용 현황이 정리되어 있지 않았습니다. 요청이 오면 결제하고, 안 쓰게 돼도 계정은 남았습니다. 사용자는 5명, 비용은 사람별이 아니라 건별로만 보였습니다.</p>
+      <div class="cards">
+        <div><h3>가시성 없음</h3><p>사람·툴·결제가 연결되어 있지 않다.</p></div>
+        <div><h3>미사용 계정</h3><p>결제는 계속, 사용은 중단.</p></div>
+        <div><h3>확산 불가</h3><p>예산 근거가 없어 새 요청을 받기 어렵다.</p></div>
+      </div>
+    </section>
+
+    <section class="sec" id="w3-dc">
+      <p class="label">판단</p>
+      <h2>확산과 비용 통제는 상충하지 않는다 — 안 쓰는 걸 정리하면 더 줄 수 있다</h2>
+      <p>도입의 병목은 기술이 아니라 "누가·무엇을·얼마에"가 보이지 않는 것이었습니다. 먼저 설문으로 수요를 조사해 실제 사용자와 업무를 파악하고, 업무 성격에 따라 툴을 나눴습니다.</p>
+      <div class="cards">
+        <div><h3>개발</h3><p>AI 코딩 도구 · IDE</p></div>
+        <div><h3>DB</h3><p>DB 클라이언트</p></div>
+        <div><h3>문서 · 일반</h3><p>생성형 AI 챗</p></div>
+      </div>
+    </section>
+
+    <section class="sec" id="w3-ds">
+      <p class="label">체계</p>
+      <h2>사람·툴·결제 단위의 대장과 신청 절차를 만들었다</h2>
+      <div class="flow" style="grid-template-columns:repeat(4,minmax(0,1fr))">
+        <div><span class="step">1 · 관리 대장</span><h3>한 줄에 전부</h3><p>누가 · 어떤 툴 · 어떤 플랜 · 결제 주기 · 예산과목.</p></div>
+        <div><span class="step">2 · 신청 절차</span><h3>요청이 대장에 쌓이게</h3><p>업무 용도 → 플랜 비교 → 승인 → 등록.</p></div>
+        <div><span class="step">3 · 최적화</span><h3>안 쓰는 건 정리</h3><p>미사용 계정 해지 · 툴 교체 · 다수 사용 툴은 연간 결제 전환으로 1인당 비용 절감.</p></div>
+        <div><span class="step">4 · 지출결의</span><h3>예산과목 기준</h3><p>월별 지출결의 체계를 총무팀과 연동.</p></div>
+      </div>
+      <div class="rules">
+        <div><b>사용자</b><span>[이름] · [부서]</span></div>
+        <div><b>툴 · 플랜</b><span>[툴] · [플랜] · 결제 주기 연간</span></div>
+        <div><b>예산과목</b><span>[과목] · 월별 지출결의 연동</span></div>
+      </div>
+      <p class="note">관리 대장 열 구성 예시 — 실제 값은 비공개.</p>
+    </section>
+
+    <section class="sec" id="w3-rs">
+      <p class="label">결과</p>
+      <h2>사용자 4배, 비용은 실제 사용 기준으로</h2>
+      <div class="results">
+        <div><b>5명 → 약 20명</b><span>AI 툴 사용자</span></div>
+        <div><b>실사용 기준</b><span>계정·비용 관리 방식</span></div>
+        <div><b>1장</b><span>관리 대장 — 다음 담당자가 그대로 인수</span></div>
+      </div>
+      <p class="note" style="margin-top:24px;font-size:16px;color:var(--body)"><b>배운 것.</b> AI 도입의 병목은 모델이 아니라 가시성입니다. "누가·무엇을·얼마에"가 보이면 확산은 따라오고, 안 쓰는 계정을 정리한 돈으로 더 많은 사람에게 줄 수 있습니다. 툴을 만들고 끝내지 않고, 현업이 계속 쓰도록 가이드와 관리 체계까지 남기는 습관이 여기서 생겼습니다.</p>
+      <p class="note">※ 툴 명칭과 계약 조건은 보안상 일반화해 적었습니다.</p>
+    </section>
+  </div>
+  <div class="wrap"><div class="casefoot"><a href="#work-data">← 이전 · 문의 4,500건 분석</a><a href="#chatbot">다음 · 찾아드림 →</a></div></div>
+</article>
 
 <!-- ========== CASE: 찾아드림 ========== -->
 <article id="v-chatbot" data-view hidden>
@@ -1125,7 +1362,7 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 
 <script>
 (function () {
-  var views = ['chatbot', 'sunscreen', 'meetup', 'qrcheck', 'weather', 'news', 'sqlagent', 'playbook'];
+  var views = ['work-root', 'work-data', 'work-aitool', 'chatbot', 'sunscreen', 'meetup', 'qrcheck', 'weather', 'news', 'sqlagent', 'playbook'];
   function show() {
     var h = location.hash.replace('#', '');
     var target = views.indexOf(h) >= 0 ? h : 'home';
