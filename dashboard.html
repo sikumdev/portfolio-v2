@@ -1,0 +1,790 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>문의 분석 대시보드 · 김시연</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #fafafa; --surface: #ffffff; --ink: #111418; --body: #3d434c; --muted: #646b75; --line: #e4e6ea; --grid: #ecebe6;
+  --pill: #eff0f2; --accent: #2f4f8f; --accent-soft: #edf1f8;
+  /* categorical, fixed order (validated: dataviz reference slots 1-5) */
+  --s1: #2a78d6; --s2: #eb6834; --s3: #1baf7a; --s4: #eda100; --s5: #e87ba4;
+  /* sequential blue ramp */
+  --q100: #cde2fb; --q450: #2a78d6; --q600: #184f95;
+  --hi: #8f5f49; --hi-bg: #f3ece6; --mid-bg: #eceef1;
+  --font: 'IBM Plex Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--font); word-break: keep-all; overflow-wrap: break-word; -webkit-font-smoothing: antialiased; }
+.wrap { max-width: 1080px; margin: 0 auto; padding: 48px 24px 80px; }
+.back { display: inline-block; margin-bottom: 20px; font-size: 13.5px; font-weight: 600; color: var(--muted); text-decoration: none; }
+.back:hover { color: var(--ink); }
+.kicker { margin: 0 0 10px; font-size: 14px; font-weight: 600; color: var(--accent); }
+h1 { font-size: clamp(26px, 3.6vw, 34px); letter-spacing: -.6px; margin: 0 0 10px; }
+.sum { margin: 0; font-size: 16px; line-height: 1.7; color: var(--body); max-width: 44em; }
+.mask { display: inline-block; margin-top: 14px; font-size: 12.5px; color: var(--muted); background: var(--pill); padding: 5px 10px; border-radius: 8px; }
+
+/* KPI row */
+.kpis { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; margin: 32px 0 16px; }
+.kpi { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 18px 20px; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.kpi .l { font-size: 12.5px; color: var(--muted); }
+.kpi .v { font-size: 30px; font-weight: 700; letter-spacing: -.8px; font-variant-numeric: tabular-nums; line-height: 1.25; }
+.kpi .v small { font-size: 15px; font-weight: 600; margin-left: 2px; }
+.kpi .s { font-size: 12.5px; color: var(--body); }
+.kpi .spark { margin-top: auto; padding-top: 8px; }
+.kpi.ring { flex-direction: row; align-items: center; gap: 14px; }
+.kpi.ring .txt { min-width: 0; }
+
+/* cards */
+.row { display: grid; gap: 16px; margin-bottom: 16px; }
+.row.r21 { grid-template-columns: minmax(0, 1.75fr) minmax(0, 1fr); }
+.row.r12 { grid-template-columns: minmax(0, 1fr) minmax(0, 1.75fr); }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 22px; min-width: 0; }
+.card h2 { font-size: 17px; margin: 0 0 4px; letter-spacing: -.2px; }
+.card .a { margin: 0 0 16px; font-size: 13.5px; color: var(--muted); line-height: 1.6; }
+.card .a b { color: var(--ink); }
+
+/* chart basics */
+.chart { position: relative; }
+.chart svg { display: block; width: 100%; height: auto; overflow: visible; }
+.ax text { font-size: 11px; fill: #898781; font-family: var(--font); }
+.gridl line { stroke: var(--grid); }
+.tip { position: absolute; pointer-events: none; background: var(--ink); color: #fff; font-size: 12px; line-height: 1.6; padding: 8px 10px; border-radius: 8px; white-space: nowrap; transform: translate(-50%, calc(-100% - 10px)); opacity: 0; transition: opacity .1s; z-index: 3; }
+.tip b { font-size: 13px; display: block; }
+.tip .tr { display: flex; justify-content: space-between; gap: 14px; align-items: center; }
+.tip .tr i { width: 8px; height: 8px; border-radius: 2px; display: inline-block; margin-right: 6px; }
+
+.legend { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
+.legend[hidden] { display: none; }
+.segc { display: inline-flex; background: var(--pill); border-radius: 10px; padding: 3px; margin-bottom: 12px; }
+.segc button { font: 500 12.5px var(--font); border: 0; background: none; padding: 6px 12px; border-radius: 8px; color: var(--muted); cursor: pointer; }
+.segc button.on { background: var(--surface); color: var(--ink); box-shadow: 0 1px 2px rgba(0,0,0,.08); }
+.blab { font-size: 12px; font-weight: 700; fill: var(--ink); font-family: var(--font); }
+.blab2 { font-size: 11px; fill: #646b75; font-family: var(--font); }
+.legend button { font: 500 12.5px var(--font); color: var(--body); background: var(--surface); border: 1px solid var(--line); border-radius: 999px; padding: 5px 10px 5px 8px; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; }
+.legend button i { width: 10px; height: 10px; border-radius: 3px; }
+.legend button.off { opacity: .4; }
+
+/* donut */
+.donut-wrap { display: grid; grid-template-columns: minmax(0, 1fr); gap: 20px; justify-items: center; margin-top: 8px; }
+@media (max-width: 1080px) and (min-width: 901px) { .donut-wrap { grid-template-columns: minmax(0, 1fr); justify-items: center; } .dlist { width: 100%; } }
+.donut-wrap .chart { width: 208px; }
+.donut-wrap .dlist { width: 100%; max-width: 320px; }
+.dlist { display: grid; gap: 9px; }
+.dlist .d { display: grid; grid-template-columns: 10px minmax(0, 1fr) auto; gap: 8px; align-items: center; font-size: 13.5px; color: var(--body); padding: 2px 0; }
+.dlist .d i { width: 10px; height: 10px; border-radius: 3px; }
+.dlist .d > span:nth-child(2) { white-space: nowrap; }
+.dlist .d .n { font-weight: 600; color: var(--ink); font-variant-numeric: tabular-nums; }
+.dlist .d .n small { font-weight: 400; color: var(--muted); margin-left: 4px; }
+.dlist .d.dim { opacity: .45; }
+.donut-c1 { font-size: 26px; font-weight: 700; fill: var(--ink); font-family: var(--font); }
+.donut-c2 { font-size: 11px; fill: #898781; font-family: var(--font); }
+.donut-pct { font-size: 12.5px; font-weight: 700; font-family: var(--font); pointer-events: none; }
+
+/* heatmap */
+.hm-scale { display: flex; align-items: center; gap: 8px; margin-top: 12px; font-size: 11.5px; color: var(--muted); }
+.hm-scale { flex-wrap: wrap; }
+.hm-scale .bar { width: 120px; height: 8px; border-radius: 4px; background: linear-gradient(90deg, #e6effb, var(--q450), var(--q600)); }
+.hm-scale .pk { width: 12px; height: 12px; border: 2px solid var(--ink); border-radius: 3px; margin-left: 10px; }
+
+/* small multiples */
+.ttabs { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
+.ttabs button { font: 500 12.5px var(--font); color: var(--body); background: var(--surface); border: 1px solid var(--line); border-radius: 999px; padding: 6px 12px 6px 9px; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; }
+.ttabs button i { width: 10px; height: 10px; border-radius: 3px; }
+.ttabs button.on { background: var(--ink); color: #fff; border-color: var(--ink); }
+.tsum { display: flex; flex-wrap: wrap; gap: 6px 18px; margin-top: 10px; font-size: 12.5px; color: var(--muted); }
+.tsum b { color: var(--ink); }
+.sm { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 14px; }
+.sm .m { min-width: 0; }
+.sm .m .t { display: flex; align-items: center; gap: 6px; font-size: 12.5px; color: var(--body); }
+.sm .m .t i { width: 8px; height: 8px; border-radius: 2px; }
+.sm .m .pk-l { font-size: 11.5px; color: var(--muted); margin-top: 6px; }
+.sm .m .v { font-size: 16px; font-weight: 700; font-variant-numeric: tabular-nums; margin: 1px 0 6px; line-height: 1.35; }
+.sm .m .v small { display: block; font-size: 12.5px; font-weight: 600; color: var(--body); margin: 0; }
+
+/* ring meter card */
+.wrow { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
+.waf { min-width: 0; }
+.waf b { display: block; font-size: 14px; }
+.waf .big { font-size: 30px; font-weight: 700; letter-spacing: -.8px; font-variant-numeric: tabular-nums; margin: 4px 0 2px; }
+.waf .grid { display: grid; grid-template-columns: repeat(10, 1fr); gap: 3px; margin: 8px 0 10px; max-width: 210px; }
+.waf .grid i { aspect-ratio: 1; border-radius: 50%; background: #e8e9ec; }
+.waf span { font-size: 12.5px; color: var(--muted); line-height: 1.55; }
+@media (max-width: 760px) { .wrow { grid-template-columns: minmax(0, 1fr); } }
+
+/* table */
+.tfilters { display: grid; gap: 8px; margin-bottom: 14px; padding: 12px 14px; background: var(--bg); border: 1px solid var(--line); border-radius: 12px; }
+.tfrow { display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 10px; align-items: start; }
+.tfrow .lb { font-size: 12.5px; font-weight: 600; color: var(--muted); padding-top: 7px; }
+.tfrow .opts { display: flex; flex-wrap: wrap; gap: 6px; }
+.tfilters button em { font-style: normal; font-size: 11.5px; color: var(--muted); margin-left: 5px; font-variant-numeric: tabular-nums; }
+.tfilters button.on em { color: #c9ccd2; }
+.tfilters button:disabled { opacity: .35; cursor: default; }
+.tfoot { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+.tfoot button { font: 500 12.5px var(--font); background: none; border: 0; color: var(--accent); cursor: pointer; padding: 6px 0; }
+.tfoot button[hidden] { display: none; }
+@media (max-width: 520px) { .tfrow { grid-template-columns: minmax(0, 1fr); gap: 4px; } .tfrow .lb { padding-top: 0; } }
+.tfilters button { font: 500 12.5px var(--font); background: var(--surface); color: var(--body); border: 1px solid var(--line); border-radius: 999px; padding: 6px 11px; cursor: pointer; }
+.tfilters button.on { background: var(--ink); border-color: var(--ink); color: #fff; }
+.seg { display: flex; height: 10px; gap: 2px; border-radius: 5px; overflow: hidden; margin: 2px 0 6px; }
+.seg i { display: block; height: 100%; }
+.seg-l { display: flex; gap: 14px; font-size: 12px; color: var(--muted); margin-bottom: 14px; }
+.seg-l span { display: inline-flex; align-items: center; gap: 5px; }
+.seg-l span i { width: 8px; height: 8px; border-radius: 2px; }
+.tbl { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+.tbl th { text-align: left; font-size: 12px; font-weight: 600; color: var(--muted); padding: 8px 10px; border-bottom: 1px solid var(--line); }
+.tbl td { padding: 10px; border-bottom: 1px solid var(--line); color: var(--body); vertical-align: top; line-height: 1.55; }
+.tbl td.cat { color: var(--muted); font-size: 12.5px; white-space: nowrap; }
+.tg { display: inline-block; margin-left: 6px; font-size: 11px; font-weight: 600; padding: 1px 7px; border-radius: 999px; vertical-align: 1px; white-space: nowrap; }
+.dc { display: inline-block; margin: 0 4px 2px 0; font-size: 11.5px; font-weight: 600; padding: 1px 7px; border-radius: 6px; background: var(--accent-soft); color: var(--accent); }
+.dc.none { background: #fdf1e7; color: #b4441b; }
+.tg.msg { background: #e6f4ec; color: #1f7a52; }
+.a .tg { margin: 0 2px; }
+.fq { display: inline-block; min-width: 26px; text-align: center; font-size: 12px; font-weight: 600; padding: 2px 7px; border-radius: 6px; background: var(--mid-bg); color: var(--body); }
+.fq.h { background: var(--hi-bg); color: var(--hi); }
+.fq.l { background: transparent; color: var(--muted); border: 1px solid var(--line); }
+.count { font-size: 12.5px; color: var(--muted); margin-top: 10px; }
+
+/* why -> fix (cause and remedy on one line) */
+.vc .head, .vc .pair { display: grid; grid-template-columns: minmax(0, 1fr) 36px minmax(0, 1fr); gap: 10px; align-items: stretch; }
+.vc .head { font-size: 12px; font-weight: 700; margin-bottom: 8px; }
+.vc .head span:first-child { color: #8f5f49; }
+.vc .head span:last-child { color: var(--accent); }
+.vc .pair + .pair { margin-top: 10px; }
+.vc .cause { background: #f6f0eb; border-radius: 12px; padding: 14px 16px; font-size: 13.5px; line-height: 1.65; color: var(--body); }
+.vc .cause b { display: block; color: #8f5f49; font-size: 14px; margin-bottom: 2px; }
+.vc .arrow { display: grid; place-items: center; color: #a3a9b2; }
+.vc .arrow svg { width: 20px; height: 20px; stroke: currentColor; stroke-width: 1.8; fill: none; }
+.vc .fixes { display: flex; flex-direction: column; gap: 8px; }
+.vc .fixes div { flex: 1; display: flex; flex-direction: column; justify-content: center; background: var(--accent-soft); border-radius: 12px; padding: 12px 16px; font-size: 13.5px; line-height: 1.55; color: var(--body); }
+.vc .fixes div b { color: var(--accent); font-size: 14px; }
+@media (max-width: 760px) {
+  .vc .head { display: none; }
+  .vc .pair { grid-template-columns: minmax(0, 1fr); }
+  .vc .arrow { transform: rotate(90deg); height: 24px; }
+}
+.foot { font-size: 12.5px; color: var(--muted); line-height: 1.7; margin-top: 8px; }
+.limits { border-top: 1px solid var(--line); padding-top: 18px; margin-top: 8px; }
+.limits h2 { font-size: 15px; margin: 0 0 8px; }
+.limits ul { margin: 0; padding-left: 18px; display: grid; gap: 6px; }
+.limits li { font-size: 13px; line-height: 1.7; color: var(--body); }
+.limits li b { color: var(--ink); }
+.vc .cause .ev { display: block; margin-top: 8px; padding-top: 8px; border-top: 1px dashed #e6dacf; font-size: 12px; color: #7a6a5f; }
+.vc .fixes div .st { display: inline-block; margin-left: 6px; font-size: 11px; font-weight: 700; padding: 1px 7px; border-radius: 999px; background: #ffffff; color: var(--muted); border: 1px solid var(--line); vertical-align: 1px; }
+.vc .fixes div .st.ok { background: #1f7a52; border-color: #1f7a52; color: #fff; }
+.vc .fixes div .st.hold { color: #8f5f49; border-color: #e6dacf; }
+.vc .fixes div.done { background: #e6f4ec; box-shadow: inset 3px 0 0 #1f7a52; }
+.vc .fixes div.done b { color: #1f7a52; }
+.vc .fixes div strong { color: #1f7a52; }
+
+@media (max-width: 900px) {
+  .row.r21, .row.r12 { grid-template-columns: minmax(0, 1fr); }
+  .kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .sm { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+@media (max-width: 520px) {
+  .wrap { padding: 32px 16px 64px; }
+  .kpis { grid-template-columns: minmax(0, 1fr); }
+  .sm { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .donut-wrap { grid-template-columns: minmax(0, 1fr); justify-items: center; }
+  .dlist { width: 100%; }
+  .tbl .hide-sm { display: none; }
+}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <a class="back" href="index.html#work-data">← 문의 4,500건 분석으로</a>
+  <p class="kicker">문의 분석 대시보드</p>
+  <h1>12개월 문의 <span id="s-total">—</span>건, 어디서 반복되는가</h1>
+  <p class="sum">회원사 업무 시스템 사용자 지원 문의를 2024년 6월부터 2025년 5월까지 업무구분별로 집계했습니다. 가장 많았던 달은 <b id="s-peak">—</b>입니다.</p>
+  <span class="mask">보안상 시스템명과 의뢰처명은 시스템 A·B, 의뢰처 A·B·C로 바꿔 표기했습니다.</span>
+
+  <section class="kpis" aria-label="핵심 지표">
+    <div class="kpi" id="k1"><div class="l">총 문의</div><div class="v"><span id="k-total">—</span><small>건</small></div><div class="s">12개월 합계 · 월별 추이</div><div class="chart spark" id="spark-total"></div></div>
+    <div class="kpi"><div class="l">월평균</div><div class="v"><span id="k-avg">—</span><small>건</small></div><div class="s">최소 <span id="k-min">—</span> · 최대 <span id="k-max">—</span></div><div class="chart spark" id="spark-range"></div></div>
+    <div class="kpi"><div class="l">피크 월</div><div class="v" id="k-peak">—</div><div class="s"><span id="k-peak-n">—</span>건, 평균의 <span id="k-peak-x">—</span>배</div></div>
+    <div class="kpi ring"><div class="chart" id="ring-hi" style="width:76px"></div><div class="txt"><div class="l">반복 문의 유형</div><div class="v"><span id="k-faq">—</span><small>개</small></div><div class="s">빈도 '상' <span id="k-faq-hi">—</span>개</div></div></div>
+  </section>
+
+  <div class="row r21">
+    <section class="card" id="c-monthly">
+      <h2>어느 달이 가장 바빴나</h2>
+      <p class="a" id="m-sub">—</p>
+      <div class="segc" id="bar-mode" role="group" aria-label="보기 방식"><button type="button" class="on" data-m="stack">업무구분별</button><button type="button" data-m="total">합계</button></div>
+      <div class="chart" id="chart-bars"></div>
+      <div class="legend" id="legend"></div>
+    </section>
+    <section class="card" id="c-share">
+      <h2>어떤 업무 문의가 가장 많나</h2>
+      <p class="a" id="r-sub">—</p>
+      <div class="donut-wrap">
+        <div class="chart" id="donut"></div>
+        <div class="dlist" id="dlist"></div>
+      </div>
+    </section>
+  </div>
+
+  <section class="card" id="c-heat" style="margin-bottom:16px">
+    <h2>언제, 어디에 몰렸나</h2>
+    <p class="a" id="h-sub">월 × 업무구분별 문의 건수. 진할수록 많습니다.</p>
+    <div class="chart" id="heat"></div>
+    <div class="hm-scale"><span class="bar"></span><span>각 업무구분 안에서 적음 → 많음</span><span class="pk"></span><span>그 업무구분의 최대 월</span></div>
+  </section>
+
+  <section class="card" id="c-trend" style="margin-bottom:16px">
+      <h2>업무구분별 추이</h2>
+      <p class="a" id="t-sub">—</p>
+      <div class="ttabs" id="t-tabs" role="group" aria-label="강조할 업무구분"></div>
+      <div class="chart" id="sm"></div>
+      <div class="tsum" id="t-sum"></div>
+  </section>
+
+  <section class="card" id="c-rings" style="margin-bottom:16px">
+    <h2>비율로 보면</h2>
+    <p class="a">점 100개 중 칠해진 만큼이 비율입니다.</p>
+    <div class="wrow" id="rings"></div>
+  </section>
+
+  <section class="card" id="c-faq" style="margin-bottom:16px">
+    <h2>무엇을 반복해서 묻나</h2>
+    <p class="a" id="faq-sub">—</p>
+    <div class="seg" id="seg" role="img"></div>
+    <div class="seg-l" id="seg-l"></div>
+    <div class="tfilters" id="tf" role="group" aria-label="반복 문의 필터"></div>
+    <table class="tbl">
+      <thead><tr><th class="hide-sm">업무구분</th><th>문의 내용</th><th style="width:112px">안내 자료</th><th style="width:56px">빈도</th></tr></thead>
+      <tbody id="tbody"></tbody>
+    </table>
+    <div class="tfoot"><p class="count" id="tcount"></p><button type="button" id="treset" hidden>필터 해제</button></div>
+  </section>
+
+  <section class="card vc" id="c-why" style="margin-bottom:16px">
+    <h2>왜 반복되고, 무엇을 바꿨나</h2>
+    <p class="a">원인마다 그에 맞는 개선안. <b>실행</b>한 것과 <b>제안</b>에 그친 것을 구분했습니다.</p>
+    <div class="head"><span>원인</span><span></span><span>개선안</span></div>
+    <div class="pair">
+      <div class="cause"><b>01 · 답은 이미 FAQ에 있다</b>자주 오는 문의 다수는 FAQ에 안내글이 있지만, 사용자가 찾지 않고 전화한다.<span class="ev">근거: 반복 문의 <span id="ev-cov">—</span>는 FAQ나 매뉴얼에 이미 안내가 있었고, 빈도 '상' 유형도 <span id="ev-covhi">—</span>가 마찬가지였습니다. 문의 원인 분석 문서에도 안내글이 "거의 조회되지 않았고, 모르면 전화하는 게 더 편해서" 전화한다는 기록이 있습니다.</span></div>
+      <div class="arrow" aria-hidden="true"><svg viewBox="0 0 20 20"><path d="M3 10h13M11 5l5 5-5 5"/></svg></div>
+      <div class="fixes"><div class="done"><b>오류 메시지에 해결 방법 연결<span class="st ok">실행</span></b>오류가 뜬 그 자리에서 해결 방법으로 연결. 예) 구형 구성요소 지원 종료, PDF 생성 오류 안내에 해결 방법 링크 추가, 전자서명 인증 실패 문구에 "허용된 접속 환경에서 다시 시도" 안내 추가. <strong>반복 문의 약 10% 이상 감소</strong></div><div><b>프로그램 안에 FAQ 버튼<span class="st hold">제안 · 보류</span></b>의뢰구분·양식별로 해당 안내글에 바로 연결. 개발 리소스 문제로 보류되어, 위의 오류 메시지 개선으로 먼저 우회</div><div><b>FAQ 게시판 재구성<span class="st">제안</span></b>빈도 '상' 유형부터 안내글 추가, 업무구분별 정리</div></div>
+    </div>
+    <div class="pair">
+      <div class="cause"><b>02 · 의뢰처마다 절차가 다르다</b>자동연계 건의 변경·수정 절차가 의뢰처 A·B·C마다 달라 회원사가 알기 어렵고, 의뢰처 쪽 처리 미숙으로 생기는 문의도 많다.<span class="ev">근거: 의뢰처 관련 문의가 전체의 <span id="ev-org">—</span>, 반복 문의 유형의 <span id="ev-orgtype">—</span>가 의뢰처·자동연계 관련. 문의 원인 분석 문서에서 "연계 의뢰가 안 들어온다", "발송 후 의뢰처에서 안 보인다"는 문의는 대부분 의뢰처 담당자의 처리 미숙이 원인으로 확인됐습니다.</span></div>
+      <div class="arrow" aria-hidden="true"><svg viewBox="0 0 20 20"><path d="M3 10h13M11 5l5 5-5 5"/></svg></div>
+      <div class="fixes"><div><b>의뢰처별 절차 한 장 정리<span class="st">제안</span></b>변경·수정·반송·취하 절차를 회원사와 의뢰처가 같이 참고</div><div><b>연계 상태 확인 창 단순화<span class="st">제안</span></b>숨은 메뉴의 칸 개수 대신 "의뢰처 수신 / 미수신"을 크게 표시해, 발송 문제인지 의뢰처 처리 문제인지 바로 구분</div></div>
+    </div>
+    <div class="pair">
+      <div class="cause"><b>03 · 의뢰처 A 업무는 매뉴얼이 없다</b>업무구분이 시스템 A로 잡힌 문의에도 의뢰처 A 업무가 섞여 있어, 실제 관련 문의는 매달 100건 안팎이다.<span class="ev">근거: 시스템 A로 분류된 문의의 월별 세부 내용을 확인한 결과, 의뢰처 A 업무가 섞여 있어 이를 합치면 대략 매달 100건으로 추정했습니다(집계상 의뢰처 A만은 월평균 <span id="ev-orga">—</span>건). 의뢰처 A 업무는 프로그램 사용법과 처리 절차를 안내하는 매뉴얼이 따로 없었습니다.</span></div>
+      <div class="arrow" aria-hidden="true"><svg viewBox="0 0 20 20"><path d="M3 10h13M11 5l5 5-5 5"/></svg></div>
+      <div class="fixes"><div><b>의뢰처 A 업무 매뉴얼<span class="st">제안</span></b>프로그램 사용법과 연계 상태 확인 절차</div></div>
+    </div>
+  </section>
+
+
+  <p class="foot">자료: 월별 업무구분별 문의 집계표(2024.06–2025.05), 자주 오는 문의 정리, 의뢰처별 문의 원인 분석 문서 3종, 개선안 자료. 총 문의는 다섯 업무구분의 합입니다.</p>
+</main>
+
+<script>
+(function () {
+  // ---------- data (masked) ----------
+  var CATS = [
+    { key: 'sysA', name: '시스템 A', color: '#2a78d6' },
+    { key: 'orgA', name: '의뢰처 A', color: '#eb6834' },
+    { key: 'sysB', name: '시스템 B', color: '#1baf7a' },
+    { key: 'orgB', name: '의뢰처 B', color: '#eda100' },
+    { key: 'orgC', name: '의뢰처 C', color: '#e87ba4' }
+  ];
+  // month, sysA, orgA, sysB, orgB, orgC, orgC(법인)
+  var RAW = [
+    ['2024-06', 206, 45, 38, 15, 8, 8], ['2024-07', 215, 84, 31, 24, 11, 6], ['2024-08', 191, 66, 42, 26, 28, 17],
+    ['2024-09', 104, 59, 33, 12, 19, 18], ['2024-10', 156, 73, 28, 32, 22, 16], ['2024-11', 131, 81, 27, 42, 46, 34],
+    ['2024-12', 112, 61, 56, 58, 42, 27], ['2025-01', 197, 97, 96, 60, 8, 6], ['2025-02', 215, 172, 52, 53, 19, 7],
+    ['2025-03', 132, 142, 129, 58, 26, 7], ['2025-04', 148, 119, 162, 39, 23, 16], ['2025-05', 103, 82, 78, 40, 13, 9]
+  ];
+  var MONTHS = RAW.map(function (r) {
+    var o = { month: r[0], sysA: r[1], orgA: r[2], sysB: r[3], orgB: r[4], orgC: r[5], orgCcorp: r[6] };
+    o.total = o.sysA + o.orgA + o.sysB + o.orgB + o.orgC;
+    return o;
+  });
+  var FAQ = [
+    ['시스템 A · 의뢰처 A', '전자문서로 의뢰가 왔는데 시스템에 반영되지 않음', '상'],
+    ['시스템 A · 의뢰처 A', '감정서 발송 후 의뢰처 전산에서 감정서가 확인되지 않음', '중'],
+    ['시스템 A · 의뢰처 A', '감정서 발송 후 수정하는 방법과 절차', '상'],
+    ['시스템 A · 의뢰처 A', '의뢰 건 취하 처리 절차', '중'],
+    ['시스템 A · 의뢰처 A', '연계 물건 데이터가 일부 누락되거나 다른 물건으로 들어옴', '중'],
+    ['시스템 A · 의뢰처 A', '연계 양식의 일부 항목 데이터가 들어오지 않을 때 작성 절차', '상'],
+    ['시스템 A · 의뢰처 B', '반려 처리 방법', '상'],
+    ['시스템 A · 의뢰처 B', '반려 후 실비만 청구하는 방법', '상', ['faq']],
+    ['시스템 A · 의뢰처 B', '반송 처리 후 수수료청구서 수정 불가', '중'],
+    ['시스템 A · 의뢰처 B', '전자서명 관련 (인증 실패, 서명 요청 누락, 권한 위임)', '상', ['faq', 'msg']],
+    ['시스템 A · 의뢰처 C', '가격시점 입력 방법', '하'],
+    ['시스템 A · 의뢰처 C', '일반 접수로 발송한 뒤 자동연계 데이터가 들어온 경우 처리 방법', '상'],
+    ['시스템 A · 의뢰처 C', '(법인) 통합 프로그램에서 발송 안 됨 (감정서 번호 중복 접수)', '중'],
+    ['시스템 A · 자동연계 공통', '연계 의뢰가 시스템에 들어오지 않음', '상'],
+    ['시스템 A · 자동연계 공통', '감정서 발송 후 의뢰처 전산에서 확인되지 않음', '중'],
+    ['시스템 A · 자동연계 공통', '의뢰처 연계 데이터 변경 처리 절차', '중'],
+    ['시스템 A · 자동연계 공통', '발송 후 수정 시 처리 절차 (의뢰처 변경 의뢰)', '상'],
+    ['시스템 A · 자동연계 공통', '목록 마감 후 평가조서 목록 추가·삭제', '상'],
+    ['시스템 A · 자동연계 공통', '작성 완료 시 점검 리스트 실패', '상'],
+    ['시스템 A · PC 환경', '구형 브라우저 구성요소 지원 종료로 양식이 보이지 않음', '상', ['msg']],
+    ['시스템 A · PC 환경', '프로그램 실행 안 됨 (보안 프로그램, 로그인 창 미표시)', '상'],
+    ['시스템 A · PC 환경', '감정서 PDF 생성 안 됨 / 멈춤', '중', ['msg']],
+    ['시스템 A · PC 환경', '접수 목록에서 감정서 삭제', '중'],
+    ['시스템 A · PC 환경', '양식 연결 설정 오류', '하'],
+    ['시스템 B', '감정서 열기 안 됨', '상'],
+    ['시스템 B', '산출 기초 탭이 보이지 않음', '상'],
+    ['시스템 B', '수수료청구서 여비 입력 방법', '중'],
+    ['시스템 B', '명세표 토지·건물 순서 설정', '중'],
+    ['시스템 B', '두 용도지역에 걸친 토지의 공시지가 입력·평가 방법', '상'],
+    ['시스템 B', '작성 완료 시 첨부한 PDF가 시스템 A에 반영되지 않음', '하']
+  ];
+
+  // where each repeated type was already documented (F = FAQ, M = manual), checked by hand against the FAQ board and manuals
+  var COVER = ["", "", "FM", "FM", "", "", "F", "F", "FM", "F", "", "F", "", "", "", "", "F", "F", "F", "F", "F", "F", "M", "F", "F", "F", "FM", "M", "F", "F"];
+  FAQ.forEach(function (f, i) { f.cover = COVER[i]; });
+
+  // ---------- helpers ----------
+  var $ = function (id) { return document.getElementById(id); };
+  var fmt = function (n) { return n.toLocaleString('ko-KR'); };
+  var mlabel = function (m) { return m.slice(0, 4) + '.' + m.slice(5); };
+  var short = function (m, first) { return (first || m.slice(5) === '01') ? m.slice(2, 4) + '.' + m.slice(5) : m.slice(5); };
+  var NS = 'http://www.w3.org/2000/svg';
+  function el(tag, attrs, parent) {
+    var e = document.createElementNS(NS, tag);
+    for (var k in attrs) e.setAttribute(k, attrs[k]);
+    if (parent) parent.appendChild(e);
+    return e;
+  }
+  function h(tag, cls, text) { var e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
+  function svgIn(box, W, H, label) {
+    var old = box.querySelector('svg'); if (old) old.remove();
+    var s = el('svg', { viewBox: '0 0 ' + W + ' ' + H, role: 'img', 'aria-label': label });
+    box.insertBefore(s, box.firstChild); return s;
+  }
+  // one tooltip per chart box; rows = [{name,color,value}]
+  function tipFor(box) {
+    var t = box.querySelector('.tip'); if (!t) { t = h('div', 'tip'); box.appendChild(t); }
+    return {
+      show: function (title, rows, x, y) {
+        t.textContent = ''; t.appendChild(h('b', null, title));
+        (rows || []).forEach(function (r) {
+          var tr = h('span', 'tr'), a = h('span'), sw = h('i'); sw.style.background = r.color;
+          a.append(sw, r.name); tr.append(a, h('span', null, r.value)); t.appendChild(tr);
+        });
+        var w = box.clientWidth; t.style.left = Math.min(Math.max(x, 70), w - 70) + 'px'; t.style.top = Math.max(y, 40) + 'px'; t.style.opacity = 1;
+      },
+      hide: function () { t.style.opacity = 0; }
+    };
+  }
+  function arcPath(cx, cy, r0, r1, a0, a1) {
+    var large = a1 - a0 > Math.PI ? 1 : 0;
+    var p = function (r, a) { return (cx + r * Math.sin(a)).toFixed(2) + ' ' + (cy - r * Math.cos(a)).toFixed(2); };
+    return 'M' + p(r1, a0) + ' A' + r1 + ' ' + r1 + ' 0 ' + large + ' 1 ' + p(r1, a1) +
+           ' L' + p(r0, a1) + ' A' + r0 + ' ' + r0 + ' 0 ' + large + ' 0 ' + p(r0, a0) + 'Z';
+  }
+
+  // ---------- numbers ----------
+  var total = MONTHS.reduce(function (s, m) { return s + m.total; }, 0);
+  var avg = total / MONTHS.length;
+  var byTotal = MONTHS.slice().sort(function (a, b) { return a.total - b.total; });
+  var peak = byTotal[byTotal.length - 1], low = byTotal[0];
+  var hiCount = FAQ.filter(function (f) { return f[2] === '상'; }).length;
+  $('s-total').textContent = fmt(total);
+  $('s-peak').textContent = mlabel(peak.month) + ' (' + fmt(peak.total) + '건)';
+  $('k-total').textContent = fmt(total);
+  $('k-avg').textContent = fmt(Math.round(avg));
+  $('k-min').textContent = fmt(low.total);
+  $('k-max').textContent = fmt(peak.total);
+  $('k-peak').textContent = mlabel(peak.month);
+  $('k-peak-n').textContent = fmt(peak.total);
+  $('k-peak-x').textContent = (peak.total / avg).toFixed(1);
+  $('k-faq').textContent = FAQ.length;
+  $('k-faq-hi').textContent = hiCount;
+  var h1 = MONTHS.slice(0, 6).reduce(function (s, m) { return s + m.total; }, 0) / 6;
+  var h2 = MONTHS.slice(6).reduce(function (s, m) { return s + m.total; }, 0) / 6;
+  var ms = $('m-sub'); ms.textContent = '';
+  ms.append('가장 바쁜 달은 ', h('b', null, mlabel(peak.month) + ' ' + fmt(peak.total) + '건'), ', 월평균(' + fmt(Math.round(avg)) + '건)의 ' + (peak.total / avg).toFixed(1) + '배. 2024.12–2025.05 월평균은 ' + fmt(Math.round(h2)) + '건으로, 그 전 6개월(2024.06–11)의 ' + (h2 / h1).toFixed(1) + '배입니다.');
+
+  // ---------- KPI sparkline: total trend, peak in accent ----------
+  function drawSpark(box, values, labels, opts) {
+    var W = Math.max(box.clientWidth, 120), H = 40, pad = 5;
+    var max = Math.max.apply(null, values), min = opts.zero ? 0 : Math.min.apply(null, values);
+    var x = function (i) { return pad + i * (W - 2 * pad) / (values.length - 1); };
+    var y = function (v) { return H - pad - (v - min) / (max - min || 1) * (H - 2 * pad); };
+    var s = svgIn(box, W, H, opts.label);
+    if (opts.band) el('line', { x1: 0, x2: W, y1: y(opts.band), y2: y(opts.band), stroke: '#c3c2b7', 'stroke-dasharray': '3 3', 'stroke-width': 1 }, s);
+    el('path', { d: values.map(function (v, i) { return (i ? 'L' : 'M') + x(i) + ' ' + y(v); }).join(' '), fill: 'none', stroke: '#9aa0a8', 'stroke-width': 2, 'stroke-linejoin': 'round', 'stroke-linecap': 'round' }, s);
+    var pi = values.indexOf(max);
+    el('circle', { cx: x(pi), cy: y(max), r: 4, fill: '#2a78d6', stroke: '#fff', 'stroke-width': 2 }, s);
+    var tip = tipFor(box);
+    values.forEach(function (v, i) {
+      var r = el('rect', { x: x(i) - (W / values.length) / 2, y: 0, width: W / values.length, height: H, fill: 'transparent' }, s);
+      r.addEventListener('mouseenter', function () { tip.show(labels[i] + ' · ' + fmt(v) + '건', null, x(i) / W * box.clientWidth, y(v) / H * box.clientHeight); });
+      r.addEventListener('mouseleave', tip.hide);
+    });
+  }
+  function sparks() {
+    var vals = MONTHS.map(function (m) { return m.total; }), labs = MONTHS.map(function (m) { return mlabel(m.month); });
+    drawSpark($('spark-total'), vals, labs, { label: '월별 총 문의 추이', zero: false });
+    drawSpark($('spark-range'), vals, labs, { label: '월별 문의와 월평균선', zero: false, band: avg });
+  }
+
+  // ---------- ring meter ----------
+  function ring(box, frac, size, color, track, center, sub) {
+    var S = size, cx = S / 2, r1 = S / 2 - 2, r0 = r1 - Math.max(8, S * 0.13);
+    var s = svgIn(box, S, S, center + ' ' + (sub || ''));
+    el('circle', { cx: cx, cy: cx, r: (r0 + r1) / 2, fill: 'none', stroke: track, 'stroke-width': r1 - r0 }, s);
+    el('path', { d: arcPath(cx, cx, r0, r1, 0, Math.PI * 2 * frac), fill: color }, s);
+    var t = el('text', { x: cx, y: cx, 'text-anchor': 'middle', 'dominant-baseline': 'central', 'class': 'donut-c1', style: 'font-size:' + Math.round(S * 0.22) + 'px' }, s); t.textContent = center;
+  }
+
+  // ---------- stacked bars ----------
+  var active = {}; CATS.forEach(function (c) { active[c.key] = true; });
+  function drawStack() {
+    var box = $('chart-bars');
+    var W = Math.max(box.clientWidth, 280), H = Math.round(Math.min(300, Math.max(210, W * 0.48)));
+    var m = { t: 24, r: 46, b: 26, l: 34 }, iw = W - m.l - m.r, ih = H - m.t - m.b;
+    var keys = CATS.filter(function (c) { return active[c.key]; });
+    var sums = MONTHS.map(function (d) { return keys.reduce(function (s, c) { return s + d[c.key]; }, 0); });
+    var max = Math.max.apply(null, sums.concat([1]));
+    var step = max > 400 ? 100 : max > 160 ? 50 : 20, top = Math.ceil(max / step) * step;
+    var s = svgIn(box, W, H, '월별 업무구분별 문의 건수 누적 막대 차트');
+    var g = el('g', { transform: 'translate(' + m.l + ',' + m.t + ')' }, s);
+    var gl = el('g', { 'class': 'gridl' }, g), ax = el('g', { 'class': 'ax' }, g);
+    for (var v = 0; v <= top; v += step) {
+      var yy = ih - v / top * ih;
+      el('line', { x1: 0, x2: iw, y1: yy, y2: yy }, gl);
+      el('text', { x: -8, y: yy, 'text-anchor': 'end', 'dominant-baseline': 'central' }, ax).textContent = v;
+    }
+    var bw = iw / MONTHS.length, pad = Math.min(12, bw * 0.28), tip = tipFor(box);
+    MONTHS.forEach(function (d, i) {
+      var y0 = ih;
+      keys.forEach(function (c, ci) {
+        var hh = d[c.key] / top * ih, gap = ci ? 2 : 0;
+        el('rect', { x: m.l + i * bw + pad / 2, y: m.t + y0 - hh + gap, width: bw - pad, height: Math.max(hh - gap, 0), fill: c.color, rx: ci === keys.length - 1 ? 4 : 0 }, s);
+        y0 -= hh;
+      });
+      if (i % (W < 480 ? 2 : 1) === 0) el('text', { x: i * bw + bw / 2, y: ih + 16, 'text-anchor': 'middle' }, ax).textContent = short(d.month, i === 0);
+      var hit = el('rect', { x: m.l + i * bw, y: m.t, width: bw, height: ih, fill: 'transparent' }, s);
+      hit.addEventListener('mouseenter', function () {
+        tip.show(mlabel(d.month) + ' · ' + fmt(sums[i]) + '건', keys.slice().reverse().map(function (c) { return { name: c.name, color: c.color, value: fmt(d[c.key]) }; }),
+          (m.l + i * bw + bw / 2) / W * box.clientWidth, (m.t + ih - sums[i] / top * ih) / H * box.clientHeight);
+      });
+      hit.addEventListener('mouseleave', tip.hide);
+    });
+    var sAvg = sums.reduce(function (a, b) { return a + b; }, 0) / sums.length, ya = ih - sAvg / top * ih;
+    el('line', { x1: 0, x2: iw, y1: ya, y2: ya, stroke: '#111418', 'stroke-dasharray': '4 4', 'stroke-width': 1.2, opacity: 0.55, 'pointer-events': 'none' }, g);
+    el('text', { x: iw + 6, y: ya - 3, 'class': 'blab2' }, g).textContent = '월평균';
+    el('text', { x: iw + 6, y: ya + 11, 'class': 'blab2' }, g).textContent = fmt(Math.round(sAvg));
+    var pi = sums.indexOf(max);
+    el('text', { x: pi * bw + bw / 2, y: ih - max / top * ih - 8, 'text-anchor': 'middle', 'class': 'blab' }, g).textContent = fmt(max) + '건';
+  }
+  CATS.forEach(function (c) {
+    var b = h('button'); b.type = 'button'; var sw = h('i'); sw.style.background = c.color; b.append(sw, c.name);
+    b.addEventListener('click', function () {
+      var on = CATS.filter(function (x) { return active[x.key]; }).length;
+      if (active[c.key] && on === 1) return;
+      active[c.key] = !active[c.key]; b.classList.toggle('off', !active[c.key]); drawBars();
+    });
+    $('legend').appendChild(b);
+  });
+
+  // peak-emphasis view: one bar per month, only the busiest month in colour, average line
+  var barMode = 'stack';
+  function drawTotal() {
+    var box = $('chart-bars');
+    var W = Math.max(box.clientWidth, 280), H = Math.round(Math.min(300, Math.max(210, W * 0.48)));
+    var m = { t: 24, r: 46, b: 26, l: 34 }, iw = W - m.l - m.r, ih = H - m.t - m.b;
+    var top = Math.ceil(peak.total / 100) * 100 + (peak.total % 100 > 60 ? 100 : 0);
+    var s = svgIn(box, W, H, '월별 문의 합계, 가장 바쁜 달 강조');
+    var g = el('g', { transform: 'translate(' + m.l + ',' + m.t + ')' }, s);
+    var gl = el('g', { 'class': 'gridl' }, g), ax = el('g', { 'class': 'ax' }, g);
+    for (var v = 0; v <= top; v += 100) {
+      var yy = ih - v / top * ih;
+      el('line', { x1: 0, x2: iw, y1: yy, y2: yy }, gl);
+      el('text', { x: -8, y: yy, 'text-anchor': 'end', 'dominant-baseline': 'central' }, ax).textContent = v;
+    }
+    var bw = iw / MONTHS.length, pad = Math.min(14, bw * 0.3), tip = tipFor(box);
+    MONTHS.forEach(function (d, i) {
+      var hh = d.total / top * ih, isPeak = d === peak;
+      el('rect', { x: m.l + i * bw + pad / 2, y: m.t + ih - hh, width: bw - pad, height: hh, rx: 4, fill: isPeak ? '#2a78d6' : '#c9ced6' }, s);
+      if (i % (W < 480 ? 2 : 1) === 0 || isPeak) el('text', { x: i * bw + bw / 2, y: ih + 16, 'text-anchor': 'middle' }, ax).textContent = short(d.month, i === 0);
+      var hit = el('rect', { x: m.l + i * bw, y: m.t, width: bw, height: ih, fill: 'transparent' }, s);
+      hit.addEventListener('mouseenter', function () {
+        var diff = Math.round(d.total - avg);
+        tip.show(mlabel(d.month) + ' · ' + fmt(d.total) + '건', [{ name: '평균 대비', color: 'transparent', value: (diff >= 0 ? '+' : '') + fmt(diff) + '건' }],
+          (m.l + i * bw + bw / 2) / W * box.clientWidth, (m.t + ih - hh) / H * box.clientHeight);
+      });
+      hit.addEventListener('mouseleave', tip.hide);
+    });
+    var ya = ih - avg / top * ih;
+    el('line', { x1: 0, x2: iw, y1: ya, y2: ya, stroke: '#111418', 'stroke-dasharray': '4 4', 'stroke-width': 1.2, opacity: 0.55 }, g);
+    el('text', { x: iw + 6, y: ya - 3, 'class': 'blab2' }, g).textContent = '월평균';
+    el('text', { x: iw + 6, y: ya + 11, 'class': 'blab2' }, g).textContent = fmt(Math.round(avg));
+    var pi = MONTHS.indexOf(peak);
+    el('text', { x: pi * bw + bw / 2, y: ih - peak.total / top * ih - 8, 'text-anchor': 'middle', 'class': 'blab' }, g).textContent = fmt(peak.total) + '건';
+  }
+  function drawBars() { if (barMode === 'total') drawTotal(); else drawStack(); }
+  document.querySelectorAll('#bar-mode button').forEach(function (b) {
+    b.addEventListener('click', function () {
+      barMode = b.dataset.m;
+      document.querySelectorAll('#bar-mode button').forEach(function (x) { x.classList.toggle('on', x === b); });
+      $('legend').hidden = barMode !== 'stack';
+      drawBars();
+    });
+  });
+
+  // ---------- donut: share by category ----------
+  var catTotals = CATS.map(function (c) { return { c: c, n: MONTHS.reduce(function (s, m) { return s + m[c.key]; }, 0) }; });
+  var ranked = catTotals.slice().sort(function (a, b) { return b.n - a.n; });
+  $('r-sub').textContent = ranked[0].c.name + ' 문의가 전체의 ' + Math.round(ranked[0].n / total * 100) + '%';
+  var drows = {};
+  ranked.forEach(function (r) {
+    var row = h('div', 'd'), sw = h('i'); sw.style.background = r.c.color;
+    var n = h('span', 'n', fmt(r.n)); n.appendChild(h('small', null, Math.round(r.n / total * 100) + '%'));
+    row.append(sw, h('span', null, r.c.name), n); $('dlist').appendChild(row); drows[r.c.key] = row;
+  });
+  function drawDonut() {
+    var box = $('donut'), S = 208, cx = S / 2, r1 = cx - 2, r0 = r1 - 38, a = 0, gap = 0.025;
+    var s = svgIn(box, S, S, '업무구분별 문의 비중 도넛 차트'), tip = tipFor(box);
+    ranked.forEach(function (r) {
+      var a1 = a + r.n / total * Math.PI * 2;
+      var p = el('path', { d: arcPath(cx, cx, r0, r1, a + gap / 2, a1 - gap / 2), fill: r.c.color, style: 'cursor:default' }, s);
+      var mid = (a + a1) / 2;
+      p.addEventListener('mouseenter', function () {
+        Object.keys(drows).forEach(function (k) { drows[k].classList.toggle('dim', k !== r.c.key); });
+        tip.show(r.c.name, [{ name: '건수', color: r.c.color, value: fmt(r.n) + '건' }, { name: '비중', color: 'transparent', value: (r.n / total * 100).toFixed(1) + '%' }],
+          (cx + r1 * Math.sin(mid)) / S * box.clientWidth, (cx - r1 * Math.cos(mid)) / S * box.clientHeight);
+      });
+      p.addEventListener('mouseleave', function () { tip.hide(); Object.keys(drows).forEach(function (k) { drows[k].classList.remove('dim'); }); });
+      var rm = (r0 + r1) / 2, pct = Math.round(r.n / total * 100);
+      if ((a1 - a) * rm > 22) {
+        var lt = el('text', { x: cx + rm * Math.sin(mid), y: cx - rm * Math.cos(mid), 'text-anchor': 'middle', 'dominant-baseline': 'central', 'class': 'donut-pct', fill: r.c.color === '#eda100' ? '#0b0b0b' : '#ffffff' }, s);
+        lt.textContent = pct + '%';
+      }
+      a = a1;
+    });
+    el('text', { x: cx, y: cx - 6, 'text-anchor': 'middle', 'class': 'donut-c1' }, s).textContent = fmt(total);
+    el('text', { x: cx, y: cx + 14, 'text-anchor': 'middle', 'class': 'donut-c2' }, s).textContent = '12개월 문의';
+  }
+
+  // ---------- heatmap: each row on its own scale, row max outlined, totals in the margins ----------
+  function heatColor(t) {
+    var stops = [[230, 239, 251], [42, 120, 214], [24, 79, 149]];
+    var seg = t < 0.65 ? 0 : 1, u = seg ? (t - 0.65) / 0.35 : t / 0.65;
+    return 'rgb(' + stops[seg].map(function (v, i) { return Math.round(v + (stops[seg + 1][i] - v) * u); }).join(',') + ')';
+  }
+  var catPeaks = CATS.map(function (c) { var best = MONTHS[0]; MONTHS.forEach(function (m) { if (m[c.key] > best[c.key]) best = m; }); return best; });
+  (function () {
+    var hs = $('h-sub'); hs.textContent = '';
+    hs.append('업무마다 몰린 달이 다릅니다. ' + CATS[1].name + '는 ', h('b', null, mlabel(catPeaks[1].month)), ', ' + CATS[2].name + '는 ', h('b', null, mlabel(catPeaks[2].month)),
+      ', ' + CATS[4].name + '는 ', h('b', null, mlabel(catPeaks[4].month)), '에 가장 많았습니다.');
+  })();
+  function drawHeat() {
+    var box = $('heat'), W = Math.max(box.clientWidth, 300), narrow = W < 560;
+    var lw = 64, rw = narrow ? 48 : 110, topH = 46, rowH = narrow ? 30 : 36, H = topH + CATS.length * rowH + 24;
+    var cw = (W - lw - rw) / MONTHS.length;
+    var s = svgIn(box, W, H, '업무구분별로 따로 색을 매긴 월별 히트맵과 합계 막대'), tip = tipFor(box), ax = el('g', { 'class': 'ax' }, s);
+    var tip2 = function (node, title, rows, x, y) {
+      node.addEventListener('mouseenter', function () { tip.show(title, rows, x / W * box.clientWidth, y / H * box.clientHeight); });
+      node.addEventListener('mouseleave', tip.hide);
+    };
+    // month totals on top
+    MONTHS.forEach(function (m, ci) {
+      var bh = m.total / peak.total * (topH - 14), x = lw + ci * cw + 3;
+      var r = el('rect', { x: x, y: topH - 6 - bh, width: cw - 6, height: bh, rx: 3, fill: '#c9ced6' }, s);
+      tip2(r, mlabel(m.month) + ' 합계', [{ name: '문의', color: '#c9ced6', value: fmt(m.total) + '건' }], x + cw / 2, topH - 6 - bh);
+    });
+    el('text', { x: lw - 8, y: topH - 10, 'text-anchor': 'end' }, ax).textContent = '월 합계';
+    if (!narrow) el('text', { x: W - rw + 8, y: topH - 10 }, ax).textContent = '12개월 합계';
+    var maxRow = Math.max.apply(null, catTotals.map(function (x) { return x.n; }));
+    CATS.forEach(function (c, ri) {
+      var y = topH + ri * rowH, vals = MONTHS.map(function (m) { return m[c.key]; });
+      var mx = Math.max.apply(null, vals), mn = Math.min.apply(null, vals);
+      el('text', { x: 0, y: y + rowH / 2, 'dominant-baseline': 'central', style: 'font-size:12px;fill:#3d434c' }, ax).textContent = c.name;
+      MONTHS.forEach(function (m, ci) {
+        var v = m[c.key], t = (v - mn) / (mx - mn || 1), x = lw + ci * cw + 1;
+        var r = el('rect', { x: x, y: y + 1, width: cw - 2, height: rowH - 2, rx: 4, fill: heatColor(t) }, s);
+        if (v === mx) el('rect', { x: x + 1, y: y + 2, width: cw - 4, height: rowH - 4, rx: 3, fill: 'none', stroke: '#111418', 'stroke-width': 2, 'pointer-events': 'none' }, s);
+        if (cw > 30) el('text', { x: x + (cw - 2) / 2, y: y + rowH / 2, 'text-anchor': 'middle', 'dominant-baseline': 'central', style: 'font-size:11px;font-family:inherit;pointer-events:none;font-weight:' + (v === mx ? 700 : 400), fill: t > 0.6 ? '#ffffff' : '#0b0b0b' }, s).textContent = v;
+        tip2(r, c.name + ' · ' + mlabel(m.month), [{ name: '문의', color: c.color, value: fmt(v) + '건' }, { name: '이 업무 최대 대비', color: 'transparent', value: Math.round(v / mx * 100) + '%' }], x + cw / 2, y);
+      });
+      var tot = catTotals.filter(function (x) { return x.c.key === c.key; })[0].n;
+      if (!narrow) {
+        var bw = (rw - 46) * tot / maxRow, bx = W - rw + 8;
+        el('rect', { x: bx, y: y + rowH / 2 - 5, width: bw, height: 10, rx: 3, fill: c.color }, s);
+        el('text', { x: bx + bw + 6, y: y + rowH / 2, 'dominant-baseline': 'central' }, ax).textContent = fmt(tot);
+      } else el('text', { x: W - 4, y: y + rowH / 2, 'text-anchor': 'end', 'dominant-baseline': 'central' }, ax).textContent = fmt(tot);
+    });
+    MONTHS.forEach(function (m, ci) {
+      if (narrow && ci % 2) return;
+      el('text', { x: lw + ci * cw + cw / 2, y: H - 6, 'text-anchor': 'middle' }, ax).textContent = short(m.month, ci === 0);
+    });
+  }
+
+  // ---------- trend: all five lines on one chart, one highlighted (default: the one that grew most) ----------
+  var tFocus = (function () {
+    var best = null;
+    CATS.forEach(function (c) {
+      var a = MONTHS.slice(0, 6).reduce(function (s, m) { return s + m[c.key]; }, 0), b = MONTHS.slice(6).reduce(function (s, m) { return s + m[c.key]; }, 0);
+      if (!best || b / a > best.r) best = { k: c.key, r: b / a };
+    });
+    return best.k;
+  })();
+  CATS.forEach(function (c) {
+    var b = h('button'), sw = h('i'); b.type = 'button'; sw.style.background = c.color; b.append(sw, c.name);
+    b.addEventListener('click', function () { tFocus = c.key; drawSM(); });
+    $('t-tabs').appendChild(b);
+  });
+  function drawSM() {
+    var c = CATS.filter(function (x) { return x.key === tFocus; })[0];
+    document.querySelectorAll('#t-tabs button').forEach(function (b, k) { b.classList.toggle('on', CATS[k].key === tFocus); b.setAttribute('aria-pressed', CATS[k].key === tFocus ? 'true' : 'false'); });
+    var vals = MONTHS.map(function (m) { return m[tFocus]; }), mx = Math.max.apply(null, vals), mn = Math.min.apply(null, vals), tot = vals.reduce(function (a, b) { return a + b; }, 0);
+    var when = MONTHS.filter(function (m) { return m[tFocus] === mx; }).map(function (m) { return mlabel(m.month); }).join(' · ');
+    var sub = $('t-sub'); sub.textContent = '';
+    sub.append(c.name + ' 문의는 ', h('b', null, when + ' ' + fmt(mx) + '건'), '이 가장 많았습니다. 업무를 누르면 그 선이 강조됩니다.');
+    var sm = $('t-sum'); sm.textContent = '';
+    [['12개월 합계', fmt(tot) + '건'], ['월평균', fmt(Math.round(tot / 12)) + '건'], ['최대', fmt(mx) + '건'], ['최소', fmt(mn) + '건']].forEach(function (r) { var sp = h('span'); sp.append(r[0] + ' ', h('b', null, r[1])); sm.appendChild(sp); });
+
+    var box = $('sm'), W = Math.max(box.clientWidth, 300), narrow = W < 560, H = 300;
+    var m = { t: 14, r: narrow ? 56 : 76, b: 26, l: 36 }, iw = W - m.l - m.r, ih = H - m.t - m.b;
+    var gmax = 0; MONTHS.forEach(function (mm) { CATS.forEach(function (cc) { gmax = Math.max(gmax, mm[cc.key]); }); });
+    var top = Math.ceil(gmax / 50) * 50;
+    var x = function (i) { return m.l + i * iw / (MONTHS.length - 1); }, y = function (v) { return m.t + ih - v / top * ih; };
+    var s = svgIn(box, W, H, '업무구분별 월별 문의 꺾은선 그래프, ' + c.name + ' 강조'), tip = tipFor(box), ax = el('g', { 'class': 'ax' }, s);
+    for (var v = 0; v <= top; v += 50) {
+      el('line', { x1: m.l, x2: W - m.r, y1: y(v), y2: y(v), stroke: '#ecebe6' }, s);
+      el('text', { x: m.l - 8, y: y(v), 'text-anchor': 'end', 'dominant-baseline': 'central' }, ax).textContent = v;
+    }
+    MONTHS.forEach(function (mm, i) { if (narrow && i % 2) return; el('text', { x: x(i), y: H - 6, 'text-anchor': 'middle' }, ax).textContent = short(mm.month, i === 0); });
+    CATS.slice().sort(function (a, b) { return (a.key === tFocus) - (b.key === tFocus); }).forEach(function (cc) {
+      var on = cc.key === tFocus, vv = MONTHS.map(function (mm) { return mm[cc.key]; });
+      el('path', { d: vv.map(function (v, i) { return (i ? 'L' : 'M') + x(i) + ' ' + y(v); }).join(' '), fill: 'none', stroke: on ? cc.color : '#d5d8dd', 'stroke-width': on ? 3 : 2, 'stroke-linejoin': 'round', 'stroke-linecap': 'round' }, s);
+      if (on) {
+        var mi = vv.indexOf(mx);
+        vv.forEach(function (v, i) { el('circle', { cx: x(i), cy: y(v), r: i === mi ? 5 : 3, fill: cc.color, stroke: '#fff', 'stroke-width': 2 }, s); });
+        el('text', { x: x(mi), y: y(mx) - 10, 'text-anchor': 'middle', 'class': 'blab' }, s).textContent = fmt(mx) + '건';
+      }
+    });
+    var labs = CATS.map(function (cc) { return { c: cc, y: y(MONTHS[MONTHS.length - 1][cc.key]) }; }).sort(function (a, b) { return a.y - b.y; });
+    for (var i = 1; i < labs.length; i++) if (labs[i].y - labs[i - 1].y < 14) labs[i].y = labs[i - 1].y + 14;
+    labs.forEach(function (l) {
+      var on = l.c.key === tFocus;
+      el('text', { x: W - m.r + 8, y: l.y, 'dominant-baseline': 'central', style: 'font-size:11.5px;font-family:inherit;font-weight:' + (on ? 700 : 500) + ';fill:' + (on ? (l.c.color === '#eda100' ? '#9a6a00' : l.c.color) : '#a3a9b2') }, s).textContent = l.c.name;
+    });
+    var cross = el('line', { y1: m.t, y2: m.t + ih, stroke: '#111418', opacity: 0, 'pointer-events': 'none' }, s);
+    MONTHS.forEach(function (mm, i) {
+      var r = el('rect', { x: x(i) - iw / 22, y: m.t, width: iw / 11, height: ih, fill: 'transparent' }, s);
+      r.addEventListener('mouseenter', function () {
+        cross.setAttribute('x1', x(i)); cross.setAttribute('x2', x(i)); cross.setAttribute('opacity', 0.15);
+        tip.show(mlabel(mm.month), CATS.slice().sort(function (a, b) { return mm[b.key] - mm[a.key]; }).map(function (cc) { return { name: cc.name, color: cc.color, value: fmt(mm[cc.key]) + '건' }; }),
+          x(i) / W * box.clientWidth, (y(mm[tFocus]) / H) * box.clientHeight);
+      });
+      r.addEventListener('mouseleave', function () { tip.hide(); cross.setAttribute('opacity', 0); });
+    });
+  }
+
+  // ---------- ring meters ----------
+  var cT = MONTHS.reduce(function (s, m) { return s + m.orgC; }, 0), cC = MONTHS.reduce(function (s, m) { return s + m.orgCcorp; }, 0);
+  var orgTypes = FAQ.filter(function (f) { return /의뢰처|자동연계/.test(f[0]); }).length;
+  var orgAll = catTotals.filter(function (x) { return x.c.key.indexOf('org') === 0; }).reduce(function (s, x) { return s + x.n; }, 0);
+  var RINGS = [
+    { frac: hiCount / FAQ.length, color: '#2a78d6', track: '#cde2fb', center: Math.round(hiCount / FAQ.length * 100) + '%', title: "반복 문의 중 빈도 '상'", sub: FAQ.length + '개 유형 중 ' + hiCount + '개 · FAQ 재구성의 우선순위' },
+    { frac: orgAll / total, color: '#eb6834', track: '#fbdccd', center: Math.round(orgAll / total * 100) + '%', title: '의뢰처 관련 문의', sub: '전체 ' + fmt(total) + '건 중 ' + fmt(orgAll) + '건 · 원인 02의 근거' },
+    { frac: FAQ.filter(function (f) { return f.cover; }).length / FAQ.length, color: '#1baf7a', track: '#d1efe3', center: '', title: '이미 안내 자료가 있던 유형', sub: FAQ.length + '개 유형 중 ' + FAQ.filter(function (f) { return f.cover; }).length + '개 · 원인 01의 근거' }
+  ];
+  var covered = FAQ.filter(function (f) { return f.cover; }).length;
+  var hiAll = FAQ.filter(function (f) { return f[2] === '상'; }), hiCovered = hiAll.filter(function (f) { return f.cover; }).length;
+  $('ev-cov').textContent = FAQ.length + '개 유형 중 ' + covered + '개(' + Math.round(covered / FAQ.length * 100) + '%)';
+  $('ev-covhi').textContent = hiAll.length + '개 중 ' + hiCovered + '개';
+  (function () { var fs = $('faq-sub'); fs.textContent = '';
+    fs.append('응대하면서 반복된 문의를 업무구분별로 정리하고 빈도를 상·중·하로 표시했습니다. ', h('b', null, FAQ.length + '개 중 ' + covered + '개'), '는 FAQ나 매뉴얼에 이미 안내가 있던 유형입니다. ');
+    var t = h('span', 'tg msg', '문구 개선 반영'); fs.append(t, '은 오류 안내 문구를 고친 유형입니다.'); })();
+  $('ev-org').textContent = Math.round(orgAll / total * 100) + '%';
+  $('ev-orgtype').textContent = Math.round(orgTypes / FAQ.length * 100) + '%';
+  $('ev-orga').textContent = Math.round(catTotals.filter(function (x) { return x.c.key === 'orgA'; })[0].n / 12);
+  // 100-dot grids: filled dots = the ratio (rounded to whole percent)
+  var INK = { '#2a78d6': '#2a78d6', '#eb6834': '#c2521f', '#1baf7a': '#14825b' }; // darker text steps for the % figure
+  RINGS.forEach(function (r) {
+    var w = h('div', 'waf'), n = Math.round(r.frac * 100), g = h('div', 'grid');
+    for (var k = 0; k < 100; k++) { var dot = h('i'); if (k < n) dot.style.background = r.color; g.appendChild(dot); }
+    g.setAttribute('role', 'img'); g.setAttribute('aria-label', r.title + ': 점 100개 중 ' + n + '개');
+    var big = h('div', 'big', n + '%'); big.style.color = INK[r.color];
+    w.append(h('b', null, r.title), big, g, h('span', null, r.sub));
+    $('rings').appendChild(w);
+  });
+  function drawRings() {
+    ring($('ring-hi'), hiCount / FAQ.length, 76, '#2a78d6', '#cde2fb', Math.round(hiCount / FAQ.length * 100) + '%');
+  }
+
+  // ---------- frequency segmented bar + table ----------
+  var FQ = [{ k: '상', color: '#8f5f49' }, { k: '중', color: '#b9a08f' }, { k: '하', color: '#dcd3cb' }];
+  FQ.forEach(function (q) {
+    var n = FAQ.filter(function (f) { return f[2] === q.k; }).length;
+    var seg = h('i'); seg.style.flex = n; seg.style.background = q.color; seg.title = '빈도 ' + q.k + ' ' + n + '개'; $('seg').appendChild(seg);
+    var l = h('span'), sw = h('i'); sw.style.background = q.color; l.append(sw, '빈도 ' + q.k + ' ' + n + '개'); $('seg-l').appendChild(l);
+  });
+  $('seg').setAttribute('aria-label', '빈도 분포: ' + FQ.map(function (q) { return q.k + ' ' + FAQ.filter(function (f) { return f[2] === q.k; }).length + '개'; }).join(', '));
+  var groups = []; FAQ.forEach(function (f) { if (groups.indexOf(f[0]) < 0) groups.push(f[0]); });
+  var fCat = '전체', fFreq = '전체';
+  var ORDER = { '상': 0, '중': 1, '하': 2 };
+  var fDoc = '전체';
+  function match(f, cat, fq, doc) { if (doc === undefined) doc = fDoc; return (cat === '전체' || f[0] === cat) && (fq === '전체' || f[2] === fq) && (doc === '전체' || (doc === '있음') === !!f.cover); }
+  function btn(label, n, on, fn) {
+    var b = h('button', on ? 'on' : null, label); b.type = 'button';
+    b.appendChild(h('em', null, n)); b.setAttribute('aria-pressed', on ? 'true' : 'false');
+    if (!n && !on) b.disabled = true;
+    b.addEventListener('click', fn); return b;
+  }
+  function frow(label, opts) {
+    var r = h('div', 'tfrow'), o = h('div', 'opts'); r.append(h('span', 'lb', label), o);
+    opts.forEach(function (x) { o.appendChild(x); }); return r;
+  }
+  function drawFilters() {
+    var tf = $('tf'); tf.textContent = '';
+    // each count reflects the *other* filter, so a reader sees what a click will show
+    var catOpts = ['전체'].concat(groups).map(function (g) {
+      var n = FAQ.filter(function (f) { return match(f, g, fFreq); }).length;
+      return btn(g === '전체' ? '전체' : g.replace('시스템 A · ', 'A · '), n, fCat === g, function () { fCat = g; drawFilters(); drawTable(); });
+    });
+    var fqOpts = ['전체', '상', '중', '하'].map(function (q) {
+      var n = FAQ.filter(function (f) { return match(f, fCat, q); }).length;
+      return btn(q === '전체' ? '전체' : q, n, fFreq === q, function () { fFreq = q; drawFilters(); drawTable(); });
+    });
+    var docOpts = ['전체', '있음', '없음'].map(function (d) {
+      var n = FAQ.filter(function (f) { return match(f, fCat, fFreq, d); }).length;
+      return btn(d === '전체' ? '전체' : d === '있음' ? 'FAQ·매뉴얼 있음' : '없음', n, fDoc === d, function () { fDoc = d; drawFilters(); drawTable(); });
+    });
+    tf.append(frow('업무구분', catOpts), frow('빈도', fqOpts), frow('안내 자료', docOpts));
+    $('treset').hidden = fCat === '전체' && fFreq === '전체' && fDoc === '전체';
+  }
+  $('treset').addEventListener('click', function () { fCat = '전체'; fFreq = '전체'; fDoc = '전체'; drawFilters(); drawTable(); });
+  function drawTable() {
+    var tb = $('tbody'); tb.textContent = '';
+    var rows = FAQ.filter(function (f) { return match(f, fCat, fFreq); })
+      .sort(function (a, b) { return ORDER[a[2]] - ORDER[b[2]] || groups.indexOf(a[0]) - groups.indexOf(b[0]); });
+    rows.forEach(function (f) {
+      var tr = h('tr'), c = h('td'), s = h('span', 'fq' + (f[2] === '상' ? ' h' : f[2] === '하' ? ' l' : ''), f[2]); c.appendChild(s);
+      var q = h('td', null, f[1]);
+      (f[3] || []).forEach(function (t) { if (t === 'msg') q.appendChild(h('span', 'tg msg', '문구 개선 반영')); });
+      var cv = h('td', 'cov');
+      if (f.cover.indexOf('F') >= 0) cv.appendChild(h('span', 'dc', 'FAQ'));
+      if (f.cover.indexOf('M') >= 0) cv.appendChild(h('span', 'dc', '매뉴얼'));
+      if (!f.cover) cv.appendChild(h('span', 'dc none', '없음'));
+      tr.append(h('td', 'cat hide-sm', f[0]), q, cv, c); tb.appendChild(tr);
+    });
+    var label = (fCat === '전체' ? '전체 업무' : fCat) + ' · ' + (fFreq === '전체' ? '모든 빈도' : '빈도 ' + fFreq) + (fDoc === '전체' ? '' : ' · 안내 자료 ' + fDoc);
+    $('tcount').textContent = label + ': ' + rows.length + '개 유형, 빈도 높은 순';
+  }
+
+  // ---------- render ----------
+  function drawAll() { sparks(); drawBars(); drawDonut(); drawHeat(); drawSM(); drawRings(); }
+  drawAll(); drawFilters(); drawTable();
+  var rt; window.addEventListener('resize', function () { clearTimeout(rt); rt = setTimeout(drawAll, 120); });
+})();
+</script>
+</body>
+</html>

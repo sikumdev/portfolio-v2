@@ -125,6 +125,9 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 .sec { padding-block: 52px; border-bottom: 1px solid var(--line); scroll-margin-top: 80px; }
 .sec:last-of-type { border-bottom: 0; }
 .label { margin: 0 0 10px; font-size: 14px; font-weight: 600; color: var(--accent); }
+[data-view] { counter-reset: step; }
+.sec p.label { display: inline-flex; align-items: center; gap: 8px; margin: 0 0 12px; padding: 4px 12px 4px 5px; border-radius: 999px; background: var(--accent-soft); color: var(--accent); font-size: 13px; font-weight: 700; line-height: 1.4; letter-spacing: .01em; }
+.sec p.label::before { counter-increment: step; content: counter(step, decimal-leading-zero); display: inline-grid; place-items: center; min-width: 22px; height: 22px; padding: 0 5px; border-radius: 999px; background: var(--accent); color: #fff; font-size: 11px; font-weight: 700; }
 .label span { color: var(--muted); font-weight: 400; }
 .mine { display: inline-block; margin-left: 8px; font-size: 12px; font-weight: 600; color: var(--accent); background: var(--accent-soft); border-radius: 6px; padding: 1px 8px; vertical-align: 2px; }
 .sec h2 { font-size: 24px; margin-bottom: 14px; }
@@ -169,6 +172,25 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 .cut { position: relative; }
 .cut::after { content: ""; position: absolute; top: -4px; bottom: -4px; left: 50%; border-left: 2px dashed #b4302f; }
 .split p.small { margin-top: 12px; font-size: 14px; color: var(--muted); }
+.flowcmp { margin-top: 24px; border: 1px solid var(--line); border-radius: 14px; background: var(--surface); overflow: hidden; }
+.flowcmp .fc-row { display: grid; grid-template-columns: 92px minmax(0, 1fr); gap: 16px; padding: 22px; align-items: start; }
+.flowcmp .fc-row + .fc-row { border-top: 1px solid var(--line); }
+.flowcmp .fc-row.to { background: var(--accent-soft); }
+.flowcmp .fc-label { font-size: 13px; font-weight: 700; color: var(--muted); padding-top: 6px; }
+.flowcmp .to .fc-label { color: var(--accent); }
+.flowcmp .fc-flow { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.flowcmp .fc-step { font-size: 14px; padding: 6px 12px; border-radius: 8px; background: var(--pill); color: var(--ink); border: 1px solid transparent; }
+.flowcmp .fc-step.person { background: var(--t-sand); color: var(--t-sand-ink); border-color: var(--t-sand-l); }
+.flowcmp .to .fc-step { background: var(--surface); border-color: #c4d2e8; color: var(--accent); }
+.flowcmp .fc-arr { color: #a3a9b2; font-size: 13px; }
+.flowcmp .fc-res { margin-top: 12px; font-size: 14px; line-height: 1.6; color: var(--muted); }
+.flowcmp .to .fc-res { color: var(--accent); font-weight: 600; }
+.flowcmp .fc-legend { padding: 10px 22px; border-top: 1px solid var(--line); font-size: 12px; color: var(--muted); }
+.flowcmp .fc-legend i { display: inline-block; width: 10px; height: 10px; border-radius: 3px; background: var(--t-sand); border: 1px solid var(--t-sand-l); margin-right: 6px; vertical-align: -1px; }
+@media (max-width: 760px) {
+  .flowcmp .fc-row { grid-template-columns: minmax(0, 1fr); gap: 10px; padding: 18px; }
+  .flowcmp .fc-label { padding-top: 0; }
+}
 
 .results { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; margin-top: 8px; }
 .results div b { display: block; font-size: 30px; font-weight: 600; letter-spacing: -0.5px; font-variant-numeric: tabular-nums; }
@@ -259,6 +281,123 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
   .exp .hits { grid-template-columns: 1fr; }
   .exp .hits a { border-left: 0; border-top: 1px solid var(--line); }
 }
+
+/* ---- detail pages: facts as chips, two-column steps, closing recap ---- */
+article[data-view] { word-break: keep-all; overflow-wrap: break-word; }
+article[data-view] .facts { margin: 28px 0 0; padding: 0; border: 1px solid var(--line); border-radius: 16px; background: var(--surface); gap: 0; overflow: hidden; }
+article[data-view] .facts > div { padding: 16px 18px; min-width: 0; }
+article[data-view] .facts > div + div { border-left: 1px solid var(--line); }
+article[data-view] .facts dt { display: flex; align-items: center; gap: 7px; font-size: 12px; font-weight: 700; color: var(--muted); margin-bottom: 10px; }
+article[data-view] .facts dt::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
+article[data-view] .facts dd { display: flex; flex-wrap: wrap; gap: 6px; }
+article[data-view] .facts .chip { font-size: 13.5px; font-weight: 600; color: var(--ink); background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 4px 9px; line-height: 1.4; }
+article[data-view] .glance { margin: 40px 0 8px; padding: 18px; border-radius: 16px; background: var(--surface); border: 1px solid var(--line); }
+article[data-view] .glance-t { margin: 0 0 12px; font-size: 13px; font-weight: 700; color: var(--muted); }
+article[data-view] .glance ol { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(var(--n, 4), minmax(0, 1fr)); gap: 10px; }
+article[data-view] .glance li { position: relative; min-width: 0; }
+article[data-view] .glance li + li::before { content: "→"; position: absolute; left: -10px; top: 50%; transform: translate(-50%, -50%); color: #a3a9b2; font-size: 13px; }
+article[data-view] .glance button { all: unset; box-sizing: border-box; cursor: pointer; display: flex; flex-direction: column; gap: 6px; height: 100%; width: 100%; padding: 12px 14px; border-radius: 12px; background: var(--bg); border: 1px solid transparent; }
+article[data-view] .glance button:hover { border-color: var(--line); background: var(--surface); }
+article[data-view] .glance .n { font-size: 12px; font-weight: 700; color: var(--accent); }
+article[data-view] .glance b { font-size: 14px; font-weight: 600; line-height: 1.5; color: var(--ink); }
+@media (min-width: 900px) {
+  article[data-view] .sec:has(> .sec-head) { display: grid; grid-template-columns: 230px minmax(0, 1fr); column-gap: 44px; align-items: start; }
+  article[data-view] .sec-head { position: sticky; top: 84px; }
+  article[data-view] .sec-head h2 { font-size: 21px; line-height: 1.45; margin-bottom: 0; }
+  article[data-view] .sec-body > :first-child { margin-top: 0; }
+}
+@media (max-width: 900px) {
+  article[data-view] .glance ol { grid-template-columns: minmax(0, 1fr); gap: 8px; }
+  article[data-view] .glance li + li::before { content: "↓"; left: 50%; top: -6px; }
+}
+@media (max-width: 760px) {
+  article[data-view] .facts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  article[data-view] .facts > div:nth-child(odd) { border-left: 0; }
+  article[data-view] .facts > div:nth-child(n+3) { border-top: 1px solid var(--line); }
+}
+
+/* ---- mockup: JD focus strip ---- */
+.focus { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; margin: 0 0 64px; }
+.exp { margin-bottom: 16px !important; }
+.fx { --tone: var(--accent); --tone-l: var(--t-blue-l); display: flex; flex-direction: column; gap: 12px; padding: 20px; border-radius: 18px; border: 1px solid var(--tone-l); min-width: 0; }
+.fx.green { --tone: var(--t-green-ink); --tone-l: var(--t-green-l); }
+.fx.sand { --tone: var(--t-sand-ink); --tone-l: var(--t-sand-l); }
+.fx-h { display: flex; align-items: center; justify-content: space-between; }
+.fx .ic { width: 36px; height: 36px; border-radius: 10px; background: var(--surface); border: 1px solid var(--tone-l); display: grid; place-items: center; }
+.fx .ic svg { width: 19px; height: 19px; fill: none; stroke: var(--tone); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.fx .n { font-size: 13px; font-weight: 700; color: var(--tone); opacity: .7; letter-spacing: .04em; }
+.fx > b { font-size: 17px; letter-spacing: -.3px; }
+.fx-v { display: flex; align-items: center; gap: 12px; min-height: 58px; padding: 12px 14px; border-radius: 12px; background: var(--surface); }
+.fx-v strong { font-size: 30px; line-height: 1; letter-spacing: -1px; color: var(--tone); font-variant-numeric: tabular-nums; }
+.fx-v > span { flex: 1; font-size: 12.5px; line-height: 1.5; color: var(--body); }
+.fx-v .meter { display: block; height: 6px; border-radius: 3px; background: var(--t-sand); margin-top: 6px; overflow: hidden; }
+.fx-v .meter i { display: block; height: 100%; background: var(--tone); border-radius: 3px; }
+.fx-v.fx-flow { gap: 5px; flex-wrap: nowrap; }
+.fx-v.fx-flow span { flex: 0 0 auto; font-size: 13px; font-weight: 600; color: var(--tone); background: var(--t-green); border: 1px solid var(--tone-l); padding: 5px 9px; white-space: nowrap; border-radius: 8px; }
+.fx.sand .fx-flow span { background: var(--t-sand); }
+.fx.blue .fx-flow span { background: var(--t-blue); }
+.fx-v.fx-flow i { font-style: normal; color: var(--muted); font-size: 12px; }
+.fx-l { display: flex; flex-wrap: wrap; gap: 6px; margin-top: auto; }
+.fx-l a { font-size: 12.5px; font-weight: 600; color: var(--ink); text-decoration: none; background: var(--surface); border: 1px solid var(--tone-l); padding: 5px 10px; border-radius: 999px; }
+.fx-l a::after { content: " →"; color: var(--tone); }
+.fx-l a:hover { border-color: var(--tone); }
+
+/* ---- mockup: experience hits as before/after bars ---- */
+.exp .hits a { gap: 6px; }
+.exp .hits .k { font-size: 12px; font-weight: 600; color: var(--muted); }
+.exp .hits .ba { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 4px 8px; margin: 4px 0 2px; }
+.exp .hits .ba i { display: block; height: 7px; width: var(--w); border-radius: 4px; background: var(--t-gray-l); }
+.exp .hits .ba i.bar-a { background: var(--accent); }
+.exp .hits .ba em { font-style: normal; font-size: 11px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.exp .hits .nt { font-size: 12.5px; color: var(--body); line-height: 1.5; }
+
+/* ---- mockup: SQL agent drawn thumbnail ---- */
+.item.feature .thumb:has(.sqlviz) { aspect-ratio: auto; padding: 4% 7%; align-items: center; }
+.screen.sqlviz { flex-direction: row; align-items: center; gap: 14px; padding: 22px 26px; border-radius: 14px; border-bottom: 1px solid var(--t-sand-l); }
+.sv-col { flex: 1; display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+.sv-k { font-size: 11px; font-weight: 700; color: var(--muted); letter-spacing: .04em; }
+.sv-q { font-size: 13px; color: var(--ink); background: var(--pill); border-radius: 12px 12px 12px 4px; padding: 8px 12px; align-self: flex-start; }
+.sv-json { font: 600 13px/1.4 ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--ink); background: var(--t-sand); border: 1px solid var(--t-sand-l); border-radius: 8px; padding: 10px 12px; }
+.sv-json em { font-style: normal; color: var(--t-sand-ink); }
+.sv-note { font-size: 11.5px; color: var(--muted); }
+.sv-arr { color: #a3a9b2; font-size: 18px; }
+.sv-r { display: flex; flex-direction: column; gap: 2px; font-size: 12.5px; color: var(--body); border-radius: 10px; padding: 9px 12px; border: 1px solid var(--line); }
+.sv-r b { font: 600 12px ui-monospace, SFMono-Regular, Menlo, monospace; }
+.sv-r.ok { background: var(--t-green); border-color: var(--t-green-l); } .sv-r.ok b { color: var(--t-green-ink); }
+.sv-r.no { background: #fbeeee; border-color: #f0d2d2; } .sv-r.no b { color: #a33a3a; }
+
+/* ---- mockup: weather / news drawn thumbnails (4:3 cards) ---- */
+.screen.mini { gap: 9px; padding: 18px 20px; font-size: 12px; justify-content: center; }
+.mv-q { align-self: flex-start; background: var(--pill); color: var(--ink); border-radius: 12px 12px 12px 4px; padding: 7px 11px; font-size: 12px; line-height: 1.45; }
+.mv-arr { align-self: center; color: #a3a9b2; font-size: 12px; line-height: 1; }
+.mv-two { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.mv-agent { border: 1px solid var(--t-blue-l); border-radius: 10px; padding: 8px 10px; display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+.mv-k { font-size: 10.5px; font-weight: 700; color: var(--muted); letter-spacing: .02em; }
+.mv-agent code { font: 600 11.5px/1.3 ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--accent); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.mv-n { font-size: 10.5px; color: var(--muted); }
+.mv-event { display: flex; gap: 10px; align-items: stretch; background: var(--t-blue); border-radius: 10px; padding: 8px 10px; }
+.mv-event i { width: 4px; border-radius: 2px; background: #2a78d6; }
+.mv-event b { display: block; font-size: 12.5px; color: var(--ink); }
+.mv-event span { font-size: 11px; color: var(--body); }
+.mv-pipe { display: flex; flex-wrap: wrap; align-items: center; gap: 5px; }
+.mv-pipe span { font-size: 11px; font-weight: 600; padding: 4px 8px; border-radius: 7px; background: var(--pill); color: var(--body); white-space: nowrap; }
+.mv-pipe span.hl { background: var(--ink); color: #fff; }
+.mv-pipe i { font-style: normal; color: #a3a9b2; font-size: 11px; }
+.mv-slack { border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; display: flex; flex-direction: column; gap: 9px; }
+.mv-sh b { font-size: 12px; color: var(--ink); margin-right: 6px; } .mv-sh span { font-size: 10.5px; color: var(--muted); }
+.mv-msg { display: flex; flex-direction: column; gap: 5px; padding-left: 9px; border-left: 3px solid #d9dce1; }
+.mv-msg i { display: block; height: 6px; border-radius: 3px; background: #e6e8ec; width: 92%; }
+.mv-msg i.t { height: 8px; width: 58%; background: #2a78d6; opacity: .75; }
+.mv-msg i.s { width: 70%; }
+@media (max-width: 900px) {
+  .screen.sqlviz { flex-direction: column; align-items: stretch; gap: 8px; padding: 16px; }
+  .sv-arr { transform: rotate(90deg); align-self: center; font-size: 14px; }
+}
+@media (max-width: 760px) {
+  .focus { grid-template-columns: minmax(0, 1fr); }
+  .screen.sqlviz { flex-direction: column; align-items: stretch; gap: 8px; padding: 16px; }
+  .sv-arr { transform: rotate(90deg); align-self: center; font-size: 14px; }
+}
 </style>
 </head>
 <body>
@@ -285,90 +424,88 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
       <span>회원사 업무 시스템 6종 운영 · 연간 문의 약 4,500건 중 60% 처리</span>
     </div>
     <div class="hits">
-      <a href="#work-root"><b>월 10건 → 1~2건</b><span>전자서명 오류 문의, 시스템이 아니라 사용 환경이 원인 — 안내 문구 한 줄로</span><small>상세 보기 →</small></a>
-      <a href="#work-data"><b>4,500건 분석</b><span>‘FAQ가 있어도 못 찾는다’ — 오류 메시지에 해결 링크, 반복 문의 10%↓</span><small>상세 보기 →</small></a>
-      <a href="#work-aitool"><b>5명 → 20명</b><span>사내 AI 툴, 요청 처리에서 관리 대장·신청 절차로 — 비용은 실사용 기준</span><small>상세 보기 →</small></a>
+      <a href="#work-aitool"><span class="k">사내 AI 툴 사용자</span><b>5명 → 20명</b><span class="ba"><i class="bar-b" style="--w:25%"></i><em>5명</em><i class="bar-a" style="--w:100%"></i><em>20명</em></span><span class="nt">관리 대장·신청 절차로 확산, 비용은 실사용 기준</span><small>상세 보기 →</small></a>
+      <a href="#work-data"><span class="k">반복 문의 · 4,500건 분석</span><b>10% ↓</b><span class="ba"><i class="bar-b" style="--w:100%"></i><em>이전</em><i class="bar-a" style="--w:90%"></i><em>개선 후</em></span><span class="nt">오류 메시지에 해결 링크를 붙여 스스로 해결</span><small>상세 보기 →</small></a>
+      <a href="#work-root"><span class="k">전자서명 오류 문의</span><b>월 10건 → 1~2건</b><span class="ba"><i class="bar-b" style="--w:100%"></i><em>10건</em><i class="bar-a" style="--w:15%"></i><em>1~2건</em></span><span class="nt">시스템 수정 없이 안내 문구 한 줄로</span><small>상세 보기 →</small></a>
     </div>
   </section>
-
-  <h2 class="sectitle" id="projects-title">Projects</h2>
-  <section class="grid" aria-labelledby="projects-title">
-    <div class="item feature">
-      <a class="card" href="#chatbot">
-        <div class="thumb blue"><div class="shot"><img src="media/chatbot-general.jpg" alt="찾아드림 실제 서비스 화면: 등록한 에어컨 모델의 설명서 그림과 함께 필터 청소 방법을 답하는 모습"></div></div>
-        <div class="cap"><b>근거가 없으면 답하지 않는 가전 챗봇<small>RAG · 서비스 기획 · 청킹</small></b><span>찾아드림 · 2026</span></div>
-      </a>
-      <div class="links"><a class="lk primary" href="#chatbot">상세 보기 →</a><a class="lk" href="https://github.com/Broogun/ask-my-appliance" target="_blank" rel="noopener">GitHub ↗</a></div>
+  <div class="focus" aria-label="할 수 있는 일">
+      <div class="fx blue">
+        <div class="fx-h"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l1.8 4.7L18.5 9.5l-4.7 1.8L12 16l-1.8-4.7L5.5 9.5l4.7-1.8z"/><path d="M18 15l.9 2.1L21 18l-2.1.9L18 21l-.9-2.1L15 18l2.1-.9z"/></svg></span><span class="n">01</span></div>
+        <b>전사 AI 도입 · 업무 자동화</b>
+        <div class="fx-v fx-flow"><span>반복 업무</span><i>→</i><span>규칙·에이전트</span><i>→</i><span>자동화</span></div>
+        <div class="fx-l"><a href="#weather">캘린더 에이전트</a></div>
+      </div>
+      <div class="fx green">
+        <div class="fx-h"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg></span><span class="n">02</span></div>
+        <b>데이터 수집 · 보고 자동화</b>
+        <div class="fx-v fx-flow"><span>수집</span><i>→</i><span>요약</span><i>→</i><span>보고</span></div>
+        <div class="fx-l"><a href="#sqlagent">SQL 리포트</a><a href="#news">뉴스 리포트</a></div>
+      </div>
+      <div class="fx sand">
+        <div class="fx-h"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/></svg></span><span class="n">03</span></div>
+        <b>사내 IT 운영 · 헬프데스크</b>
+        <div class="fx-v fx-flow"><span>문의</span><i>→</i><span>원인 찾기</span><i>→</i><span>재발 방지</span></div>
+        <div class="fx-l"><a href="dashboard.html">문의 분석 대시보드</a></div>
+      </div>
     </div>
 
-    <div class="item">
-      <a class="card" href="#sunscreen">
-        <div class="thumb sand" aria-hidden="true"><div class="screen">
-          <div class="meta">지성 · 백탁 싫어요 · 데일리</div>
-          <div style="font-weight:600;color:var(--ink)">추천 선크림</div>
-          <div class="bars">
-            <span>산뜻함</span><span class="bar"><i style="width:82%"></i></span>
-            <span>백탁</span><span class="bar"><i style="width:64%"></i></span>
-            <span>자극</span><span class="bar"><i style="width:72%"></i></span>
-          </div>
-          <div class="meta">리뷰 근거 보기 →</div>
-        </div></div>
-        <div class="cap"><b>리뷰 7,500건을 근거로 보여주는 선크림 추천<small>RAG · LangGraph · 개인</small></b><span>올리브영 리뷰 · 2026</span></div>
-      </a>
-      <div class="links"><a class="lk primary" href="#sunscreen">상세 보기 →</a><a class="lk" href="https://github.com/sikumdev/oliveyoung-review-insight-rag" target="_blank" rel="noopener">GitHub ↗</a></div>
-    </div>
-
-    <div class="item">
-      <a class="card" href="#meetup">
-        <div class="thumb green"><div class="phones">
-          <img src="media/meet-1-menu.jpg" alt="텔레그램 봇 메뉴 화면">
-          <img src="media/meet-3-activity.jpg" alt="관심 활동 입력 화면">
-          <img src="media/meet-5-result.jpg" alt="추천 장소와 참여자별 이동 시간 결과 화면">
-        </div></div>
-        <div class="cap"><b>모두에게 공평한 모임 장소 정하기<small>n8n · 텔레그램 봇 · 개인</small></b><span>우리 어디서 봐? · 2026</span></div>
-      </a>
-      <div class="links"><a class="lk primary" href="#meetup">상세 보기 →</a><a class="lk" href="https://github.com/sikumdev/n8n-automation-workflows" target="_blank" rel="noopener">GitHub ↗</a></div>
-    </div>
-
-    <div class="item">
-      <a class="card" href="#qrcheck">
-        <div class="thumb pink" role="img" aria-label="매장 스캐너가 대표자 QR을 읽고 GroupA 5명 체크인 완료를 표시하는 장면"><div class="scanner">
-          <div class="qphone"><div class="scr"><img src="media/qr-group.jpg" alt=""><span class="line"></span></div></div>
-          <div class="done"><span class="ok">✓ 체크인 완료</span><b>GroupA · 5명</b><div class="avs"><i>홍</i><i>a1</i><i>a2</i><i>a3</i><i>a4</i></div><span>2021-12-02 06:45</span></div>
-        </div></div>
-        <div class="cap"><b>한 번 찍으면 일행 전원이 체크인되는 QR<small>Android · Firebase · 기업연계 4인</small></b><span>QR캡처체리 · 2021</span></div>
-      </a>
-      <div class="links"><a class="lk primary" href="#qrcheck">상세 보기 →</a></div>
-    </div>
-  </section>
-
-
-  <h2 class="sectitle" id="automation-title" style="margin-top:88px">Automation <span style="font-size:16px;color:var(--muted);font-weight:500;margin-left:8px">n8n · AI 에이전트</span></h2>
+  <h2 class="sectitle" id="automation-title">업무 자동화 프로젝트 모아보기</h2>
   <section class="grid" aria-labelledby="automation-title">
     <div class="item feature">
-      <a class="card" href="#weather">
-        <div class="thumb blue"><div class="shot dark"><img src="media/auto-weather.jpg" alt="n8n 캔버스: Weather Agent와 Calendar Agent가 메모리를 공유하며 Open-Meteo와 Google Calendar 툴을 호출하는 워크플로우"></div></div>
-        <div class="cap"><b>날씨를 보고 일정을 잡는 캘린더 에이전트<small>n8n · 멀티 에이전트 · Google Calendar</small></b><span>Weather-Aware Calendar Agent · 2025</span></div>
-      </a>
-      <div class="links"><a class="lk primary" href="#weather">상세 보기 →</a><a class="lk" href="#playbook">자동화 판단 기준 →</a></div>
-    </div>
-
-    <div class="item">
-      <a class="card" href="#news">
-        <div class="thumb gray"><div class="shot dark"><img src="media/auto-news.jpg" alt="n8n 캔버스: Firecrawl 추출 → 본문 수집 → 요약 → Slack 전송 워크플로우"></div></div>
-        <div class="cap"><b>IT 뉴스를 모아 3줄 요약으로 Slack에 보내는 리포트<small>n8n · 스크래핑 · Slack 리포트</small></b><span>뉴스 요약 리포트 · 2025</span></div>
-      </a>
-      <div class="links"><a class="lk primary" href="#news">상세 보기 →</a></div>
-    </div>
-
-    <div class="item">
       <a class="card" href="#sqlagent">
-        <div class="thumb sand"><div class="shot dark"><img src="media/auto-sql.jpg" alt="n8n 캔버스: SQL 생성 Agent → Structured Output → Switch 분기 → SQL 실행 → 리포트 생성"></div></div>
+        <div class="thumb sand" role="img" aria-label="자연어 질문을 받아 실행 가능하면 SQL을 실행해 리포트를 만들고, 데이터 변경 요청은 사유와 함께 거부하는 흐름"><div class="screen sqlviz">
+          <div class="sv-col">
+            <span class="sv-k">질문</span>
+            <span class="sv-q">고객 유형별 고객 수 알려줘</span>
+            <span class="sv-q">고객 데이터 전부 지워줘</span>
+          </div>
+          <span class="sv-arr">→</span>
+          <div class="sv-col">
+            <span class="sv-k">에이전트 판정</span>
+            <code class="sv-json">{ SQL, <em>success</em>, reason }</code>
+            <span class="sv-note">조회만 허용 · UPDATE / DELETE 금지</span>
+          </div>
+          <span class="sv-arr">→</span>
+          <div class="sv-col">
+            <span class="sv-k">결과</span>
+            <span class="sv-r ok"><b>✓ success = true</b>SQL 실행 → 리포트 생성</span>
+            <span class="sv-r no"><b>✕ success = false</b>실행하지 않고 사유 전달</span>
+          </div>
+        </div></div>
         <div class="cap"><b>질문하면 SQL을 만들고, 못 하면 이유를 말하는 리포트 에이전트<small>n8n · PostgreSQL · Structured Output</small></b><span>자연어 → SQL 리포트 · 2026</span></div>
       </a>
-      <div class="links"><a class="lk primary" href="#sqlagent">상세 보기 →</a><a class="lk" href="https://github.com/sikumdev/n8n-automation-workflows" target="_blank" rel="noopener">GitHub ↗</a></div>
+      <div class="links"><a class="lk" href="https://github.com/sikumdev/n8n-automation-workflows" target="_blank" rel="noopener">GitHub ↗</a></div>
     </div>
-
+    <div class="item">
+      <a class="card" href="#news">
+        <div class="thumb gray" role="img" aria-label="기사 목록 수집, 본문 추출, LLM 1회 요약을 거쳐 Slack 메시지로 보내는 흐름"><div class="screen mini nw">
+          <div class="mv-pipe"><span>기사 목록</span><i>→</i><span>본문</span><i>→</i><span class="hl">요약 1회</span><i>→</i><span>Slack</span></div>
+          <div class="mv-slack">
+            <div class="mv-sh"><b>IT 뉴스 요약</b><span>오늘 · 기사별 3줄 요약</span></div>
+            <div class="mv-msg"><i class="t"></i><i></i><i></i><i class="s"></i></div>
+            <div class="mv-msg"><i class="t"></i><i></i><i></i><i class="s"></i></div>
+            <div class="mv-msg"><i class="t"></i><i></i><i></i><i class="s"></i></div>
+          </div>
+        </div></div>
+        <div class="cap"><b>IT 뉴스를 모아 3줄 요약으로 Slack에 보내는 리포트<small>n8n · 스크래핑 · Slack 리포트</small></b><span>뉴스 요약 리포트 · 2025</span></div>
+      </a>
+    </div>
+    <div class="item">
+      <a class="card" href="#weather">
+        <div class="thumb blue" role="img" aria-label="자연어 요청을 Weather Agent가 날짜와 날씨 조건으로 판정하고, Calendar Agent가 충돌을 확인한 뒤 일정을 만드는 흐름"><div class="screen mini wx">
+          <span class="mv-q">다음주 화요일 14시 비 안 오면 양산 일정 추가해줘</span>
+          <span class="mv-arr">↓</span>
+          <div class="mv-two">
+            <div class="mv-agent"><span class="mv-k">Weather Agent</span><code>condition_ok: true</code><span class="mv-n">강수확률 10%</span></div>
+            <div class="mv-agent"><span class="mv-k">Calendar Agent</span><code>충돌 검사 → 없음</code><span class="mv-n">겹치면 만들지 않음</span></div>
+          </div>
+          <span class="mv-arr">↓</span>
+          <div class="mv-event"><i></i><div><b>양산 챙기기</b><span>2025-12-30 · 14:00–15:00</span></div></div>
+        </div></div>
+        <div class="cap"><b>날씨를 보고 일정을 잡는 캘린더 에이전트<small>n8n · 멀티 에이전트 · Google Calendar</small></b><span>Weather-Aware Calendar Agent · 2025</span></div>
+      </a>
+    </div>
     <div class="item">
       <a class="card" href="#playbook">
         <div class="thumb green" aria-hidden="true"><div class="screen">
@@ -384,15 +521,60 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
         </div></div>
         <div class="cap"><b>어떤 업무를 규칙으로, 어떤 업무를 에이전트로 풀 것인가<small>n8n 워크플로우 50여 개에서 정리</small></b><span>자동화 판단 기준</span></div>
       </a>
-      <div class="links"><a class="lk primary" href="#playbook">상세 보기 →</a><a class="lk" href="https://github.com/sikumdev/n8n-automation-workflows" target="_blank" rel="noopener">GitHub ↗</a></div>
+      <div class="links"><a class="lk" href="https://github.com/sikumdev/n8n-automation-workflows" target="_blank" rel="noopener">GitHub ↗</a></div>
     </div>
   </section>
-
+  <h2 class="sectitle" id="projects-title" style="margin-top:88px">AI · 서비스 프로젝트 모아보기</h2>
+  <section class="grid" aria-labelledby="projects-title">
+    <div class="item feature">
+      <a class="card" href="#chatbot">
+        <div class="thumb blue"><div class="shot"><img src="media/chatbot-general.jpg" alt="찾아드림 실제 서비스 화면: 등록한 에어컨 모델의 설명서 그림과 함께 필터 청소 방법을 답하는 모습"></div></div>
+        <div class="cap"><b>근거가 없으면 답하지 않는 가전 챗봇<small>RAG · 서비스 기획 · 청킹</small></b><span>찾아드림 · 2026</span></div>
+      </a>
+      <div class="links"><a class="lk" href="https://github.com/Broogun/ask-my-appliance" target="_blank" rel="noopener">GitHub ↗</a></div>
+    </div>
+    <div class="item">
+      <a class="card" href="#sunscreen">
+        <div class="thumb sand" aria-hidden="true"><div class="screen">
+          <div class="meta">지성 · 백탁 싫어요 · 데일리</div>
+          <div style="font-weight:600;color:var(--ink)">추천 선크림</div>
+          <div class="bars">
+            <span>산뜻함</span><span class="bar"><i style="width:82%"></i></span>
+            <span>백탁</span><span class="bar"><i style="width:64%"></i></span>
+            <span>자극</span><span class="bar"><i style="width:72%"></i></span>
+          </div>
+          <div class="meta">리뷰 근거 보기 →</div>
+        </div></div>
+        <div class="cap"><b>리뷰 7,500건을 근거로 보여주는 선크림 추천<small>RAG · LangGraph · 개인</small></b><span>올리브영 리뷰 · 2026</span></div>
+      </a>
+      <div class="links"><a class="lk" href="https://github.com/sikumdev/oliveyoung-review-insight-rag" target="_blank" rel="noopener">GitHub ↗</a></div>
+    </div>
+    <div class="item">
+      <a class="card" href="#meetup">
+        <div class="thumb green"><div class="phones">
+          <img src="media/meet-1-menu.jpg" alt="텔레그램 봇 메뉴 화면">
+          <img src="media/meet-3-activity.jpg" alt="관심 활동 입력 화면">
+          <img src="media/meet-5-result.jpg" alt="추천 장소와 참여자별 이동 시간 결과 화면">
+        </div></div>
+        <div class="cap"><b>모두에게 공평한 모임 장소 정하기<small>n8n · 텔레그램 봇 · 개인</small></b><span>우리 어디서 봐? · 2026</span></div>
+      </a>
+      <div class="links"><a class="lk" href="https://github.com/sikumdev/n8n-automation-workflows" target="_blank" rel="noopener">GitHub ↗</a></div>
+    </div>
+    <div class="item">
+      <a class="card" href="#qrcheck">
+        <div class="thumb pink" role="img" aria-label="매장 스캐너가 대표자 QR을 읽고 GroupA 5명 체크인 완료를 표시하는 장면"><div class="scanner">
+          <div class="qphone"><div class="scr"><img src="media/qr-group.jpg" alt=""><span class="line"></span></div></div>
+          <div class="done"><span class="ok">✓ 체크인 완료</span><b>GroupA · 5명</b><div class="avs"><i>홍</i><i>a1</i><i>a2</i><i>a3</i><i>a4</i></div><span>2021-12-02 06:45</span></div>
+        </div></div>
+        <div class="cap"><b>한 번 찍으면 일행 전원이 체크인되는 QR<small>Android · Firebase · 기업연계 4인</small></b><span>QR캡처체리 · 2021</span></div>
+      </a>
+    </div>
+  </section>
   <footer class="site">
     <div><b>김시연</b><p>IT 서비스 운영 · 업무 자동화 · AI 에이전트</p></div>
     <div><h3>Work</h3><ul><li><a href="#work-root">전자서명 오류 원인 추적</a></li><li><a href="#work-data">문의 4,500건 분석</a></li><li><a href="#work-aitool">AI 툴 운영 체계</a></li></ul></div>
+    <div><h3>Automation</h3><ul><li><a href="#sqlagent">SQL 리포트 에이전트</a></li><li><a href="#news">뉴스 요약 리포트</a></li><li><a href="#weather">캘린더 에이전트</a></li><li><a href="#playbook">자동화 판단 기준</a></li></ul></div>
     <div><h3>Projects</h3><ul><li><a href="#chatbot">찾아드림</a></li><li><a href="#sunscreen">선크림 추천 RAG</a></li><li><a href="#meetup">우리 어디서 봐?</a></li><li><a href="#qrcheck">QR캡처체리</a></li></ul></div>
-    <div><h3>Automation</h3><ul><li><a href="#weather">캘린더 에이전트</a></li><li><a href="#news">뉴스 요약 리포트</a></li><li><a href="#sqlagent">SQL 리포트 에이전트</a></li><li><a href="#playbook">자동화 판단 기준</a></li></ul></div>
     <div><h3>Contact</h3><ul><li>moonjungkim99@gmail.com</li></ul></div>
   </footer>
 </div>
@@ -407,123 +589,178 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
   <div class="wrap">
     <header class="casehead">
       <p class="eyebrow">한국감정평가사협회 IT정보센터 · 실무 · 2024</p>
-      <h1>매달 10건씩 오던 문의를 줄인 것은 문장 하나였다</h1>
-      <p class="lede">회원사 업무 시스템의 '전자서명 오류' 문의가 매달 반복됐습니다. 시스템이 아니라 사용자의 작업 환경이 원인임을 확인하고, 오류 안내 문구 한 줄을 바꿔 문의를 월 1~2건으로 줄였습니다.</p>
+      <h1>매달 10건씩 오던 문의를 줄인 것은 문장 하나였습니다</h1>
+      <p class="lede">회원사 업무 시스템의 '전자서명 오류' 문의가 매달 약 10건씩 반복됐습니다.<br>시스템이 아니라 사용자의 작업 환경이 원인임을 확인하고,<br>오류 안내 문구 한 줄을 바꿔 문의를 월 1~2건으로 줄였습니다.</p>
     </header>
     <dl class="facts">
-      <div><dt>내 역할</dt><dd>사용자 지원 · 원인 분석 · 개선 요청</dd></div>
-      <div><dt>대상</dt><dd>회원사 업무 시스템 · 전자서명 기능</dd></div>
-      <div><dt>협업</dt><dd>개발팀 · 회원사 사용자</dd></div>
-      <div><dt>산출물</dt><dd>문구 변경 요청 · FAQ 항목 · 응대 절차</dd></div>
+      <div><dt>내 역할</dt><dd><span class="chip">사용자 지원</span><span class="chip">원인 분석</span><span class="chip">개선 요청</span></dd></div>
+      <div><dt>대상</dt><dd><span class="chip">회원사 업무 시스템</span><span class="chip">전자서명 기능</span></dd></div>
+      <div><dt>협업</dt><dd><span class="chip">개발팀</span><span class="chip">회원사 사용자</span></dd></div>
+      <div><dt>산출물</dt><dd><span class="chip">문구 변경 요청</span><span class="chip">FAQ 항목</span><span class="chip">응대 절차</span></dd></div>
     </dl>
 
     <section class="sec" id="w1-pb">
+      <div class="sec-head">
       <p class="label">문제</p>
-      <h2>문의는 반복됐고, 해결은 매번 사람이 붙어야 했다</h2>
-      <p>회원사(전국 감정평가법인·사무소)가 쓰는 업무 시스템 6종의 사용자 지원을 맡고 있었습니다. "전자서명이 안 됩니다"라는 문의가 매달 10건씩 왔고, 그때마다 담당자가 개별로 붙어 해결해 주는 식으로 처리되고 있었습니다.</p>
-      <div class="cards">
-        <div><h3>재현 불가</h3><p>내 환경에서 여러 조건으로 시도해도 오류가 나지 않는다.</p></div>
-        <div><h3>공통점 없음</h3><p>문의자의 PC 사양·OS 버전이 제각각이다.</p></div>
-        <div><h3>사람 의존</h3><p>매 건 담당자가 대응 — 시간이 그대로 소모된다.</p></div>
+      <h2>문의는 반복됐고, 해결은 매번 사람이 붙어야 했습니다</h2>
       </div>
+      <div class="sec-body">
+      <p>회원사(전국 감정평가법인·사무소)가 쓰는 업무 시스템의 사용자 지원을 맡고 있었습니다. "전자서명이 안 됩니다"라는 문의가 매달 약 10건씩 왔고, 그때마다 담당자가 개별로 붙어 해결해 주는 식으로 처리되고 있었습니다.</p>
+      <div class="cards">
+        <div><h3>재현 불가</h3><p>내 환경에서 여러 조건으로 시도해도 오류가 나지 않음.</p></div>
+        <div><h3>공통점 없음</h3><p>문의자의 PC 사양·OS 버전이 제각각</p></div>
+        <div><h3>사람 의존</h3><p>매 건 담당자가 대응 — 시간이 그대로 소모</p></div>
+      </div>      </div>
     </section>
 
     <section class="sec" id="w1-dc">
+      <div class="sec-head">
       <p class="label">판단</p>
-      <h2>실마리는 한 사용자의 '밖에서 작업 중'이라는 말이었다</h2>
-      <p>문의 관리 프로그램에서 해당 건만 추려 환경을 비교했지만 공통점이 없었습니다. 그러다 한 사용자가 지나가듯 "밖에서 작업 중"이라고 했습니다. 전자서명은 허용된 접속 환경에서만 동작하도록 되어 있었습니다. 그 뒤로 문의마다 작업 장소를 먼저 물었고, 원인이 시스템이 아니라 <b>허용되지 않은 환경에서 시도한 것</b>임을 확정했습니다.</p>
+      <h2>실마리는 한 사용자의 '밖에서 작업 중'이라는 말이었습니다</h2>
+      </div>
+      <div class="sec-body">
+      <p>문의 관리 프로그램에서 해당 건만 추려 환경을 비교했지만 공통점이 없었습니다. 그러다 한 사용자가 지나가듯 "밖에서 작업 중"이라고 했고, 사무실 밖이라면 접속 환경이 다를 테니 그게 원인일 수 있겠다고 생각했습니다. 다른 환경에서 직접 서명을 시도해 보니 같은 오류가 재현됐고, 전자서명이 허용된 접속 환경에서만 동작하도록 되어 있다는 것을 그때 알게 됐습니다. 그 뒤로 문의마다 작업 장소를 먼저 물었고, 원인이 시스템이 아니라 <b>허용되지 않은 환경에서 시도한 것</b>임을 확정했습니다.</p>
       <div class="split">
         <div><h3>처음 가설</h3><p>프로그램 버그 또는 특정 OS·브라우저 호환 문제 → 환경 비교로 검증 → 기각</p></div>
         <div class="good"><h3>확정 원인</h3><p>사용자가 조건에 맞지 않는 환경에서 시도 → 오류 문구만 뜨고, 왜 안 되는지는 알려주지 않음</p></div>
-      </div>
+      </div>      </div>
     </section>
 
     <section class="sec" id="w1-ac">
+      <div class="sec-head">
       <p class="label">조치</p>
-      <h2>시스템을 고치지 않고 문구를 고쳤다</h2>
+      <h2>시스템을 고치지 않고 문구를 고쳤습니다</h2>
+      </div>
+      <div class="sec-body">
       <div class="flow">
         <div><span class="step">1 · 개발팀 요청</span><h3>오류 팝업에 조건 명시</h3><p>동작 조건을 알려주는 문구로 변경 요청. 재현 결과와 문의 건수를 근거로 제시했습니다.</p></div>
-        <div><span class="step">2 · FAQ 등록</span><h3>응대법을 남긴다</h3><p>다른 담당자도 같은 답을 하도록 FAQ에 등록했습니다.</p></div>
+        <div><span class="step">2 · FAQ 등록</span><h3>응대법 남기기</h3><p>다른 담당자도 같은 답을 하도록 FAQ에 등록했습니다.</p></div>
         <div><span class="step">3 · 절차 변경</span><h3>환경부터 확인</h3><p>전자서명 문의는 작업 환경을 먼저 확인하는 순서로 매뉴얼을 고쳤습니다.</p></div>
-      </div>
+      </div>      </div>
     </section>
 
     <section class="sec" id="w1-rs">
+      <div class="sec-head">
       <p class="label">결과</p>
-      <h2>사용자가 스스로 해결하면서 문의와 개별 대응이 함께 사라졌다</h2>
+      <h2>사용자가 스스로 해결하면서 문의와 개별 대응이 함께 사라졌습니다</h2>
+      </div>
+      <div class="sec-body">
       <div class="results">
         <div><b>월 10건 → 1~2건</b><span>전자서명 오류 문의</span></div>
         <div><b>0회</b><span>시스템 수정</span></div>
         <div><b>1줄</b><span>바뀐 것</span></div>
       </div>
-      <p class="note" style="margin-top:24px;font-size:16px;color:var(--body)"><b>배운 것.</b> 문의는 증상이고 원인은 프로세스에 있습니다. 시스템 오류가 아니라 "사용자가 조건을 모르는 것"이 원인인 경우가 많고, 그럴 때 가장 싼 해결책이 가장 큰 효과를 냅니다. 이후 자동화를 설계할 때도 코드보다 먼저 "어디서 사람이 막히는가"를 봅니다.</p>
-      <p class="note">※ 접속 환경 구성은 보안상 일반화해 적었습니다.</p>
+      <p class="note" style="margin-top:24px;font-size:16px;color:var(--body)"><b>배운 것.</b> 문의는 증상이고 원인은 프로세스에 있었습니다. 시스템 오류가 아니라 "사용자가 조건을 모르는 것"이 원인인 경우가 많고, 그럴 때 가장 싼 해결책이 가장 큰 효과를 낸다라는 것을 배웠습니다. 이후 자동화를 설계할 때도 코드보다 먼저 "어디서 사람이 막히는가"를 보게 되었습니다.</p>
+      <p class="note">※ 접속 환경 구성은 보안상 일반화해 적었습니다.</p>      </div>
+    </section>
+    <section class="glance glance-end" aria-label="정리" style="--n:4">
+      <p class="glance-t">정리</p>
+      <ol>
+        <li><button type="button" data-jump="w1-pb"><span class="n">01 문제</span><b>전자서명 오류 문의가 매달 약 10건 왔고, 매번 담당자가 직접 해결했습니다</b></button></li>
+        <li><button type="button" data-jump="w1-dc"><span class="n">02 판단</span><b>사용자의 "밖에서 작업 중"이라는 말에서 접속 환경이 원인임을 찾았습니다</b></button></li>
+        <li><button type="button" data-jump="w1-ac"><span class="n">03 조치</span><b>시스템은 그대로 두고 오류 안내 문구를 고쳤습니다</b></button></li>
+        <li><button type="button" data-jump="w1-rs"><span class="n">04 결과</span><b>문의가 월 10건에서 1~2건으로 줄었습니다</b></button></li>
+      </ol>
     </section>
   </div>
-  <div class="wrap"><div class="casefoot"><a href="#">← 전체 프로젝트</a><a href="#work-data">다음 · 문의 4,500건 분석 →</a></div></div>
+  <div class="wrap"><div class="casefoot"><span></span><a href="#work-data">다음 · 문의 4,500건 분석 →</a></div></div>
 </article>
 
 <!-- ========== WORK 2: 문의 4,500건 분석 ========== -->
 <article id="v-work-data" data-view hidden>
   <div class="casenav wrap"><nav class="pills" aria-label="목차">
     <a href="#">← Projects</a>
-    <button class="on" type="button" data-jump="w2-pb">문제</button><button type="button" data-jump="w2-dc">판단</button><button type="button" data-jump="w2-ds">설계</button><button type="button" data-jump="w2-rs">결과</button>
+    <button class="on" type="button" data-jump="w2-pb">문제</button><button type="button" data-jump="w2-dc">판단</button><button type="button" data-jump="w2-ds">조치</button><button type="button" data-jump="w2-rs">결과</button>
   </nav></div>
   <div class="wrap">
     <header class="casehead">
       <p class="eyebrow">한국감정평가사협회 IT정보센터 · 실무 · 2025</p>
-      <h1>문의 4,500건 속 답은 이미 있었다. 닿지 않았을 뿐</h1>
-      <p class="lede">12개월간 쌓인 문의를 유형·빈도별로 분류해 "FAQ가 있어도 사용자가 찾지 못한다"는 구조적 원인을 찾고, 전화·담당자 기억에 의존하던 흐름을 프로그램 안에서 스스로 해결하는 흐름으로 다시 설계해 제안했습니다.</p>
+      <h1>문의 4,500건 속 답은 이미 있었습니다. </h1>
+      <p class="lede">12개월간 쌓인 문의를 유형·빈도별로 분류해 "FAQ가 있어도 사용자가 찾지 못한다"는 구조적 원인을 찾았고, 담당자 기억에 의존하던 흐름을 프로그램 안에서 스스로 해결하는 흐름으로 다시 설계해 제안했습니다.</p>
     </header>
     <dl class="facts">
-      <div><dt>내 역할</dt><dd>데이터 분류 · 원인 도출 · To-Be 제안</dd></div>
-      <div><dt>데이터</dt><dd>12개월 · 약 4,500건 (60% 직접 처리)</dd></div>
-      <div><dt>협업</dt><dd>개발팀 · 팀장</dd></div>
-      <div><dt>산출물</dt><dd>유형 분류표 · As-Is/To-Be 개선안</dd></div>
+      <div><dt>내 역할</dt><dd><span class="chip">데이터 분류</span><span class="chip">원인 도출</span><span class="chip">To-Be 제안</span></dd></div>
+      <div><dt>데이터</dt><dd><span class="chip">12개월</span><span class="chip">약 4,500건 (60% 직접 처리)</span></dd></div>
+      <div><dt>협업</dt><dd><span class="chip">개발팀</span><span class="chip">팀장</span></dd></div>
+      <div><dt>산출물</dt><dd><span class="chip">유형 분류표</span><span class="chip">As-Is/To-Be 개선안</span></dd></div>
     </dl>
 
     <section class="sec" id="w2-pb">
+      <div class="sec-head">
       <p class="label">문제</p>
-      <h2>같은 증상인데 의뢰처마다 답이 달랐다</h2>
-      <p>업무 시스템은 복수의 외부 기관과 의뢰 데이터를 주고받습니다. 기관마다 접수·발송 절차가 달라 "접수가 안 돼요"라는 같은 질문에도 해결법이 달랐고, 사용자는 매번 전화로 물었습니다. 접수 시스템에 유형별 통계가 쌓이고 있었지만 아무도 그 데이터를 개선에 쓰지 않았습니다.</p>
+      <h2>같은 증상인데 의뢰처마다 답이 달랐습니다</h2>
+      </div>
+      <div class="sec-body">
+      <p>업무 시스템은 여러 외부 기관과 의뢰 데이터를 주고받고 있었습니다. 기관마다 접수·발송 절차가 달라 "접수가 안 돼요"라는 같은 질문에도 해결법이 달랐고, 사용자는 막힐 때마다 전화로 물어야 했습니다. 접수 시스템에는 유형별 통계가 쌓이고 있었지만, 그 데이터를 개선에 활용하는 사람은 없었습니다.</p>
       <div class="cards">
         <div><h3>전화 의존</h3><p>막히면 전화 → 담당자가 기억으로 답변.</p></div>
-        <div><h3>FAQ 무용</h3><p>FAQ는 있지만 프로그램 안에서는 보이지 않는다.</p></div>
-        <div><h3>오류 메시지</h3><p>"오류가 발생했습니다"만 뜨고 다음 행동을 알려주지 않는다.</p></div>
-      </div>
+        <div><h3>FAQ 무용</h3><p>FAQ는 있지만 프로그램 안에서는 보이지 않습니다.</p></div>
+        <div><h3>오류 메시지</h3><p>"오류가 발생했습니다"만 뜨고 다음 행동을 알려주지 않습니다.</p></div>
+      </div>      </div>
     </section>
 
     <section class="sec" id="w2-dc">
+      <div class="sec-head">
       <p class="label">판단</p>
-      <h2>지식이 없는 게 아니라 필요한 순간에 닿지 않는 것이었다</h2>
-      <p>4,500건을 유형·빈도·의뢰처별로 나눴습니다. 다수가 프로그램 오류가 아니라 "의뢰처별 절차를 몰라서" 생긴 문의였고, 그 답은 이미 FAQ에 있었습니다. 문제는 지식이 아니라 전달 경로였습니다.</p>
-      <div class="split">
-        <div><h3>As-Is</h3><p>막힘 → 전화 → 담당자 기억 → 구두 안내<br>같은 질문이 사람과 날짜만 바뀌어 반복</p></div>
-        <div class="good"><h3>To-Be</h3><p>막힘 → 오류 메시지에 해결 링크 → 프로그램 내 FAQ 버튼 → 의뢰처별 FAQ<br>사람을 거치지 않고 그 자리에서 해결</p></div>
+      <h2>답은 이미 있었고, 필요한 순간에 닿지 않았을 뿐이었습니다</h2>
       </div>
+      <div class="sec-body">
+      <p>4,500건을 유형·빈도·의뢰처별로 나눴습니다. 다수가 프로그램 오류가 아니라 "의뢰처별 절차를 몰라서" 생긴 문의였고, 그 답은 이미 FAQ에 있었습니다. 문제는 지식이 아니라 전달 경로였습니다.</p>
+      <div class="flowcmp">
+        <div class="fc-row">
+          <div class="fc-label">As-Is</div>
+          <div>
+            <div class="fc-flow"><span class="fc-step">막힘</span><span class="fc-arr">→</span><span class="fc-step person">전화</span><span class="fc-arr">→</span><span class="fc-step person">담당자 기억</span><span class="fc-arr">→</span><span class="fc-step person">구두 안내</span></div>
+            <p class="fc-res">같은 질문이 사람과 날짜만 바뀌어 반복</p>
+          </div>
+        </div>
+        <div class="fc-row to">
+          <div class="fc-label">To-Be</div>
+          <div>
+            <div class="fc-flow"><span class="fc-step">막힘</span><span class="fc-arr">→</span><span class="fc-step">오류 메시지에 해결 링크</span><span class="fc-arr">→</span><span class="fc-step">프로그램 내 FAQ 버튼</span><span class="fc-arr">→</span><span class="fc-step">의뢰처별 FAQ</span></div>
+            <p class="fc-res">사람을 거치지 않고 그 자리에서 해결</p>
+          </div>
+        </div>
+        <div class="fc-legend"><i></i>사람(담당자)을 거치는 단계</div>
+      </div>      </div>
     </section>
 
     <section class="sec" id="w2-ds">
-      <p class="label">설계</p>
-      <h2>큰 제안이 막히자 작은 단위로 쪼개 우회했다</h2>
+      <div class="sec-head">
+      <p class="label">조치</p>
+      <h2>큰 제안이 막히자 작은 단위로 쪼개 우회했습니다</h2>
+      </div>
+      <div class="sec-body">
       <p>개발팀에 프로그램 내 FAQ 버튼을 제안했지만 개발 리소스 문제로 보류됐습니다. 그래서 가장 빈도 높은 오류 메시지에 해결 방법 링크를 붙이는 것부터 먼저 반영하도록 요청했습니다 — 개발 공수가 작고, 효과는 바로 측정되는 쪽부터.</p>
       <div class="flow">
         <div><span class="step">1 · 분류</span><h3>유형 × 빈도 × 의뢰처</h3><p>표로 정리하고 상위 유형부터 원인을 태깅했습니다.</p></div>
         <div><span class="step">2 · 제안</span><h3>3단계 개선안</h3><p>FAQ 버튼 · 의뢰처별 FAQ · 오류 메시지 링크를 문서화했습니다.</p></div>
         <div><span class="step">3 · 우회</span><h3>작은 것부터</h3><p>보류된 FAQ 버튼 대신 오류 메시지 개선을 먼저 반영했습니다.</p></div>
-      </div>
+      </div>      </div>
     </section>
 
     <section class="sec" id="w2-rs">
+      <div class="sec-head">
       <p class="label">결과</p>
       <h2>반복 문의 약 10% 감소, 그리고 RAG 챗봇의 출발점</h2>
+      </div>
+      <div class="sec-body">
       <div class="results">
         <div><b>약 10%↓</b><span>반복 문의 (오류 메시지 개선 후)</span></div>
         <div><b>4,500건</b><span>유형·빈도·의뢰처별 분류</span></div>
         <div><b>3단계</b><span>To-Be 개선안</span></div>
       </div>
       <p class="note" style="margin-top:24px;font-size:16px;color:var(--body)"><b>배운 것.</b> 운영 데이터는 이미 쌓여 있고, 안 보고 있을 뿐입니다. "지식이 있는가"보다 "필요한 순간에 꺼내 쓸 수 있는가"가 업무 혁신의 본질이라는 걸 여기서 배웠고, 이후 '근거가 없으면 답하지 않는' RAG 챗봇 <a href="#chatbot">「찾아드림」</a>을 기획한 출발점이 됐습니다.</p>
-      <p class="note">※ 연계 기관명과 시스템 구성은 보안상 일반화해 적었습니다.</p>
+      <p class="note">※ 연계 기관명과 시스템 구성은 보안상 일반화해 적었습니다.</p>      </div>
+    </section>
+    <section class="glance glance-end" aria-label="정리" style="--n:4">
+      <p class="glance-t">정리</p>
+      <ol>
+        <li><button type="button" data-jump="w2-pb"><span class="n">01 문제</span><b>같은 증상인데 의뢰처마다 답이 달랐고, 사용자는 매번 전화했습니다</b></button></li>
+        <li><button type="button" data-jump="w2-dc"><span class="n">02 판단</span><b>답은 이미 FAQ에 있었지만, 필요한 순간에 닿지 않았습니다</b></button></li>
+        <li><button type="button" data-jump="w2-ds"><span class="n">03 조치</span><b>FAQ 버튼 제안이 막히자 오류 메시지에 해결 링크부터 넣었습니다</b></button></li>
+        <li><button type="button" data-jump="w2-rs"><span class="n">04 결과</span><b>반복 문의가 약 10% 줄었습니다</b></button></li>
+      </ol>
     </section>
   </div>
   <div class="wrap"><div class="casefoot"><a href="#work-root">← 이전 · 전자서명 오류 원인 추적</a><a href="#work-aitool">다음 · 사내 AI 툴 운영 체계 →</a></div></div>
@@ -533,7 +770,7 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 <article id="v-work-aitool" data-view hidden>
   <div class="casenav wrap"><nav class="pills" aria-label="목차">
     <a href="#">← Projects</a>
-    <button class="on" type="button" data-jump="w3-pb">문제</button><button type="button" data-jump="w3-dc">판단</button><button type="button" data-jump="w3-ds">체계</button><button type="button" data-jump="w3-rs">결과</button>
+    <button class="on" type="button" data-jump="w3-pb">문제</button><button type="button" data-jump="w3-dc">판단</button><button type="button" data-jump="w3-ds">조치</button><button type="button" data-jump="w3-rs">결과</button>
   </nav></div>
   <div class="wrap">
     <header class="casehead">
@@ -542,37 +779,46 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
       <p class="lede">구독 요청이 올 때마다 결제해 주던 방식을, 수요 조사 → 업무별 툴 매핑 → 관리 대장·신청 절차 → 월별 지출결의로 바꿨습니다. 안 쓰는 계정을 정리한 비용으로 사용자를 5명에서 약 20명으로 늘렸습니다.</p>
     </header>
     <dl class="facts">
-      <div><dt>내 역할</dt><dd>수요 조사 · 툴 매핑 · 대장·절차 설계 · 예산</dd></div>
-      <div><dt>대상</dt><dd>생성형 AI · AI 코딩 도구 · 개발 도구</dd></div>
-      <div><dt>협업</dt><dd>총무팀 · 각 부서 사용자 · 팀장</dd></div>
-      <div><dt>산출물</dt><dd>관리 대장 · 신청 절차 · 지출결의 체계</dd></div>
+      <div><dt>내 역할</dt><dd><span class="chip">수요 조사</span><span class="chip">툴 매핑</span><span class="chip">대장·절차 설계</span><span class="chip">예산</span></dd></div>
+      <div><dt>대상</dt><dd><span class="chip">생성형 AI</span><span class="chip">AI 코딩 도구</span><span class="chip">개발 도구</span></dd></div>
+      <div><dt>협업</dt><dd><span class="chip">총무팀</span><span class="chip">각 부서 사용자</span><span class="chip">팀장</span></dd></div>
+      <div><dt>산출물</dt><dd><span class="chip">관리 대장</span><span class="chip">신청 절차</span><span class="chip">지출결의 체계</span></dd></div>
     </dl>
 
     <section class="sec" id="w3-pb">
+      <div class="sec-head">
       <p class="label">문제</p>
-      <h2>누가 어떤 툴을 쓰는지, 얼마가 나가는지 아무도 몰랐다</h2>
+      <h2>누가 어떤 툴을 쓰는지, 얼마가 나가는지 아무도 몰랐습니다</h2>
+      </div>
+      <div class="sec-body">
       <p>AI 툴 구독 요청이 늘고 있었지만 사용 현황이 정리되어 있지 않았습니다. 요청이 오면 결제하고, 안 쓰게 돼도 계정은 남았습니다. 사용자는 5명, 비용은 사람별이 아니라 건별로만 보였습니다.</p>
       <div class="cards">
-        <div><h3>가시성 없음</h3><p>사람·툴·결제가 연결되어 있지 않다.</p></div>
+        <div><h3>가시성 없음</h3><p>사람·툴·결제가 연결되어 있지 않습니다.</p></div>
         <div><h3>미사용 계정</h3><p>결제는 계속, 사용은 중단.</p></div>
-        <div><h3>확산 불가</h3><p>예산 근거가 없어 새 요청을 받기 어렵다.</p></div>
-      </div>
+        <div><h3>확산 불가</h3><p>예산 근거가 없어 새 요청을 받기 어렵습니다.</p></div>
+      </div>      </div>
     </section>
 
     <section class="sec" id="w3-dc">
+      <div class="sec-head">
       <p class="label">판단</p>
-      <h2>확산과 비용 통제는 상충하지 않는다 — 안 쓰는 걸 정리하면 더 줄 수 있다</h2>
+      <h2>확산과 비용 통제는 상충하지 않습니다 — 안 쓰는 걸 정리하면 더 줄 수 있습니다</h2>
+      </div>
+      <div class="sec-body">
       <p>도입의 병목은 기술이 아니라 "누가·무엇을·얼마에"가 보이지 않는 것이었습니다. 먼저 설문으로 수요를 조사해 실제 사용자와 업무를 파악하고, 업무 성격에 따라 툴을 나눴습니다.</p>
       <div class="cards">
         <div><h3>개발</h3><p>AI 코딩 도구 · IDE</p></div>
         <div><h3>DB</h3><p>DB 클라이언트</p></div>
         <div><h3>문서 · 일반</h3><p>생성형 AI 챗</p></div>
-      </div>
+      </div>      </div>
     </section>
 
     <section class="sec" id="w3-ds">
-      <p class="label">체계</p>
-      <h2>사람·툴·결제 단위의 대장과 신청 절차를 만들었다</h2>
+      <div class="sec-head">
+      <p class="label">조치</p>
+      <h2>사람·툴·결제 단위의 대장과 신청 절차를 만들었습니다</h2>
+      </div>
+      <div class="sec-body">
       <div class="flow" style="grid-template-columns:repeat(4,minmax(0,1fr))">
         <div><span class="step">1 · 관리 대장</span><h3>한 줄에 전부</h3><p>누가 · 어떤 툴 · 어떤 플랜 · 결제 주기 · 예산과목.</p></div>
         <div><span class="step">2 · 신청 절차</span><h3>요청이 대장에 쌓이게</h3><p>업무 용도 → 플랜 비교 → 승인 → 등록.</p></div>
@@ -584,19 +830,31 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
         <div><b>툴 · 플랜</b><span>[툴] · [플랜] · 결제 주기 연간</span></div>
         <div><b>예산과목</b><span>[과목] · 월별 지출결의 연동</span></div>
       </div>
-      <p class="note">관리 대장 열 구성 예시 — 실제 값은 비공개.</p>
+      <p class="note">관리 대장 열 구성 예시 — 실제 값은 비공개.</p>      </div>
     </section>
 
     <section class="sec" id="w3-rs">
+      <div class="sec-head">
       <p class="label">결과</p>
       <h2>사용자 4배, 비용은 실제 사용 기준으로</h2>
+      </div>
+      <div class="sec-body">
       <div class="results">
         <div><b>5명 → 약 20명</b><span>AI 툴 사용자</span></div>
         <div><b>실사용 기준</b><span>계정·비용 관리 방식</span></div>
         <div><b>1장</b><span>관리 대장 — 다음 담당자가 그대로 인수</span></div>
       </div>
       <p class="note" style="margin-top:24px;font-size:16px;color:var(--body)"><b>배운 것.</b> AI 도입의 병목은 모델이 아니라 가시성입니다. "누가·무엇을·얼마에"가 보이면 확산은 따라오고, 안 쓰는 계정을 정리한 돈으로 더 많은 사람에게 줄 수 있습니다. 툴을 만들고 끝내지 않고, 현업이 계속 쓰도록 가이드와 관리 체계까지 남기는 습관이 여기서 생겼습니다.</p>
-      <p class="note">※ 툴 명칭과 계약 조건은 보안상 일반화해 적었습니다.</p>
+      <p class="note">※ 툴 명칭과 계약 조건은 보안상 일반화해 적었습니다.</p>      </div>
+    </section>
+    <section class="glance glance-end" aria-label="정리" style="--n:4">
+      <p class="glance-t">정리</p>
+      <ol>
+        <li><button type="button" data-jump="w3-pb"><span class="n">01 문제</span><b>누가 어떤 AI 툴을 쓰고 얼마가 나가는지 정리되어 있지 않았습니다</b></button></li>
+        <li><button type="button" data-jump="w3-dc"><span class="n">02 판단</span><b>병목은 기술이 아니라 사용 현황이 보이지 않는 것이었습니다</b></button></li>
+        <li><button type="button" data-jump="w3-ds"><span class="n">03 조치</span><b>사람·툴·결제 단위의 관리 대장과 신청 절차를 만들었습니다</b></button></li>
+        <li><button type="button" data-jump="w3-rs"><span class="n">04 결과</span><b>사용자가 5명에서 약 20명으로 늘고, 비용은 실사용 기준으로 관리했습니다</b></button></li>
+      </ol>
     </section>
   </div>
   <div class="wrap"><div class="casefoot"><a href="#work-data">← 이전 · 문의 4,500건 분석</a><a href="#chatbot">다음 · 찾아드림 →</a></div></div>
@@ -613,34 +871,39 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
       <p class="eyebrow">찾아드림 · LG CNS AI 캠퍼스 1조 · 2026</p>
       <h1>근거가 없으면 답하지 않는 가전 챗봇</h1>
       <p class="lede">LG·삼성 60개 모델의 사용설명서를 검색 대상으로 두고, 답변의 모든 문장에 출처 쪽 번호와 설명서 그림을 붙이는 RAG 챗봇입니다.</p>
-      <div class="links"><a class="lk primary" href="https://github.com/Broogun/ask-my-appliance" target="_blank" rel="noopener">GitHub 보기 ↗</a></div>
     </header>
     <figure class="stage blue" style="margin-inline:0">
       <video src="media/chatbot-error.mp4" poster="media/chatbot-error.jpg" autoplay muted loop playsinline controls aria-label="에러코드 질문에 원인과 조치를 답하는 시연 영상"></video>
       <figcaption>시연 · 에러코드를 물으면 RDB 정확 매칭으로 원인과 조치를 바로 답합니다.</figcaption>
     </figure>
     <dl class="facts">
-      <div><dt>내 역할</dt><dd>서비스 기획 · 청킹 전략</dd></div>
-      <div><dt>기간</dt><dd>2026.09.07 – 09.28</dd></div>
-      <div><dt>팀</dt><dd>4인</dd></div>
-      <div><dt>산출물</dt><dd>PRD · 기능정의서 · 와이어프레임</dd></div>
+      <div><dt>내 역할</dt><dd><span class="chip">서비스 기획</span><span class="chip">청킹 전략</span></dd></div>
+      <div><dt>기간</dt><dd><span class="chip">2026.09.07 – 09.28</span></dd></div>
+      <div><dt>팀</dt><dd><span class="chip">4인</span></dd></div>
+      <div><dt>산출물</dt><dd><span class="chip">PRD</span><span class="chip">기능정의서</span><span class="chip">와이어프레임</span></dd></div>
     </dl>
 
     <section class="sec" id="c1-pb">
+      <div class="sec-head">
       <p class="label">문제</p>
-      <h2>증상은 아는데, 해결까지 넘어야 할 단계가 많다</h2>
+      <h2>증상은 아는데, 해결까지 넘어야 할 단계가 많습니다</h2>
+      </div>
+      <div class="sec-body">
       <p>"에어컨에 물이 새는데 설명서는 어딜 봐야 하죠?" 사용자는 증상만 압니다. 검색어를 고민하고, 정보를 찾고, 근거를 해석하고, 다시 확인하는 일을 모두 혼자 해야 합니다.</p>
       <div class="cards">
-        <div><h3>시간</h3><p>검색과 재확인이 반복된다</p></div>
-        <div><h3>정확성</h3><p>다른 모델 정보가 섞일 수 있다</p></div>
-        <div><h3>신뢰</h3><p>찾은 답을 믿고 실행하기 어렵다</p></div>
-        <div><h3>접근</h3><p>버린 설명서를 다시 구하기 어렵다</p></div>
-      </div>
+        <div><h3>시간</h3><p>검색과 재확인이 반복됩니다</p></div>
+        <div><h3>정확성</h3><p>다른 모델 정보가 섞일 수 있습니다</p></div>
+        <div><h3>신뢰</h3><p>찾은 답을 믿고 실행하기 어렵습니다</p></div>
+        <div><h3>접근</h3><p>버린 설명서를 다시 구하기 어렵습니다</p></div>
+      </div>      </div>
     </section>
 
     <section class="sec" id="c1-dc">
+      <div class="sec-head">
       <p class="label">판단</p>
-      <h2>RAG는 모델별 설명서로 범위를 좁히고 출처까지 준다</h2>
+      <h2>RAG는 모델별 설명서로 범위를 좁히고 출처까지 줍니다</h2>
+      </div>
+      <div class="sec-body">
       <p>지식iN은 광고성 글이 섞이고, 범용 AI는 없는 기능도 있는 것처럼 답하며, 제조사 AI는 모델명을 넣어도 설명서 기반 답변이 아니라고 밝힙니다. 세 방식을 같은 기준으로 비교했습니다.</p>
       <div class="tbl"><table>
         <thead><tr><th scope="col">기준</th><th scope="col">구글 · 네이버 검색</th><th scope="col">범용 LLM</th><th scope="col" class="hl">찾아드림 RAG</th></tr></thead>
@@ -651,23 +914,29 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
           <tr><th scope="row">근거 없을 때 보류</th><td>보장 어려움</td><td>보장 어려움</td><td class="hl">가능</td></tr>
           <tr><th scope="row">답변까지 걸리는 시간</th><td>오래 걸림</td><td>빠름</td><td class="hl">빠름</td></tr>
         </tbody>
-      </table></div>
+      </table></div>      </div>
     </section>
 
     <section class="sec" id="c1-ft">
+      <div class="sec-head">
       <p class="label">주요 기능</p>
-      <h2>사용자는 증상만 말하고, 탐색과 확인은 찾아드림이 맡는다</h2>
+      <h2>사용자는 증상만 말하고, 탐색과 확인은 찾아드림이 맡습니다</h2>
+      </div>
+      <div class="sec-body">
       <div class="cards">
         <div><h3>내 모델 설명서만 검색</h3><p>제품을 한 번 등록하면 그 모델의 설명서 안에서만 근거를 찾습니다.</p></div>
         <div><h3>에러코드 정확 매칭</h3><p>"CH05 떠요"처럼 코드를 물으면 RDB에서 정확히 찾아 원인과 조치를 답합니다.</p></div>
         <div><h3>쪽 번호 · 그림 · 원문</h3><p>답변 줄마다 설명서 쪽 번호와 그림을 붙이고, PDF 원문으로 바로 확인할 수 있습니다.</p></div>
         <div><h3>근거가 없으면 보류</h3><p>관련 근거가 기준에 못 미치면 추측하지 않고 "찾지 못했습니다"라고 답합니다.</p></div>
-      </div>
+      </div>      </div>
     </section>
 
     <section class="sec" id="c1-sc">
+      <div class="sec-head">
       <p class="label">화면</p>
       <h2>제품 등록 → 질문 → 답변 → 출처 확인</h2>
+      </div>
+      <div class="sec-body">
       <div class="gallery">
         <figure><img src="media/chat-flow-1.jpg" alt="제품 등록 화면" loading="lazy"><b>1 · 제품 등록</b><figcaption>모델명으로 내 제품 추가</figcaption></figure>
         <figure><img src="media/chat-flow-2.jpg" alt="자연어 질문 화면" loading="lazy"><b>2 · 자연어 질문</b><figcaption>평소 말로 증상 입력</figcaption></figure>
@@ -677,27 +946,33 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
       <div class="videos">
         <figure><video src="media/chatbot-error.mp4" poster="media/chatbot-error.jpg" muted loop playsinline controls preload="none"></video><b>에러코드 케이스</b><span>RDB 정확 매칭 → 원인 · 조치 답변</span></figure>
         <figure><video src="media/chatbot-general.mp4" poster="media/chatbot-general.jpg" muted loop playsinline controls preload="none"></video><b>일반 질문 케이스</b><span>벡터 검색 · 리랭킹 → 설명서 그림 포함 답변</span></figure>
-      </div>
+      </div>      </div>
     </section>
 
     <section class="sec" id="c1-ds">
+      <div class="sec-head">
       <p class="label">설계 <span class="mine">내 담당</span></p>
-      <h2>설명서의 목차를 그대로 청크 단위로 쓴다</h2>
+      <h2>설명서의 목차를 그대로 청크 단위로 씁니다</h2>
+      </div>
+      <div class="sec-body">
       <p>설명서에는 이미 "필터 분리하기 → 극세 필터 청소하기"처럼 목차 구조가 있습니다. 고정 길이로 자르면 한 절의 설명이 중간에 끊겨 답변이 반쪽이 되기 때문에, 목차 경계를 그대로 청크 단위로 썼습니다.</p>
       <div class="split">
-        <div><h3>고정 길이로 자르면 · 절이 중간에 끊긴다</h3>
+        <div><h3>고정 길이로 자르면 · 절이 중간에 끊깁니다</h3>
           <div class="chunks"><span>필터 분리하기</span><span class="cut">극세 필터 청소하기</span><span class="cut">알러지케어 집진 필터 청소하기</span><span>필터 끼우기</span></div>
-          <p class="small">청크 3개 · 경계가 절 한가운데를 지난다</p></div>
+          <p class="small">청크 3개 · 경계가 절 한가운데를 지납니다</p></div>
         <div class="good"><h3>목차 단위로 자르면 · 절 하나가 청크 하나</h3>
           <div class="chunks"><span>필터 분리하기</span><span>극세 필터 청소하기</span><span>알러지케어 집진 필터 청소하기</span><span>필터 끼우기</span></div>
           <p class="small">청크 4개 · 700자 이상 · 15% 오버랩 · 목차 없는 PDF와 고장 신고 표는 예외 규칙</p></div>
       </div>
-      <p class="note">기획 산출물: 기능 요구사항 13개 · 화면 13개 · 기능 45개 정의, 와이어프레임 16개 화면</p>
+      <p class="note">기획 산출물: 기능 요구사항 13개 · 화면 13개 · 기능 45개 정의, 와이어프레임 16개 화면</p>      </div>
     </section>
 
     <section class="sec" id="c1-rs">
+      <div class="sec-head">
       <p class="label">결과 <span>· 팀 결과, 900문항 평가</span></p>
       <h2>가장 나쁜 실패인 "근거 없는 확신 답변"은 0건</h2>
+      </div>
+      <div class="sec-body">
       <div class="results">
         <div><b>0건</b><span>근거 없는 확신 답변</span></div>
         <div><b>84.6% → 92.3%</b><span>리랭킹 후 Top-5 적중</span></div>
@@ -713,10 +988,20 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
         </tbody>
       </table></div>
       <p class="note">5문항 × 60개 모델 × 3라운드. 설명서에 없는 내용을 묻는 경우도 있어 정답률 대신 4가지로 분류해 판정했습니다.</p>
-      <div class="stack"><span>RAG</span><span>pgvector</span><span>BGE-m3-ko</span><span>gpt-4o-mini</span><span>FastAPI</span></div>
+      <div class="stack"><span>RAG</span><span>pgvector</span><span>BGE-m3-ko</span><span>gpt-4o-mini</span><span>FastAPI</span></div>      </div>
+    </section>
+    <section class="glance glance-end" aria-label="정리" style="--n:5">
+      <p class="glance-t">정리</p>
+      <ol>
+        <li><button type="button" data-jump="c1-pb"><span class="n">01 문제</span><b>사용자는 증상만 알고, 설명서에서 답을 찾는 일은 혼자 해야 합니다</b></button></li>
+        <li><button type="button" data-jump="c1-dc"><span class="n">02 판단</span><b>검색·범용 AI·제조사 AI를 같은 기준으로 비교해 RAG를 골랐습니다</b></button></li>
+        <li><button type="button" data-jump="c1-ft"><span class="n">03 주요</span><b>증상만 말하면 탐색과 출처 확인은 찾아드림이 맡습니다</b></button></li>
+        <li><button type="button" data-jump="c1-ds"><span class="n">05 설계</span><b>설명서 목차를 그대로 청크 단위로 썼습니다</b></button></li>
+        <li><button type="button" data-jump="c1-rs"><span class="n">06 결과</span><b>900문항 평가에서 근거 없는 확신 답변 0건 (팀 결과)</b></button></li>
+      </ol>
     </section>
   </div>
-  <div class="wrap"><div class="casefoot"><a href="#">← 전체 프로젝트</a><a href="#sunscreen">다음 · 선크림 추천 RAG →</a></div></div>
+  <div class="wrap"><div class="casefoot"><span></span><a href="#sunscreen">다음 · 선크림 추천 RAG →</a></div></div>
 </article>
 
 <!-- ========== CASE: 선크림 ========== -->
@@ -730,7 +1015,6 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
       <p class="eyebrow">올리브영 리뷰 기반 추천 · 개인 프로젝트 · 2026</p>
       <h1>리뷰 7,500건을 근거로 보여주는 선크림 추천</h1>
       <p class="lede">"선크림이 수백 개인데, 리뷰를 다 읽지 않고 어떻게 내 피부에 맞는 걸 고를까?" 실구매 리뷰를 기준별로 수치화해, 추천과 함께 근거를 보여주는 챗봇을 만들었습니다.</p>
-      <div class="links"><a class="lk primary" href="https://github.com/sikumdev/oliveyoung-review-insight-rag" target="_blank" rel="noopener">GitHub 보기 ↗</a></div>
     </header>
     <figure class="stage sand" style="margin-inline:0">
       <div class="convo" aria-label="화면 설계안: 대화 시나리오">
@@ -745,43 +1029,55 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
       <figcaption>화면 설계안 · LangGraph CLI로 구현해 화면 대신 기획 단계의 대화 시나리오를 옮겼습니다. 회색 글씨는 실제 노드 이름입니다.</figcaption>
     </figure>
     <dl class="facts">
-      <div><dt>역할</dt><dd>기획 · 데이터 가공 · 구현 · 품질 검증</dd></div>
-      <div><dt>기간</dt><dd>2026.03 – 04</dd></div>
-      <div><dt>팀</dt><dd>개인</dd></div>
-      <div><dt>데이터</dt><dd>선크림 30개 · 리뷰 7,500건</dd></div>
+      <div><dt>역할</dt><dd><span class="chip">기획</span><span class="chip">데이터 가공</span><span class="chip">구현</span><span class="chip">품질 검증</span></dd></div>
+      <div><dt>기간</dt><dd><span class="chip">2026.03 – 04</span></dd></div>
+      <div><dt>팀</dt><dd><span class="chip">개인</span></dd></div>
+      <div><dt>데이터</dt><dd><span class="chip">선크림 30개</span><span class="chip">리뷰 7,500건</span></dd></div>
     </dl>
 
     <section class="sec" id="c2-pb">
+      <div class="sec-head">
       <p class="label">문제</p>
-      <h2>리뷰가 너무 많아 판단 근거가 되지 못한다</h2>
-      <p>인기 제품은 리뷰가 수만 건입니다. 평점만으로는 "지성인데 끈적이지 않는지" 같은 내 기준을 알 수 없습니다. 리뷰 1,000건 이상인 선크림 30개를 골라, 피부타입별로 균등하게 샘플링해 7,500건을 모았습니다.</p>
+      <h2>리뷰가 너무 많아 판단 근거가 되지 못합니다</h2>
+      </div>
+      <div class="sec-body">
+      <p>인기 제품은 리뷰가 수만 건입니다. 평점만으로는 "지성인데 끈적이지 않는지" 같은 내 기준을 알 수 없습니다. 리뷰 1,000건 이상인 선크림 30개를 골라, 피부타입별로 균등하게 샘플링해 7,500건을 모았습니다.</p>      </div>
     </section>
 
     <section class="sec" id="c2-ft">
+      <div class="sec-head">
       <p class="label">주요 기능</p>
-      <h2>모르면 먼저 묻고, 수치는 지어내지 않는다</h2>
+      <h2>모르면 먼저 묻고, 수치는 지어내지 않습니다</h2>
+      </div>
+      <div class="sec-body">
       <div class="cards">
         <div><h3>정보가 부족하면 되묻기</h3><p>피부타입이나 비교 제품이 빠지면 검색하지 않고 먼저 묻습니다. 대답을 받으면 멈춘 지점부터 이어갑니다.</p></div>
         <div><h3>DB 수치를 그대로 노출</h3><p>"끈적임 없음 80%" 같은 수치는 LLM이 아니라 집계 데이터에서 그대로 가져옵니다.</p></div>
         <div><h3>3회 재검색 후 대안</h3><p>결과가 빈약하면 질문을 다시 써서 최대 3회 검색하고, 그래도 없으면 비슷한 조건의 대안을 보여줍니다.</p></div>
         <div><h3>같은 제품 반복 방지</h3><p>이미 추천한 제품은 점수를 절반으로 낮춰 다른 제품도 함께 보여줍니다.</p></div>
-      </div>
+      </div>      </div>
     </section>
 
     <section class="sec" id="c2-dt">
+      <div class="sec-head">
       <p class="label">데이터</p>
       <h2>리뷰를 8개 기준으로 나눠 체감 비율로 집계</h2>
+      </div>
+      <div class="sec-body">
       <p>키워드 매칭은 "끈적이지 않아요"를 "끈적임"으로 잘못 분류합니다. 그래서 LLM으로 리뷰마다 8개 기준(산뜻함 · 끈적임 · 보습 · 자극 · 백탁 · 밀림 · 지속력 · 눈시림)을 긍정 · 부정 · 언급 없음으로 분류했습니다.</p>
       <div class="cards">
         <div><h3>1 · 수집</h3><p>제품 30개 × 최대 250건. 피부타입 5종 × 40건 + 전체 50건을 유용순으로 수집하고 중복을 제거했습니다.</p></div>
         <div><h3>2 · 분류</h3><p>8개 기준별 긍정 · 부정 · 없음. 분모는 전체 리뷰가 아니라 그 기준을 언급한 리뷰 수입니다.</p></div>
         <div><h3>3 · 활용</h3><p>언급이 5건 미만이면 표시하지 않고, 피부타입별 가중치를 더해 추천 점수를 계산합니다.</p></div>
-      </div>
+      </div>      </div>
     </section>
 
     <section class="sec" id="c2-pl">
+      <div class="sec-head">
       <p class="label">예외 정책 <span>· 기획 산출물</span></p>
       <h2>어떤 상황에서도 서비스가 침묵하지 않게</h2>
+      </div>
+      <div class="sec-body">
       <div class="tbl"><table>
         <thead><tr><th scope="col">상황</th><th scope="col">사용자에게 보이는 메시지</th><th scope="col">시스템 동작</th></tr></thead>
         <tbody>
@@ -792,10 +1088,19 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
           <tr><th scope="row">시스템 오류</th><td>"잠시 후 다시 시도해주세요" + 재시도 버튼</td><td>기술 용어 노출 금지 · 직전 입력 보존</td></tr>
         </tbody>
       </table></div>
-      <div class="stack"><span>LangGraph</span><span>PostgreSQL</span><span>pgvector</span><span>GPT-4o-mini</span><span>ko-sroberta</span></div>
+      <div class="stack"><span>LangGraph</span><span>PostgreSQL</span><span>pgvector</span><span>GPT-4o-mini</span><span>ko-sroberta</span></div>      </div>
+    </section>
+    <section class="glance glance-end" aria-label="정리" style="--n:4">
+      <p class="glance-t">정리</p>
+      <ol>
+        <li><button type="button" data-jump="c2-pb"><span class="n">01 문제</span><b>리뷰가 수만 건이라 평점만으로는 내 피부 기준을 알 수 없습니다</b></button></li>
+        <li><button type="button" data-jump="c2-ft"><span class="n">02 주요</span><b>정보가 부족하면 먼저 묻고, 수치는 지어내지 않습니다</b></button></li>
+        <li><button type="button" data-jump="c2-dt"><span class="n">03 데이터</span><b>리뷰 7,500건을 8개 기준으로 나눠 체감 비율로 집계했습니다</b></button></li>
+        <li><button type="button" data-jump="c2-pl"><span class="n">04 예외</span><b>어떤 상황에서도 서비스가 침묵하지 않게 예외 메시지를 정했습니다</b></button></li>
+      </ol>
     </section>
   </div>
-  <div class="wrap"><div class="casefoot"><a href="#">← 전체 프로젝트</a><a href="#meetup">다음 · 우리 어디서 봐? →</a></div></div>
+  <div class="wrap"><div class="casefoot"><span></span><a href="#meetup">다음 · 우리 어디서 봐? →</a></div></div>
 </article>
 
 <!-- ========== CASE: 우리 어디서 봐 ========== -->
@@ -809,18 +1114,20 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
       <p class="eyebrow">우리 어디서 봐? · 개인 프로젝트 · 2026</p>
       <h1>모두에게 공평한 모임 장소 정하기</h1>
       <p class="lede">앱 설치 없이 텔레그램 대화창에서 출발지와 하고 싶은 활동을 모으고, 참여자별 이동 시간 차이가 가장 작은 장소를 날씨까지 고려해 추천하는 봇입니다.</p>
-      <div class="links"><a class="lk primary" href="https://github.com/sikumdev/n8n-automation-workflows" target="_blank" rel="noopener">GitHub 보기 ↗</a></div>
     </header>
     <dl class="facts">
-      <div><dt>역할</dt><dd>기획 · 구현</dd></div>
-      <div><dt>기간</dt><dd>2026.01</dd></div>
-      <div><dt>팀</dt><dd>개인</dd></div>
-      <div><dt>형태</dt><dd>텔레그램 봇 + 웹앱</dd></div>
+      <div><dt>역할</dt><dd><span class="chip">기획</span><span class="chip">구현</span></dd></div>
+      <div><dt>기간</dt><dd><span class="chip">2026.01</span></dd></div>
+      <div><dt>팀</dt><dd><span class="chip">개인</span></dd></div>
+      <div><dt>형태</dt><dd><span class="chip">텔레그램 봇 + 웹앱</span></dd></div>
     </dl>
 
     <section class="sec" id="c3-sc">
+      <div class="sec-head">
       <p class="label">화면 <span>· 실제 시연 화면</span></p>
       <h2>버튼만 누르면 끝나는 4단계</h2>
+      </div>
+      <div class="sec-body">
       <div class="gallery phone">
         <figure><img src="media/meet-1-menu.jpg" alt="봇 메뉴: 내 출발지 등록, 관심 활동 등록, 장소 추천 버튼" loading="lazy"><b>1 · 메뉴</b><figcaption>봇을 초대하면 버튼이 바로 뜹니다</figcaption></figure>
         <figure><img src="media/meet-2-address.jpg" alt="카카오 주소 검색 웹앱" loading="lazy"><b>2 · 출발지</b><figcaption>카카오 주소 검색으로 정확히 입력</figcaption></figure>
@@ -828,33 +1135,42 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
         <figure><img src="media/meet-4-date.jpg" alt="약속 일정 접수 후 AI가 장소를 분석하는 메시지" loading="lazy"><b>4 · 장소 추천</b><figcaption>날짜를 고르면 날씨까지 확인</figcaption></figure>
         <figure><img src="media/meet-5-result.jpg" alt="추천 장소 2곳과 참여자별 이동 시간 결과" loading="lazy"><b>결과</b><figcaption>추천 2곳 + 참여자별 이동 시간</figcaption></figure>
       </div>
-      <p class="note">참여자 이름은 가렸습니다.</p>
+      <p class="note">참여자 이름은 가렸습니다.</p>      </div>
     </section>
 
     <section class="sec" id="c3-pb">
+      <div class="sec-head">
       <p class="label">문제</p>
-      <h2>즐거워야 할 만남, 장소 정하기부터 지친다</h2>
+      <h2>즐거워야 할 만남, 장소 정하기부터 지칩니다</h2>
+      </div>
+      <div class="sec-body">
       <div class="cards">
         <div><h3>거리만 보는 중간 지점</h3><p>지도상 가운데여도 실제로는 만나기 어려운 곳이 추천되고, 사람마다 이동 시간이 크게 다릅니다.</p></div>
         <div><h3>앱을 계속 오가는 피로</h3><p>대화는 메신저에서, 검색은 지도 앱에서, 날씨는 또 다른 앱에서 확인해야 합니다.</p></div>
         <div><h3>전용 앱의 설치 장벽</h3><p>모두가 앱을 설치하지 않으니, 결국 한 명이 주소를 일일이 받아 혼자 검색합니다.</p></div>
-      </div>
+      </div>      </div>
     </section>
 
     <section class="sec" id="c3-ft">
+      <div class="sec-head">
       <p class="label">판단</p>
       <h2>이동 시간이 비슷한 곳, 그리고 날씨에 맞는 곳</h2>
+      </div>
+      <div class="sec-body">
       <ul>
         <li>참여자 전원의 출발지로 대중교통 이동 시간 편차가 가장 작은 지점을 계산합니다.</li>
         <li>정보가 많은 지역만 추천하는 편향은 이동 시간 편차 조건으로 보정했습니다.</li>
         <li>비 · 눈 · 폭염 예보가 있으면 실내 장소를 먼저 찾습니다.</li>
         <li>"주차되고 조용한 룸술집" 같은 자연어 조건은 프롬프트로 구조화된 조건으로 바꿉니다.</li>
-      </ul>
+      </ul>      </div>
     </section>
 
     <section class="sec" id="c3-rd">
+      <div class="sec-head">
       <p class="label">재설계</p>
-      <h2>명령어 방식은 만든 사람만 쓸 수 있었다</h2>
+      <h2>명령어 방식은 만든 사람만 쓸 수 있었습니다</h2>
+      </div>
+      <div class="sec-body">
       <p>처음에는 오작동을 줄이려고 "/출발지 [주소]" 같은 명령어 방식으로 만들었습니다. 직접 테스트해 보니 두 가지 문제가 나왔습니다.</p>
       <div class="cards">
         <div><h3>지명 중의성</h3><p>"성남"을 입력했는데 "수원" 위치로 인식했습니다. → 카카오 주소 검색 웹앱으로 정확한 주소를 고르게 했습니다.</p></div>
@@ -867,10 +1183,18 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
           <tr><th scope="row">데이터 보관</th><td>대화가 지나가면 사라짐</td><td class="hl">DB 기반 세션 (Airtable)</td></tr>
         </tbody>
       </table></div>
-      <div class="stack"><span>n8n</span><span>Telegram Bot</span><span>Kakao API</span><span>Airtable</span><span>GPT-4</span></div>
+      <div class="stack"><span>n8n</span><span>Telegram Bot</span><span>Kakao API</span><span>Airtable</span><span>GPT-4</span></div>      </div>
+    </section>
+    <section class="glance glance-end" aria-label="정리" style="--n:3">
+      <p class="glance-t">정리</p>
+      <ol>
+        <li><button type="button" data-jump="c3-pb"><span class="n">02 문제</span><b>즐거워야 할 만남이 장소 정하기부터 지칩니다</b></button></li>
+        <li><button type="button" data-jump="c3-ft"><span class="n">03 판단</span><b>이동 시간이 비슷하고 날씨에 맞는 곳을 찾습니다</b></button></li>
+        <li><button type="button" data-jump="c3-rd"><span class="n">04 재설계</span><b>명령어 방식을 버튼만 누르면 끝나는 4단계로 바꿨습니다</b></button></li>
+      </ol>
     </section>
   </div>
-  <div class="wrap"><div class="casefoot"><a href="#">← 전체 프로젝트</a><a href="#qrcheck">다음 · QR캡처체리 →</a></div></div>
+  <div class="wrap"><div class="casefoot"><span></span><a href="#qrcheck">다음 · QR캡처체리 →</a></div></div>
 </article>
 
 <!-- ========== CASE: QR캡처체리 ========== -->
@@ -893,26 +1217,32 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
       <figcaption>재구성 이미지 · 매장 스캐너로 대표자 QR을 한 번 찍으면 그룹 멤버 5명이 함께 체크인됩니다. QR은 실제 앱에서 만든 GroupA 대표자 QR입니다.</figcaption>
     </figure>
     <dl class="facts">
-      <div><dt>내 역할</dt><dd>기획·UX 설계·일정 관리 주도, 로그인 기능 구현</dd></div>
-      <div><dt>기간</dt><dd>2021.08 – 12</dd></div>
-      <div><dt>팀</dt><dd>4인 (체리쥬빌레)</dd></div>
-      <div><dt>형태</dt><dd>Android 앱</dd></div>
+      <div><dt>내 역할</dt><dd><span class="chip">기획·UX 설계·일정 관리 주도, 로그인 기능 구현</span></dd></div>
+      <div><dt>기간</dt><dd><span class="chip">2021.08 – 12</span></dd></div>
+      <div><dt>팀</dt><dd><span class="chip">4인 (체리쥬빌레)</span></dd></div>
+      <div><dt>형태</dt><dd><span class="chip">Android 앱</span></dd></div>
     </dl>
 
     <section class="sec" id="c4-pb">
+      <div class="sec-head">
       <p class="label">문제</p>
       <h2>모임은 커졌는데, 체크인은 여전히 한 명씩</h2>
+      </div>
+      <div class="sec-body">
       <p>2021년 말 위드 코로나 정책으로 5인 이상 집합금지가 완화됐지만, 건물에 들어갈 때 QR 체크인은 여전히 필수였습니다. 일행이 많을수록 입구에서 QR을 찍는 시간도 그만큼 늘어났습니다.</p>
       <div class="cards">
-        <div><h3>입장 대기</h3><p>인원 수만큼 스캔을 반복해 줄이 길어진다</p></div>
-        <div><h3>명부 누락</h3><p>번거로우면 건너뛰고, 접촉자 추적이 어려워진다</p></div>
-        <div><h3>대리 체크인</h3><p>어린이 · 노인은 보호자가 대신 찍어야 한다</p></div>
-      </div>
+        <div><h3>입장 대기</h3><p>인원 수만큼 스캔을 반복해 줄이 길어집니다</p></div>
+        <div><h3>명부 누락</h3><p>번거로우면 건너뛰고, 접촉자 추적이 어려워집니다</p></div>
+        <div><h3>대리 체크인</h3><p>어린이 · 노인은 보호자가 대신 찍어야 합니다</p></div>
+      </div>      </div>
     </section>
 
     <section class="sec" id="c4-dc">
+      <div class="sec-head">
       <p class="label">판단</p>
-      <h2>기존 QR 체크인은 모두 개인 단위였다</h2>
+      <h2>기존 QR 체크인은 모두 개인 단위였습니다</h2>
+      </div>
+      <div class="sec-body">
       <p>카카오톡과 네이버 QR 체크인을 분석했습니다. 둘 다 누구나 쓰는 앱 안에 있어 접근성이 좋고, 카카오톡은 흔들어 열기처럼 여는 동작도 쉽습니다. 하지만 한 사람이 한 번씩 찍는 구조는 같았습니다. 그래서 일행을 하나로 묶는 대표자 QR에 집중했습니다.</p>
       <div class="tbl"><table>
         <thead><tr><th scope="col">기준</th><th scope="col">카카오톡 · 네이버 QR</th><th scope="col" class="hl">QR캡처체리</th></tr></thead>
@@ -922,12 +1252,15 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
           <tr><th scope="row">대신 체크인</th><td>각자 휴대폰 필요</td><td class="hl">대표자가 일괄 처리</td></tr>
           <tr><th scope="row">함께 온 인원 확인</th><td>명부에서 따로 추정</td><td class="hl">같은 시각 · 번호로 기록</td></tr>
         </tbody>
-      </table></div>
+      </table></div>      </div>
     </section>
 
     <section class="sec" id="c4-ft">
+      <div class="sec-head">
       <p class="label">주요 기능</p>
-      <h2>사용자는 그룹만 만들고, 매장은 한 번만 찍는다</h2>
+      <h2>사용자는 그룹만 만들고, 매장은 한 번만 찍습니다</h2>
+      </div>
+      <div class="sec-body">
       <div class="cards">
         <div><h3>회원가입 · 개인 QR</h3><p>이름 · 이메일 · 전화번호로 가입하면 개인 토큰이 발급되고, 버튼 하나로 개인 QR을 만듭니다.</p></div>
         <div><h3>그룹 만들기</h3><p>그룹명을 정하고 멤버의 개인 QR을 찍어 인원을 추가합니다.</p></div>
@@ -970,23 +1303,29 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
           <g class="n shop"><rect x="500" y="250" width="140" height="40" rx="10"/><text x="570.0" y="270">방문자 명부 기록</text></g>
         </svg>
         <div class="legend"><span><i></i>대표자 QR 흐름</span><span><i class="s"></i>이동</span><span><i class="d"></i>선택 · 반복</span></div>
-      </figure>
+      </figure>      </div>
     </section>
 
     <section class="sec" id="c4-sc">
+      <div class="sec-head">
       <p class="label">화면 <span>· 실제 구현 화면 (테스트 계정)</span></p>
       <h2>그룹 페이지 → 개인 QR → 대표자 QR</h2>
+      </div>
+      <div class="sec-body">
       <div class="gallery qr">
         <figure><img src="media/qr-group-page.jpg" alt="그룹 페이지: 멤버 5명 목록과 QR 보여주기 · 인원 추가하기 버튼" loading="lazy"><b>1 · 그룹 페이지</b><figcaption>멤버의 개인 QR을 찍어 그룹에 추가</figcaption></figure>
-        <figure><img src="media/qr-personal.jpg" alt="admin1 계정의 개인 QR코드" loading="lazy"><b>2 · 개인 QR</b><figcaption>개인 토큰만 담는다</figcaption></figure>
+        <figure><img src="media/qr-personal.jpg" alt="admin1 계정의 개인 QR코드" loading="lazy"><b>2 · 개인 QR</b><figcaption>개인 토큰만 담습니다</figcaption></figure>
         <figure><img src="media/qr-group.jpg" alt="GroupA 5명의 대표자 QR코드" loading="lazy"><b>3 · 대표자 QR</b><figcaption>GroupA 5명을 하나의 코드로</figcaption></figure>
       </div>
-      <p class="note">화면의 이메일 · 전화번호는 모두 테스트 계정입니다.</p>
+      <p class="note">화면의 이메일 · 전화번호는 모두 테스트 계정입니다.</p>      </div>
     </section>
 
     <section class="sec" id="c4-ds">
+      <div class="sec-head">
       <p class="label">설계</p>
-      <h2>리더기 하나가 개인 QR과 대표자 QR을 구분해야 했다</h2>
+      <h2>리더기 하나가 개인 QR과 대표자 QR을 구분해야 했습니다</h2>
+      </div>
+      <div class="sec-body">
       <p>ZXing으로 만든 QR에는 문자열 하나만 담을 수 있습니다. 그래서 개인 정보 대신 Firebase가 회원가입 때 발급하는 개인 토큰을 넣고, 리더기가 토큰으로 DB에서 정보를 찾게 했습니다. 대표자 QR은 여러 명의 정보를 담아야 해서, 같은 리더기가 읽는 방식을 나눴습니다.</p>
       <div class="flow">
         <div><span class="step">1 · 구분</span><h3>키 문자 하나로 판별</h3><p>대표자 QR 데이터 앞에 키 문자를 넣었습니다. 키를 읽으면 대표자, 못 읽으면 개인으로 처리합니다.</p></div>
@@ -997,7 +1336,7 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
         <figure><img src="media/qr-db-group.jpg" alt="Firebase Realtime Database의 GroupA 노드: 멤버 1~5의 idToken, 프로필, 이메일, 이름, 전화번호" loading="lazy"><b>그룹 DB</b><figcaption>그룹별로 멤버의 개인 토큰과 정보를 저장</figcaption></figure>
         <figure><img src="media/qr-db-visitor.jpg" alt="Firebase Realtime Database의 Visitor 노드: 같은 시각 뒤에 -1부터 -5까지 번호가 붙은 방문 기록 5건" loading="lazy"><b>방문자 명부</b><figcaption>한 번 스캔으로 5명이 같은 시각에 기록됨</figcaption></figure>
       </div>
-      <h3 style="font-size:18px;margin:40px 0 10px">DB를 WAMP + PHP에서 Firebase로 바꿨다</h3>
+      <h3 style="font-size:18px;margin:40px 0 10px">DB를 WAMP + PHP에서 Firebase로 바꿨습니다</h3>
       <p>처음에는 WAMP로 DB를 만들고 PHP로 안드로이드와 연동했지만, 리더기로 들어온 데이터를 저장하고 불러오는 과정에서 오류가 반복됐습니다. 인증 · DB · 저장소를 한 번에 쓸 수 있는 Firebase로 옮겼습니다.</p>
       <div class="tbl"><table>
         <thead><tr><th scope="col">Firebase 모듈</th><th scope="col">쓴 곳</th></tr></thead>
@@ -1006,22 +1345,35 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
           <tr><th scope="row">Realtime Database</th><td>사용자 정보 · 방문자 명부 · 대표자 QR용 그룹을 각각 저장</td></tr>
           <tr><th scope="row">Storage</th><td>앱 UI 이미지 저장</td></tr>
         </tbody>
-      </table></div>
+      </table></div>      </div>
     </section>
 
     <section class="sec" id="c4-rs">
+      <div class="sec-head">
       <p class="label">결과</p>
       <h2>일행 5명을 스캔 한 번으로 기록</h2>
+      </div>
+      <div class="sec-body">
       <div class="results">
         <div><b>5번 → 1번</b><span>일행 5명 입장 시 스캔 횟수</span></div>
         <div><b>2종</b><span>리더기 하나로 개인 · 대표자 QR 인식</span></div>
         <div><b>약 4개월</b><span>기획 → 설계 → 개발 → 발표</span></div>
       </div>
       <p style="margin-top:24px">회원가입부터 개인 QR, 그룹 구성, 대표자 QR, 매장 스캐너, 방문자 명부 기록까지 하나의 흐름으로 동작하는 앱을 완성했습니다. 다음 과제로는 메뉴바로 앱 구조 정리, 회원가입 시 FCM 번호 인증, 모인 방문 데이터 활용을 남겼습니다.</p>
-      <div class="stack"><span>Java</span><span>Android Studio</span><span>Firebase Auth</span><span>Realtime Database</span><span>ZXing</span><span>Figma</span></div>
+      <div class="stack"><span>Java</span><span>Android Studio</span><span>Firebase Auth</span><span>Realtime Database</span><span>ZXing</span><span>Figma</span></div>      </div>
+    </section>
+    <section class="glance glance-end" aria-label="정리" style="--n:5">
+      <p class="glance-t">정리</p>
+      <ol>
+        <li><button type="button" data-jump="c4-pb"><span class="n">01 문제</span><b>모임은 커졌는데 QR 체크인은 여전히 한 명씩 해야 했습니다</b></button></li>
+        <li><button type="button" data-jump="c4-dc"><span class="n">02 판단</span><b>기존 QR은 모두 개인 단위라, 일행을 묶는 대표자 QR에 집중했습니다</b></button></li>
+        <li><button type="button" data-jump="c4-ft"><span class="n">03 주요</span><b>사용자는 그룹만 만들고, 매장은 한 번만 찍습니다</b></button></li>
+        <li><button type="button" data-jump="c4-ds"><span class="n">05 설계</span><b>리더기 하나가 개인 QR과 대표자 QR을 구분하게 했습니다</b></button></li>
+        <li><button type="button" data-jump="c4-rs"><span class="n">06 결과</span><b>일행 5명의 스캔이 5번에서 1번으로 줄었습니다</b></button></li>
+      </ol>
     </section>
   </div>
-  <div class="wrap"><div class="casefoot"><a href="#">← 전체 프로젝트</a><a href="#chatbot">처음으로 · 찾아드림 →</a></div></div>
+  <div class="wrap"><div class="casefoot"><span></span><a href="#chatbot">처음으로 · 찾아드림 →</a></div></div>
 </article>
 
 
@@ -1042,26 +1394,32 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
       <figcaption>n8n 캔버스 · Weather Agent와 Calendar Agent가 메모리를 공유하고, 각자 자기 툴만 가집니다.</figcaption>
     </figure>
     <dl class="facts">
-      <div><dt>역할</dt><dd>설계 · 프롬프트 · 구현</dd></div>
-      <div><dt>기간</dt><dd>2025.12</dd></div>
-      <div><dt>형태</dt><dd>n8n 멀티 에이전트</dd></div>
-      <div><dt>연동</dt><dd>Open-Meteo · Google Calendar · Slack</dd></div>
+      <div><dt>역할</dt><dd><span class="chip">설계</span><span class="chip">프롬프트</span><span class="chip">구현</span></dd></div>
+      <div><dt>기간</dt><dd><span class="chip">2025.12</span></dd></div>
+      <div><dt>형태</dt><dd><span class="chip">n8n 멀티 에이전트</span></dd></div>
+      <div><dt>연동</dt><dd><span class="chip">Open-Meteo</span><span class="chip">Google Calendar</span><span class="chip">Slack</span></dd></div>
     </dl>
 
     <section class="sec" id="a1-pb">
+      <div class="sec-head">
       <p class="label">문제</p>
-      <h2>날씨를 보고 일정을 잡는 일은 앱 두 개를 오가는 일이다</h2>
+      <h2>날씨를 보고 일정을 잡는 일은 앱 두 개를 오가는 일입니다</h2>
+      </div>
+      <div class="sec-body">
       <p>야외 일정은 날씨 앱에서 확인하고, 캘린더에서 빈 시간을 찾고, 다시 돌아와 등록해야 합니다. 요청은 한 문장인데 사람이 세 번 판단합니다.</p>
       <div class="cards">
         <div><h3>날짜 해석</h3><p>"다음주 화요일"이 며칠인지는 오늘이 언제냐에 따라 다릅니다.</p></div>
         <div><h3>조건 판단</h3><p>그 시각 강수확률이 조건을 만족하는지 확인해야 합니다.</p></div>
         <div><h3>충돌 검사</h3><p>이미 일정이 있으면 만들면 안 됩니다.</p></div>
-      </div>
+      </div>      </div>
     </section>
 
     <section class="sec" id="a1-dc">
+      <div class="sec-head">
       <p class="label">판단</p>
-      <h2>에이전트 하나에 다 맡기지 않고, 날씨와 캘린더를 분리했다</h2>
+      <h2>에이전트 하나에 다 맡기지 않고, 날씨와 캘린더를 분리했습니다</h2>
+      </div>
+      <div class="sec-body">
       <p>처음엔 에이전트 하나에 날씨 툴과 캘린더 툴을 모두 붙이는 게 간단해 보였습니다. 그러나 날씨 판단 규칙과 캘린더 충돌 규칙이 한 프롬프트에 섞이면 프롬프트가 비대해지고, 날씨 조건이 없는 단순 일정 요청에도 날씨 API를 호출하는 낭비가 생깁니다.</p>
       <div class="tbl"><table>
         <thead><tr><th scope="col">에이전트</th><th scope="col">하는 일</th><th scope="col">절대 하지 않는 일</th></tr></thead>
@@ -1070,12 +1428,15 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
           <tr><th scope="row">Calendar Agent</th><td>Weather Agent 결과를 받아 Google Calendar 조회 · 생성 · 수정 · 삭제 · 충돌 검사</td><td>날씨 추론 (사용자가 날씨를 언급해도 직접 판단하지 않음)</td></tr>
         </tbody>
       </table></div>
-      <p class="note">역할을 나누자 날씨 조건이 없는 "다음주 일정 알려줘"는 날씨 API를 거치지 않고 Calendar Agent만 동작합니다. 조건부 API 호출이 프롬프트가 아니라 구조로 보장됩니다.</p>
+      <p class="note">역할을 나누자 날씨 조건이 없는 "다음주 일정 알려줘"는 날씨 API를 거치지 않고 Calendar Agent만 동작합니다. 조건부 API 호출이 프롬프트가 아니라 구조로 보장됩니다.</p>      </div>
     </section>
 
     <section class="sec" id="a1-ds">
+      <div class="sec-head">
       <p class="label">설계</p>
       <h2>판단 결과는 JSON으로, 충돌 검사는 순서가 고정된 규칙으로</h2>
+      </div>
+      <div class="sec-body">
       <div class="pre">[사용자]  "다음주 화요일 14시 비 안 오면 양산 일정 추가"
    ↓
 [Weather Agent]
@@ -1094,17 +1455,20 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
       <div class="flow">
         <div><span class="step">1 · 출력 형식 강제</span><h3>Weather Agent는 JSON만</h3><p>설명 없이 <code>condition_ok</code>를 포함한 JSON만 출력합니다. Calendar Agent가 그 값만 보고 분기할 수 있어야 하기 때문입니다.</p></div>
         <div><span class="step">2 · 상대 날짜 규칙 고정</span><h3>"다음주"를 수식으로</h3><p><code>this_monday</code> = 오늘이 속한 주의 월요일, <code>next_monday</code> = +7일, 다음주 = [next_monday, +7일). 모델 해석에 맡기면 매번 달라졌습니다.</p></div>
-        <div><span class="step">3 · TODAY 주입</span><h3>"오늘"의 기준을 넣는다</h3><p><code>$now.setZone('Asia/Seoul')</code>를 시스템 프롬프트에 넣었습니다. 이전 버전에서 "오늘부터 1주 전 일정"이 조회되지 않았던 원인이 "오늘"의 기준이 없어서였습니다.</p></div>
+        <div><span class="step">3 · TODAY 주입</span><h3>"오늘"의 기준을 넣었습니다</h3><p><code>$now.setZone('Asia/Seoul')</code>를 시스템 프롬프트에 넣었습니다. 이전 버전에서 "오늘부터 1주 전 일정"이 조회되지 않았던 원인이 "오늘"의 기준이 없어서였습니다.</p></div>
       </div>
       <div class="cards">
         <div><h3>툴 결과로만 답하기</h3><p>캘린더 요청은 추측하지 않고 반드시 툴 호출 결과로만 답하며, 실패 시 "캘린더 조회/처리에 실패했습니다" 한 줄만 출력합니다.</p></div>
         <div><h3>입력 경로 확장</h3><p>채팅 트리거 외에 Slack 슬래시 커맨드 → Webhook 노드로도 진입합니다. 로컬 n8n은 외부에서 접근할 수 없어 ngrok으로 포워딩했습니다.</p></div>
-      </div>
+      </div>      </div>
     </section>
 
     <section class="sec" id="a1-rs">
+      <div class="sec-head">
       <p class="label">결과</p>
-      <h2>요청 유형에 따라 필요한 에이전트만 움직인다</h2>
+      <h2>요청 유형에 따라 필요한 에이전트만 움직입니다</h2>
+      </div>
+      <div class="sec-body">
       <div class="tbl"><table>
         <thead><tr><th scope="col">요청</th><th scope="col">Weather Agent</th><th scope="col">Calendar Agent</th></tr></thead>
         <tbody>
@@ -1114,10 +1478,19 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
         </tbody>
       </table></div>
       <p class="note">어려웠던 점은 로직보다 프롬프트였습니다. "다음주"의 정의를 어느 에이전트에 둘지, "일정이 겹친다"를 어디까지 적어야 같은 기준으로 판단하는지를 여러 번 고쳤습니다. 규칙으로 적을 수 있는 것은 전부 규칙으로 적고, 모델에게는 해석만 남겼습니다.</p>
-      <div class="stack"><span>n8n</span><span>AI Agent (Tools)</span><span>OpenAI</span><span>Open-Meteo API</span><span>Google Calendar API</span><span>Simple Memory</span><span>Webhook · Slack Slash Command</span><span>ngrok</span></div>
+      <div class="stack"><span>n8n</span><span>AI Agent (Tools)</span><span>OpenAI</span><span>Open-Meteo API</span><span>Google Calendar API</span><span>Simple Memory</span><span>Webhook · Slack Slash Command</span><span>ngrok</span></div>      </div>
+    </section>
+    <section class="glance glance-end" aria-label="정리" style="--n:4">
+      <p class="glance-t">정리</p>
+      <ol>
+        <li><button type="button" data-jump="a1-pb"><span class="n">01 문제</span><b>날씨를 보고 일정을 잡으려면 앱 두 개를 오가며 세 번 판단해야 합니다</b></button></li>
+        <li><button type="button" data-jump="a1-dc"><span class="n">02 판단</span><b>에이전트 하나에 맡기지 않고 날씨와 캘린더를 분리했습니다</b></button></li>
+        <li><button type="button" data-jump="a1-ds"><span class="n">03 설계</span><b>판단 결과는 JSON으로, 충돌 검사는 순서가 고정된 규칙으로 정했습니다</b></button></li>
+        <li><button type="button" data-jump="a1-rs"><span class="n">04 결과</span><b>요청 유형에 따라 필요한 에이전트만 움직입니다</b></button></li>
+      </ol>
     </section>
   </div>
-  <div class="wrap"><div class="casefoot"><a href="#">← 전체 프로젝트</a><a href="#news">다음 · 뉴스 요약 리포트 →</a></div></div>
+  <div class="wrap"><div class="casefoot"><span></span><a href="#news">다음 · 뉴스 요약 리포트 →</a></div></div>
 </article>
 
 <!-- ========== CASE: 뉴스 요약 리포트 ========== -->
@@ -1137,25 +1510,31 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
       <figcaption>n8n 캔버스 · 윗줄은 수집·가공, 아랫줄은 요약·전송입니다.</figcaption>
     </figure>
     <dl class="facts">
-      <div><dt>역할</dt><dd>설계 · 구현</dd></div>
-      <div><dt>기간</dt><dd>2025.12</dd></div>
-      <div><dt>LLM 호출</dt><dd>기사 N개당 1회</dd></div>
-      <div><dt>출력</dt><dd>Slack Block 메시지</dd></div>
+      <div><dt>역할</dt><dd><span class="chip">설계</span><span class="chip">구현</span></dd></div>
+      <div><dt>기간</dt><dd><span class="chip">2025.12</span></dd></div>
+      <div><dt>LLM 호출</dt><dd><span class="chip">기사 N개당 1회</span></dd></div>
+      <div><dt>출력</dt><dd><span class="chip">Slack Block 메시지</span></dd></div>
     </dl>
 
     <section class="sec" id="a2-pb">
+      <div class="sec-head">
       <p class="label">문제</p>
-      <h2>매일 보는 뉴스인데, 매일 손으로 고르고 정리한다</h2>
+      <h2>매일 보는 뉴스인데, 매일 손으로 고르고 정리합니다</h2>
+      </div>
+      <div class="sec-body">
       <div class="cards">
         <div><h3>동적 웹</h3><p>요즘 뉴스 사이트는 JavaScript가 실행돼야 내용이 보여, 단순 HTTP 요청으로는 빈 HTML만 옵니다.</p></div>
         <div><h3>비용</h3><p>기사마다 LLM을 호출하면 10개 기사에 10번 호출이 됩니다.</p></div>
         <div><h3>형식</h3><p>"요약해줘"로 받은 자유 텍스트는 Slack 메시지로 바꾸려면 다시 파싱해야 합니다.</p></div>
-      </div>
+      </div>      </div>
     </section>
 
     <section class="sec" id="a2-dc">
+      <div class="sec-head">
       <p class="label">판단</p>
       <h2>비싼 도구는 꼭 필요한 곳에만, 나머지는 기본 노드로</h2>
+      </div>
+      <div class="sec-body">
       <div class="tbl"><table>
         <thead><tr><th scope="col">단계</th><th scope="col" class="hl">선택</th><th scope="col">이유</th></tr></thead>
         <tbody>
@@ -1164,12 +1543,15 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
           <tr><th scope="row">요약</th><td class="hl">Aggregate 후 LLM 1회 + Structured Output</td><td>기사를 모아 한 번에 보내고, JSON 스키마로 받아 다음 노드가 바로 씁니다.</td></tr>
           <tr><th scope="row">전송</th><td class="hl">Code 노드 → Slack Block Kit</td><td>제목(링크) + 요약 + 구분선 형식으로 읽기 쉽게.</td></tr>
         </tbody>
-      </table></div>
+      </table></div>      </div>
     </section>
 
     <section class="sec" id="a2-ds">
+      <div class="sec-head">
       <p class="label">설계</p>
       <h2>Split → 개별 처리 → Aggregate → 일괄 처리 → Split → 개별 전송</h2>
+      </div>
+      <div class="sec-body">
       <div class="pre">1  Manual Trigger
 2  Firecrawl Extract      네이버 IT 섹션 → <em>{articles:[{title,url}, …]}</em>
 3  Split Out              기사 1건 = 아이템 1개
@@ -1184,18 +1566,30 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
       <div class="split">
         <div><h3>왜 Split Out을 두 번 쓰는가</h3><p>Firecrawl이 기사 목록을 배열로 주므로 기사별 본문을 가져오려면 한 번 풀어야 하고, LLM이 요약을 다시 배열로 주므로 Slack 블록으로 바꾸려면 또 풀어야 합니다. 중간에 Aggregate로 묶는 이유는 LLM 호출을 1회로 줄이기 위해서입니다.</p></div>
         <div class="good"><h3>Structured Output을 쓴 이유</h3><p>자유 텍스트 요약은 사람이 읽기엔 좋지만 다음 노드가 쓰기엔 나쁩니다. <code>{title, url, content}</code> 스키마를 강제하면 Code 노드에서 파싱 없이 바로 블록을 만들 수 있고, 필드가 빠지면 LLM 단계에서 실패하므로 오류가 뒤로 전파되지 않습니다.</p></div>
-      </div>
+      </div>      </div>
     </section>
 
     <section class="sec" id="a2-rs">
+      <div class="sec-head">
       <p class="label">결과</p>
       <h2>버튼 한 번에 기사 목록 → 요약 → Slack 메시지</h2>
+      </div>
+      <div class="sec-body">
       <p>Slack에는 기사마다 굵은 제목(원문 링크) 아래 3줄 요약이 붙고 구분선으로 나뉘어 도착합니다. 스케줄 트리거로 바꾸면 매일 아침 리포트가 되고, URL과 CSS 셀렉터만 바꾸면 다른 섹션 · 다른 사이트 모니터링으로 재사용됩니다.</p>
       <p class="note">같은 패턴으로 네이버 뉴스 검색 API → LLM 섹션 분류 → PostgreSQL 저장 파이프라인도 만들었습니다. 수집 결과를 Slack으로 보낼지 DB에 쌓을지는 마지막 노드만 다릅니다.</p>
-      <div class="stack"><span>n8n</span><span>Firecrawl</span><span>HTTP Request</span><span>HTML Extract</span><span>Split Out · Aggregate · Edit Fields</span><span>OpenAI · Structured Output</span><span>Code (JS)</span><span>Slack Block Kit</span><span>PostgreSQL</span></div>
+      <div class="stack"><span>n8n</span><span>Firecrawl</span><span>HTTP Request</span><span>HTML Extract</span><span>Split Out · Aggregate · Edit Fields</span><span>OpenAI · Structured Output</span><span>Code (JS)</span><span>Slack Block Kit</span><span>PostgreSQL</span></div>      </div>
+    </section>
+    <section class="glance glance-end" aria-label="정리" style="--n:4">
+      <p class="glance-t">정리</p>
+      <ol>
+        <li><button type="button" data-jump="a2-pb"><span class="n">01 문제</span><b>매일 보는 뉴스를 매일 손으로 고르고 정리합니다</b></button></li>
+        <li><button type="button" data-jump="a2-dc"><span class="n">02 판단</span><b>비싼 도구는 꼭 필요한 곳에만 쓰고, 나머지는 기본 노드로 처리했습니다</b></button></li>
+        <li><button type="button" data-jump="a2-ds"><span class="n">03 설계</span><b>기사를 모아 LLM을 한 번만 호출하도록 흐름을 짰습니다</b></button></li>
+        <li><button type="button" data-jump="a2-rs"><span class="n">04 결과</span><b>버튼 한 번에 기사 목록이 3줄 요약 Slack 메시지로 도착합니다</b></button></li>
+      </ol>
     </section>
   </div>
-  <div class="wrap"><div class="casefoot"><a href="#">← 전체 프로젝트</a><a href="#sqlagent">다음 · SQL 리포트 에이전트 →</a></div></div>
+  <div class="wrap"><div class="casefoot"><span></span><a href="#sqlagent">다음 · SQL 리포트 에이전트 →</a></div></div>
 </article>
 
 <!-- ========== CASE: SQL 리포트 에이전트 ========== -->
@@ -1209,44 +1603,52 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
       <p class="eyebrow">자연어 → SQL 리포트 에이전트 · n8n · PostgreSQL · 개인 실습 · 2026.01</p>
       <h1>질문하면 SQL을 만들고, 못 하면 이유를 말하는 리포트 에이전트</h1>
       <p class="lede">"고객 유형별 고객 수 알려줘"처럼 자연어로 물으면 에이전트가 DB 스키마를 바탕으로 SQL을 생성하고, 실행 가능하다고 판정된 경우에만 PostgreSQL에서 조회해 리포트로 요약합니다. 실행하면 안 되는 요청은 거부하고 사유를 돌려줍니다.</p>
-      <div class="links"><a class="lk primary" href="https://github.com/sikumdev/n8n-automation-workflows" target="_blank" rel="noopener">GitHub 보기 ↗</a></div>
     </header>
     <figure class="stage sand" style="margin-inline:0">
       <img src="media/auto-sql.jpg" alt="n8n 캔버스: Chat Trigger → SQL 생성 Agent(OpenAI, Postgres Chat Memory, Structured Output Parser) → Switch → 성공: Execute SQL → Aggregate → 리포트 생성 / 실패: 사유 전달">
       <figcaption>n8n 캔버스 · Switch 노드가 <code>success</code> 값으로 실행 경로와 거부 경로를 나눕니다.</figcaption>
     </figure>
     <dl class="facts">
-      <div><dt>역할</dt><dd>설계 · 프롬프트 · 구현</dd></div>
-      <div><dt>데이터</dt><dd>customers · sales 테이블</dd></div>
-      <div><dt>허용 범위</dt><dd>조회만 (UPDATE · DELETE 금지)</dd></div>
-      <div><dt>출력</dt><dd>SQL / success / reason</dd></div>
+      <div><dt>역할</dt><dd><span class="chip">설계</span><span class="chip">프롬프트</span><span class="chip">구현</span></dd></div>
+      <div><dt>데이터</dt><dd><span class="chip">customers</span><span class="chip">sales 테이블</span></dd></div>
+      <div><dt>허용 범위</dt><dd><span class="chip">조회만 (UPDATE</span><span class="chip">DELETE 금지)</span></dd></div>
+      <div><dt>출력</dt><dd><span class="chip">SQL / success / reason</span></dd></div>
     </dl>
 
     <section class="sec" id="a3-pb">
+      <div class="sec-head">
       <p class="label">문제</p>
-      <h2>데이터는 DB에 있는데, 질문할 때마다 SQL을 아는 사람을 찾아야 한다</h2>
+      <h2>데이터는 DB에 있는데, 질문할 때마다 SQL을 아는 사람을 찾아야 합니다</h2>
+      </div>
+      <div class="sec-body">
       <p>비개발 동료가 "지난달 VIP 고객 매출 얼마야?"를 알고 싶을 때, SQL을 모르면 요청을 넣고 기다려야 합니다. LLM에게 SQL을 쓰게 하면 빨라지지만, 생성된 SQL을 그대로 DB에 실행하는 건 다른 문제입니다.</p>
       <div class="cards">
         <div><h3>위험</h3><p>LLM이 UPDATE · DELETE를 만들어 실행하면 되돌릴 수 없습니다.</p></div>
         <div><h3>모호함</h3><p>"잘 나가는 상품"처럼 정의가 없는 질문에도 그럴듯한 SQL을 만듭니다.</p></div>
         <div><h3>분기 불가</h3><p>LLM의 자유 텍스트 응답으로는 "실행할지 말지"를 노드가 판단할 수 없습니다.</p></div>
-      </div>
+      </div>      </div>
     </section>
 
     <section class="sec" id="a3-dc">
+      <div class="sec-head">
       <p class="label">판단</p>
-      <h2>에이전트는 SQL을 '제안'만 하고, 실행 여부는 구조화된 판정값으로 결정한다</h2>
+      <h2>에이전트는 SQL을 '제안'만 하고, 실행 여부는 구조화된 판정값으로 결정합니다</h2>
+      </div>
+      <div class="sec-body">
       <div class="rules">
         <div><b>시스템 프롬프트</b><span>테이블 구조 · 컬럼 설명 · 금지 행위(UPDATE / DELETE) · 허용 범위(조회)를 명시. 범위 밖 요청은 SQL을 만들지 말고 거부하도록 지시 — 이 프롬프트가 에이전트의 헌법</span></div>
         <div><b>Output Parser</b><span>응답을 <code>{ SQL, success, reason }</code> JSON으로 강제. <code>success=false</code>면 SQL은 비어 있어도 되고 <code>reason</code>은 필수</span></div>
         <div><b>Switch</b><span><code>success</code>가 true일 때만 Execute SQL로, false면 사유를 사용자에게 전달. 거부는 에러가 아니라 의사결정으로 취급</span></div>
         <div><b>Chat Memory</b><span>세션별 대화 이력을 Postgres에 저장해 "그중 VIP만"처럼 이어지는 질문을 처리</span></div>
-      </div>
+      </div>      </div>
     </section>
 
     <section class="sec" id="a3-ds">
+      <div class="sec-head">
       <p class="label">설계</p>
-      <h2>스키마 자체에 "성공이면 ok, 실패면 사유 필수" 규칙을 넣었다</h2>
+      <h2>스키마 자체에 "성공이면 ok, 실패면 사유 필수" 규칙을 넣었습니다</h2>
+      </div>
+      <div class="sec-body">
       <div class="pre">User Chat
   → SQL 생성 Agent        <em>(DB 스키마 이해 + 거부 가능)</em>
   → Structured Output     <em>{ SQL, success, reason }</em>
@@ -1260,18 +1662,30 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
       <div class="cards">
         <div><h3>리포트 단계 분리</h3><p>SQL 실행 결과는 Aggregate로 묶은 뒤 별도 LLM 노드가 "결과 분석 및 리포트 생성"을 맡습니다. SQL을 만드는 에이전트와 결과를 해석하는 모델의 역할을 나눴습니다.</p></div>
         <div><h3>JSON.stringify</h3><p>조회 결과(객체 배열)를 리포트 프롬프트에 넣기 위해 문자열로 직렬화했습니다. 빠뜨리면 모델이 <code>[object Object]</code>를 받습니다.</p></div>
-      </div>
+      </div>      </div>
     </section>
 
     <section class="sec" id="a3-rs">
+      <div class="sec-head">
       <p class="label">결과</p>
       <h2>DB + n8n은 "정해진 일을 정확히", DB + Agent는 "할 수 있는지 판단"</h2>
+      </div>
+      <div class="sec-body">
       <p>같은 DB를 두고 두 가지 워크플로우를 만들어 비교했습니다. 네이버 뉴스를 API로 받아 LLM이 섹션을 분류하고 Postgres에 저장하는 파이프라인은 순서가 고정된 규칙 자동화이고, 이 리포트 에이전트는 질문을 이해하고 실행 가능 여부를 판단하는 에이전트입니다. 두 경우 모두 실제 DB 쓰기는 규칙 노드가 담당합니다.</p>
       <p class="note">이후 LangGraph로 같은 흐름을 다시 만들 때는 SQL 실행 직전에 사람 승인(Human-in-the-loop) 단계를 추가하고, 승인 후 멈춘 지점부터 이어가도록 체크포인트를 저장했습니다.</p>
-      <div class="stack"><span>n8n</span><span>AI Agent</span><span>OpenAI</span><span>PostgreSQL</span><span>Postgres Chat Memory</span><span>Structured Output Parser</span><span>Switch</span><span>LangGraph (후속)</span></div>
+      <div class="stack"><span>n8n</span><span>AI Agent</span><span>OpenAI</span><span>PostgreSQL</span><span>Postgres Chat Memory</span><span>Structured Output Parser</span><span>Switch</span><span>LangGraph (후속)</span></div>      </div>
+    </section>
+    <section class="glance glance-end" aria-label="정리" style="--n:4">
+      <p class="glance-t">정리</p>
+      <ol>
+        <li><button type="button" data-jump="a3-pb"><span class="n">01 문제</span><b>데이터를 보려면 매번 SQL을 아는 사람을 찾아야 합니다</b></button></li>
+        <li><button type="button" data-jump="a3-dc"><span class="n">02 판단</span><b>에이전트는 SQL을 제안만 하고, 실행 여부는 판정값으로 결정합니다</b></button></li>
+        <li><button type="button" data-jump="a3-ds"><span class="n">03 설계</span><b>"성공이면 ok, 실패면 사유 필수" 규칙을 스키마에 넣었습니다</b></button></li>
+        <li><button type="button" data-jump="a3-rs"><span class="n">04 결과</span><b>같은 DB로 규칙 자동화와 에이전트를 만들어 쓰임새를 비교했습니다</b></button></li>
+      </ol>
     </section>
   </div>
-  <div class="wrap"><div class="casefoot"><a href="#">← 전체 프로젝트</a><a href="#playbook">다음 · 자동화 판단 기준 →</a></div></div>
+  <div class="wrap"><div class="casefoot"><span></span><a href="#playbook">다음 · 자동화 판단 기준 →</a></div></div>
 </article>
 
 <!-- ========== CASE: 자동화 판단 기준 ========== -->
@@ -1285,12 +1699,14 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
       <p class="eyebrow">자동화 판단 기준 · n8n 워크플로우 50여 개에서 정리</p>
       <h1>어떤 업무를 규칙으로, 어떤 업무를 에이전트로 풀 것인가</h1>
       <p class="lede">에이전트는 "문제 해결사"지 "프로세스 실행기"가 아닙니다. 그래서 중요한 실행은 노드가 맡고, 애매한 판단만 에이전트에게 줍니다. 위 세 프로젝트를 이 기준으로 설계했습니다.</p>
-      <div class="links"><a class="lk primary" href="https://github.com/sikumdev/n8n-automation-workflows" target="_blank" rel="noopener">GitHub 보기 ↗</a></div>
     </header>
 
     <section class="sec" id="a4-no">
+      <div class="sec-head">
       <p class="label">체크리스트</p>
-      <h2>이런 업무는 에이전트에 맡기지 않는다</h2>
+      <h2>이런 업무는 에이전트에 맡기지 않습니다</h2>
+      </div>
+      <div class="sec-body">
       <div class="tbl"><table>
         <thead><tr><th scope="col">상황</th><th scope="col">예시</th><th scope="col">에이전트가 위험한 이유</th></tr></thead>
         <tbody>
@@ -1302,12 +1718,15 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
           <tr><th scope="row">예외 처리가 명확</th><td>null이면 A · 타입이 다르면 B · 에러코드면 C</td><td>규칙보다 추론을 우선함 → if/else 노드가 훨씬 안전</td></tr>
           <tr><th scope="row">사람이 책임지는 결정</th><td>금액 확정 · 계약 조건 · 승인/반려</td><td>"그럴듯한 판단"은 잘하지만 책임 판단은 못함</td></tr>
         </tbody>
-      </table></div>
+      </table></div>      </div>
     </section>
 
     <section class="sec" id="a4-st">
+      <div class="sec-head">
       <p class="label">추천 구조</p>
-      <h2>결정론적인 부분은 노드로, 그 위에 에이전트를 얹는다</h2>
+      <h2>결정론적인 부분은 노드로, 그 위에 에이전트를 얹습니다</h2>
+      </div>
+      <div class="sec-body">
       <div class="pre">[Node 기반 Workflow]        <em>← 결정론 · 순서 보장 · 추적 가능</em>
    ├─ 데이터 수집
    ├─ 검증
@@ -1322,12 +1741,15 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
         <div><h3>캘린더 에이전트</h3><p>날짜 해석 · 조건 판단은 에이전트, 충돌 검사 순서와 기준은 프롬프트에 규칙으로 고정.</p></div>
         <div><h3>뉴스 리포트</h3><p>수집 · 가공 · 전송은 전부 노드, 요약만 LLM 1회.</p></div>
         <div><h3>SQL 에이전트</h3><p>SQL 제안은 에이전트, 실행 여부는 <code>success</code> 값으로 Switch 노드가 결정.</p></div>
-      </div>
+      </div>      </div>
     </section>
 
     <section class="sec" id="a4-nd">
+      <div class="sec-head">
       <p class="label">노드 패턴</p>
       <h2>n8n에서 반복해서 쓰게 되는 조합</h2>
+      </div>
+      <div class="sec-body">
       <div class="tbl"><table>
         <thead><tr><th scope="col">노드</th><th scope="col">역할</th><th scope="col">언제</th></tr></thead>
         <tbody>
@@ -1340,12 +1762,15 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
           <tr><th scope="row">Switch</th><td>값에 따라 경로 분기</td><td>Structured Output의 판정값으로 실행/거부를 나눌 때</td></tr>
         </tbody>
       </table></div>
-      <p class="note">Split → 개별 처리 → Aggregate → 일괄 처리 → Split → 개별 전송. 뉴스 리포트, 쇼핑 가격 수집, 기상청 공공데이터 가공 모두 이 한 가지 패턴의 변형이었습니다.</p>
+      <p class="note">Split → 개별 처리 → Aggregate → 일괄 처리 → Split → 개별 전송. 뉴스 리포트, 쇼핑 가격 수집, 기상청 공공데이터 가공 모두 이 한 가지 패턴의 변형이었습니다.</p>      </div>
     </section>
 
     <section class="sec" id="a4-sf">
+      <div class="sec-head">
       <p class="label">안전장치</p>
       <h2>에이전트를 실무에 붙일 때 같이 넣는 것</h2>
+      </div>
+      <div class="sec-body">
       <div class="cards">
         <div><h3>Structured Output</h3><p>자유 텍스트 대신 JSON 스키마로 받아 다음 노드가 분기할 수 있게. <code>additionalProperties:false</code>로 규격 외 필드 차단.</p></div>
         <div><h3>Guardrails 노드</h3><p>AI에게 전달되기 전 개인정보 마스킹 · 유해 입력 필터링.</p></div>
@@ -1354,10 +1779,10 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
         <div><h3>툴 결과로만 답하기</h3><p>조회 요청은 반드시 툴을 호출한 결과로만 답하도록 해 추측 응답을 차단.</p></div>
         <div><h3>실패 메시지 고정</h3><p>툴 실패 시 한 줄 고정 문구만 출력해, 장애를 그럴듯한 문장으로 가리지 않게.</p></div>
       </div>
-      <p class="note">그 외 실습: Google Calendar CRUD 봇 · 날씨/환율 의도 분기 에이전트 · 네이버 뉴스 API → Postgres 저장 · AI 농담 생성·평가 Slack 봇(Google Sheets 누적) · 네이버 쇼핑/기상청 공공데이터 가공 · RAG/하이브리드 RAG 에이전트(pgvector · Pinecone).</p>
+      <p class="note">그 외 실습: Google Calendar CRUD 봇 · 날씨/환율 의도 분기 에이전트 · 네이버 뉴스 API → Postgres 저장 · AI 농담 생성·평가 Slack 봇(Google Sheets 누적) · 네이버 쇼핑/기상청 공공데이터 가공 · RAG/하이브리드 RAG 에이전트(pgvector · Pinecone).</p>      </div>
     </section>
   </div>
-  <div class="wrap"><div class="casefoot"><a href="#">← 전체 프로젝트</a><a href="#weather">처음으로 · 캘린더 에이전트 →</a></div></div>
+  <div class="wrap"><div class="casefoot"><span></span><a href="#weather">처음으로 · 캘린더 에이전트 →</a></div></div>
 </article>
 
 <script>
