@@ -398,6 +398,37 @@ article[data-view] .glance b { font-size: 14px; font-weight: 600; line-height: 1
   .screen.sqlviz { flex-direction: column; align-items: stretch; gap: 8px; padding: 16px; }
   .sv-arr { transform: rotate(90deg); align-self: center; font-size: 14px; }
 }
+
+/* ---- 찾아드림: question-flow diagram ---- */
+#c1-fl .sec-head { position: static; }
+.flowfig, .flowtail { grid-column: 1 / -1; min-width: 0; }
+.flowtail .note { max-width: none; }
+.chip-jump { font: inherit; cursor: pointer; }
+.chip-jump:hover, .chip-jump:focus-visible { border-color: var(--accent); color: var(--accent); outline: none; }
+.plstats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin-top: 24px; }
+.plstats div { padding: 16px 18px; border: 1px solid var(--line); border-radius: 14px; background: var(--surface); }
+.plstats b { display: block; font-size: 30px; font-weight: 700; color: var(--accent); font-variant-numeric: tabular-nums; line-height: 1.2; }
+.plstats span { font-size: 14px; color: var(--muted); }
+.plthumbs { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin-top: 24px; }
+.plthumbs a { display: grid; gap: 6px; align-content: start; color: var(--ink); text-decoration: none; }
+.plthumbs .ph { display: block; aspect-ratio: 16 / 10; border: 1px solid var(--line); border-radius: 12px; background: #fff; overflow: hidden; }
+.plthumbs .ph img { width: 100%; height: 100%; object-fit: cover; object-position: top left; transition: transform .25s; }
+.plthumbs a:hover .ph img { transform: scale(1.03); }
+.plthumbs a:hover .ph { border-color: var(--accent); }
+.plthumbs b { font-size: 15px; margin-top: 4px; }
+.plthumbs .cap { font-size: 14px; line-height: 1.6; color: var(--muted); }
+.plcta { display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 16px; padding: 14px 18px; border-radius: 12px; background: var(--accent); color: #fff; font-size: 15px; font-weight: 700; text-decoration: none; }
+.plcta:hover, .plcta:focus-visible { filter: brightness(1.08); outline: none; }
+@media (max-width: 760px) { .plstats { grid-template-columns: repeat(2, minmax(0, 1fr)); } .plthumbs { grid-template-columns: minmax(0, 1fr); } }
+.doclink { display: grid; gap: 4px; margin-top: 24px; padding: 18px 20px; border: 1px solid var(--line); border-radius: 14px; background: var(--surface); color: var(--ink); text-decoration: none; transition: border-color .15s, background .15s; }
+.doclink:hover, .doclink:focus-visible { border-color: var(--accent); background: var(--accent-soft); outline: none; }
+.doclink-k { font-size: 12.5px; font-weight: 700; color: var(--accent); }
+.doclink b { font-size: 16px; }
+.doclink-s { font-size: 14px; color: var(--muted); }
+.flowfig { margin: 28px 0 0; padding: 20px; border: 1px solid var(--line); border-radius: 16px; background: #fff; overflow-x: auto; }
+.flowfig img { display: block; width: 100%; max-width: 900px; height: auto; margin: 0 auto; }
+@media (max-width: 760px) { .flowfig img { width: 640px; max-width: none; } }
+.flowfig figcaption { margin-top: 10px; font-size: 13px; color: var(--muted); text-align: center; }
 </style>
 </head>
 <body>
@@ -529,7 +560,7 @@ article[data-view] .glance b { font-size: 14px; font-weight: 600; line-height: 1
     <div class="item feature">
       <a class="card" href="#chatbot">
         <div class="thumb blue"><div class="shot"><img src="media/chatbot-general.jpg" alt="찾아드림 실제 서비스 화면: 등록한 에어컨 모델의 설명서 그림과 함께 필터 청소 방법을 답하는 모습"></div></div>
-        <div class="cap"><b>근거가 없으면 답하지 않는 가전 챗봇<small>RAG · 서비스 기획 · 청킹</small></b><span>찾아드림 · 2026</span></div>
+        <div class="cap"><b>근거가 없으면 답하지 않는 가전 챗봇<small>RAG · 서비스 기획 · RDB 설계</small></b><span>찾아드림 · 2026</span></div>
       </a>
       <div class="links"><a class="lk" href="https://github.com/Broogun/ask-my-appliance" target="_blank" rel="noopener">GitHub ↗</a></div>
     </div>
@@ -864,23 +895,23 @@ article[data-view] .glance b { font-size: 14px; font-weight: 600; line-height: 1
 <article id="v-chatbot" data-view hidden>
   <div class="casenav wrap"><nav class="pills" aria-label="목차">
     <a href="#">← Projects</a>
-    <button class="on" type="button" data-jump="c1-pb">문제</button><button type="button" data-jump="c1-dc">판단</button><button type="button" data-jump="c1-ft">기능</button><button type="button" data-jump="c1-sc">화면</button><button type="button" data-jump="c1-ds">설계</button><button type="button" data-jump="c1-rs">결과</button><a class="navlk" href="https://github.com/Broogun/ask-my-appliance" target="_blank" rel="noopener">GitHub ↗</a>
+    <button class="on" type="button" data-jump="c1-pb">문제</button><button type="button" data-jump="c1-dc">판단</button><button type="button" data-jump="c1-ft">기능</button><button type="button" data-jump="c1-pl">기획</button><button type="button" data-jump="c1-sc">화면</button><button type="button" data-jump="c1-fl">흐름</button><button type="button" data-jump="c1-ds">청킹</button><button type="button" data-jump="c1-rs">결과</button><a class="navlk" href="https://github.com/Broogun/ask-my-appliance" target="_blank" rel="noopener">GitHub ↗</a>
   </nav></div>
   <div class="wrap">
     <header class="casehead">
       <p class="eyebrow">찾아드림 · LG CNS AI 캠퍼스 1조 · 2026</p>
       <h1>근거가 없으면 답하지 않는 가전 챗봇</h1>
-      <p class="lede">LG·삼성 60개 모델의 사용설명서를 검색 대상으로 두고, 답변의 모든 문장에 출처 쪽 번호와 설명서 그림을 붙이는 RAG 챗봇입니다.</p>
+      <p class="lede">LG·삼성 60개 가전제품 모델의 사용설명서를 검색 대상으로 두고, 답변마다 설명서 쪽 번호를 붙이고 맞는 그림이 있으면 함께 보여주는 RAG 챗봇입니다.</p>
     </header>
     <figure class="stage blue" style="margin-inline:0">
       <video src="media/chatbot-error.mp4" poster="media/chatbot-error.jpg" autoplay muted loop playsinline controls aria-label="에러코드 질문에 원인과 조치를 답하는 시연 영상"></video>
       <figcaption>시연 · 에러코드를 물으면 RDB 정확 매칭으로 원인과 조치를 바로 답합니다.</figcaption>
     </figure>
     <dl class="facts">
-      <div><dt>내 역할</dt><dd><span class="chip">서비스 기획</span><span class="chip">청킹 전략</span></dd></div>
+      <div><dt>내 역할</dt><dd><span class="chip">서비스 기획</span><span class="chip">RDB · 질문 흐름 설계</span></dd></div>
       <div><dt>기간</dt><dd><span class="chip">2026.09.07 – 09.28</span></dd></div>
       <div><dt>팀</dt><dd><span class="chip">4인</span></dd></div>
-      <div><dt>산출물</dt><dd><span class="chip">PRD</span><span class="chip">기능정의서</span><span class="chip">와이어프레임</span></dd></div>
+      <div><dt>산출물</dt><dd><button type="button" class="chip chip-jump" data-jump="c1-pl">요구사항 정의서</button><button type="button" class="chip chip-jump" data-jump="c1-pl">기능정의서</button><button type="button" class="chip chip-jump" data-jump="c1-pl">화면설계서</button></dd></div>
     </dl>
 
     <section class="sec" id="c1-pb">
@@ -931,6 +962,21 @@ article[data-view] .glance b { font-size: 14px; font-weight: 600; line-height: 1
       </div>      </div>
     </section>
 
+    <section class="sec" id="c1-pl">
+      <div class="sec-head">
+      <p class="label">기획 <span class="mine">내 담당</span></p>
+      <h2>요구사항부터 화면까지 문서로 먼저 정의했습니다</h2>
+      </div>
+      <div class="sec-body">
+      <p>개발에 들어가기 전에 무엇을 만들지 문서로 정했습니다. 요구사항 정의서, 기능정의서, 화면설계서를 Figma에 정리해 팀이 같은 기준으로 만들 수 있게 했습니다.</p>
+      <div class="plthumbs">
+        <a href="https://www.figma.com/design/wBDis5314lBKKFsqF4G3NX/%EA%B0%80%EC%A0%84%EC%A0%9C%ED%92%88-RAG-%EA%B8%B0%ED%9A%8D?node-id=21-11075" target="_blank" rel="noopener"><span class="ph"><img src="media/plan-req.jpg" alt="요구사항 정의서: 기능 요구사항(FR) 13개를 영역·범위·세부내용으로 정리한 표" loading="lazy"></span><b>요구사항 정의서</b><span class="cap">기능 요구사항 13개를 MVP·2차 개발·검증용으로 나눠 범위를 정했습니다</span></a>
+        <a href="https://www.figma.com/design/wBDis5314lBKKFsqF4G3NX/%EA%B0%80%EC%A0%84%EC%A0%9C%ED%92%88-RAG-%EA%B8%B0%ED%9A%8D?node-id=21-11075" target="_blank" rel="noopener"><span class="ph"><img src="media/plan-screen.jpg" alt="화면설계서: 온보딩 제품 찾기 화면의 와이어프레임과 번호별 설명" loading="lazy"></span><b>화면설계서</b><span class="cap">화면마다 번호별 동작 설명을 달고, 실제 구현 화면과 나란히 비교했습니다</span></a>
+      </div>
+      <a class="plcta" href="https://www.figma.com/design/wBDis5314lBKKFsqF4G3NX/%EA%B0%80%EC%A0%84%EC%A0%9C%ED%92%88-RAG-%EA%B8%B0%ED%9A%8D?node-id=21-11075" target="_blank" rel="noopener">Figma에서 기획 산출물 전체 보기 <span aria-hidden="true">↗</span></a>
+      </div>
+    </section>
+
     <section class="sec" id="c1-sc">
       <div class="sec-head">
       <p class="label">화면</p>
@@ -949,9 +995,31 @@ article[data-view] .glance b { font-size: 14px; font-weight: 600; line-height: 1
       </div>      </div>
     </section>
 
+    <section class="sec" id="c1-fl">
+      <div class="sec-head">
+      <p class="label">흐름 <span class="mine">내 담당</span></p>
+      <h2>확실한 질문은 DB가 바로 답하고, 나머지만 검색합니다</h2>
+      </div>
+      <div class="sec-body">
+      <p>에러코드나 "이 모델에 그 기능이 있나요?"처럼 답이 정해진 질문까지 AI 검색에 맡기면, 비슷한 다른 내용을 근거로 그럴듯하게 답할 위험이 있습니다. 그래서 질문이 들어오면 먼저 종류를 나누고, 답이 정해진 질문은 DB에서 바로 꺼내도록 흐름과 DB를 설계했습니다.</p>
+      </div>
+      <figure class="flowfig">
+        <img src="media/chatbot-flow.svg" alt="질문 처리 흐름도. 질문 입력 후 라우팅에서 에러코드가 있으면 에러코드 DB, 기능이 없는 모델이면 기능 표로 바로 답변 생성으로 가고, 그 외 질문은 벡터 검색 40개, 리랭킹 5개, 고장 챕터 보강을 거쳐 근거가 남았는지 판단한다. 근거가 없으면 찾지 못했다고 답하고, 있으면 답변을 생성한 뒤 위험 신호가 있으면 안전 경고를 붙이고 그림과 쪽 번호를 표시한다." loading="lazy">
+        <figcaption>질문 처리 흐름 · 파란 "내 담당" 표시가 제가 설계한 부분입니다</figcaption>
+      </figure>
+      <div class="flowtail">
+      <div class="cards">
+        <div><h3>에러코드 143개</h3><p>"CH05 떠요"처럼 코드를 물으면 검색 없이 원인과 조치를 꺼냅니다. LLM 호출은 0회입니다.</p></div>
+        <div><h3>모델별 기능 표 160행</h3><p>그 모델에 없는 기능을 물으면 추측하지 않고 "없습니다"로 확정합니다.</p></div>
+        <div><h3>모델 ↔ 설명서 92쌍</h3><p>등록한 가전의 설명서만 검색 범위로 묶어 다른 모델 정보가 섞이지 않게 합니다.</p></div>
+      </div>
+      <p class="note">4명이 각자 만든 파이프라인을 같은 900문항으로 비교했고, 이 DB와 질문 흐름은 최종 서비스에 그대로 들어갔습니다.</p>
+      </div>
+    </section>
+
     <section class="sec" id="c1-ds">
       <div class="sec-head">
-      <p class="label">설계 <span class="mine">내 담당</span></p>
+      <p class="label">청킹 <span class="mine">직접 구현</span></p>
       <h2>설명서의 목차를 그대로 청크 단위로 씁니다</h2>
       </div>
       <div class="sec-body">
@@ -962,21 +1030,27 @@ article[data-view] .glance b { font-size: 14px; font-weight: 600; line-height: 1
           <p class="small">청크 3개 · 경계가 절 한가운데를 지납니다</p></div>
         <div class="good"><h3>목차 단위로 자르면 · 절 하나가 청크 하나</h3>
           <div class="chunks"><span>필터 분리하기</span><span>극세 필터 청소하기</span><span>알러지케어 집진 필터 청소하기</span><span>필터 끼우기</span></div>
-          <p class="small">청크 4개 · 700자 이상 · 15% 오버랩 · 목차 없는 PDF와 고장 신고 표는 예외 규칙</p></div>
+          <p class="small">청크 4개 · 절 하나가 청크 하나</p></div>
       </div>
-      <p class="note">기획 산출물: 기능 요구사항 13개 · 화면 13개 · 기능 45개 정의, 와이어프레임 16개 화면</p>      </div>
+      <div class="cards">
+        <div><h3>고장 신고 표는 증상 단위로</h3><p>원인 한 줄씩 자르니 "와이파이가 안 돼요"에 원인 6개 중 3개만 AI에 전달됐습니다. 증상 1개를 청크 1개로 묶어 6개가 모두 들어가게 했습니다.</p></div>
+        <div><h3>브랜드별 파서 2개</h3><p>LG와 삼성은 설명서 양식이 달랐습니다. 표가 없는 삼성 에어컨은 글씨 크기로 증상 줄을 찾았습니다.</p></div>
+        <div><h3>목차 없는 PDF</h3><p>목차가 없는 구형 설명서는 번호 소제목이나 글자 크기 차이로 제목을 찾았습니다.</p></div>
+      </div>
+      <p class="note">4명이 같은 900문항으로 비교한 결과, 최종 서비스에는 같은 목차 기반이면서 긴 절을 700자 단위로 나누는 팀원의 청킹이 채택됐습니다.</p>
+      </div>
     </section>
 
     <section class="sec" id="c1-rs">
       <div class="sec-head">
-      <p class="label">결과 <span>· 팀 결과, 900문항 평가</span></p>
+      <p class="label">결과 <span>· 팀 결과</span></p>
       <h2>가장 나쁜 실패인 "근거 없는 확신 답변"은 0건</h2>
       </div>
       <div class="sec-body">
       <div class="results">
-        <div><b>0건</b><span>근거 없는 확신 답변</span></div>
-        <div><b>84.6% → 92.3%</b><span>리랭킹 후 Top-5 적중</span></div>
-        <div><b>약 4.5원</b><span>답변 1건당 비용</span></div>
+        <div><b>0건</b><span>근거 없는 확신 답변 (900문항, AI 채점)</span></div>
+        <div><b>84.6% → 92.3%</b><span>리랭킹 후 Top-5 적중 (104문항)</span></div>
+        <div><b>0 / 9</b><span>실제 사용자 질문에서 지어낸 원인 (23건)</span></div>
       </div>
       <div class="tbl"><table>
         <thead><tr><th scope="col">판정</th><th scope="col" class="num">round1 · 흔한 문의</th><th scope="col" class="num">round2 · 세부 기능</th><th scope="col" class="num">round3 · 앱 · 설치</th></tr></thead>
@@ -987,17 +1061,20 @@ article[data-view] .glance b { font-size: 14px; font-weight: 600; line-height: 1
           <tr><th scope="row">근거 없이 확신</th><td class="num hl">0</td><td class="num hl">0</td><td class="num hl">0</td></tr>
         </tbody>
       </table></div>
-      <p class="note">5문항 × 60개 모델 × 3라운드. 설명서에 없는 내용을 묻는 경우도 있어 정답률 대신 4가지로 분류해 판정했습니다.</p>
+      <p class="note">5문항 × 60개 가전제품 모델 × 3라운드. 설명서에 없는 내용을 묻는 경우도 있어 정답률 대신 4가지로 분류했고, 판정은 AI 채점관(gpt-4o-mini)이 했습니다. 실제 사용자 질문은 지식iN·카페 질문 23건으로 따로 확인했습니다.</p>
+      <p class="note" style="margin-top:24px;font-size:16px;color:var(--body)"><b>배운 것.</b> AI가 판단하지 않아도 되는 건 AI에게 맡기지 않는 것이 신뢰를 지키는 가장 쉬운 방법이라는 걸 배웠습니다. 에러코드와 기능 유무를 DB로 확정한 이유입니다.</p>
       <div class="stack"><span>RAG</span><span>pgvector</span><span>BGE-m3-ko</span><span>gpt-4o-mini</span><span>FastAPI</span></div>      </div>
     </section>
-    <section class="glance glance-end" aria-label="정리" style="--n:5">
+    <section class="glance glance-end" aria-label="정리" style="--n:7">
       <p class="glance-t">정리</p>
       <ol>
         <li><button type="button" data-jump="c1-pb"><span class="n">01 문제</span><b>사용자는 증상만 알고, 설명서에서 답을 찾는 일은 혼자 해야 합니다</b></button></li>
         <li><button type="button" data-jump="c1-dc"><span class="n">02 판단</span><b>검색·범용 AI·제조사 AI를 같은 기준으로 비교해 RAG를 골랐습니다</b></button></li>
         <li><button type="button" data-jump="c1-ft"><span class="n">03 주요</span><b>증상만 말하면 탐색과 출처 확인은 찾아드림이 맡습니다</b></button></li>
-        <li><button type="button" data-jump="c1-ds"><span class="n">05 설계</span><b>설명서 목차를 그대로 청크 단위로 썼습니다</b></button></li>
-        <li><button type="button" data-jump="c1-rs"><span class="n">06 결과</span><b>900문항 평가에서 근거 없는 확신 답변 0건 (팀 결과)</b></button></li>
+        <li><button type="button" data-jump="c1-pl"><span class="n">04 기획</span><b>요구사항·기능·화면을 문서로 먼저 정의했습니다</b></button></li>
+        <li><button type="button" data-jump="c1-fl"><span class="n">06 흐름</span><b>확실한 질문은 DB가 바로 답하게 흐름을 나눴습니다</b></button></li>
+        <li><button type="button" data-jump="c1-ds"><span class="n">07 청킹</span><b>설명서 목차와 증상 단위로 청크를 나눴습니다</b></button></li>
+        <li><button type="button" data-jump="c1-rs"><span class="n">08 결과</span><b>900문항 평가에서 근거 없는 확신 답변 0건 (팀 결과)</b></button></li>
       </ol>
     </section>
   </div>
