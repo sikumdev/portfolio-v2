@@ -957,8 +957,8 @@ article[data-view] .glance b { font-size: 14px; font-weight: 600; line-height: 1
       <div class="cards">
         <div><h3>내 모델 설명서만 검색</h3><p>제품을 한 번 등록하면 그 모델의 설명서 안에서만 근거를 찾습니다.</p></div>
         <div><h3>에러코드 정확 매칭</h3><p>"CH05 떠요"처럼 코드를 물으면 RDB에서 정확히 찾아 원인과 조치를 답합니다.</p></div>
-        <div><h3>쪽 번호 · 그림 · 원문</h3><p>답변 줄마다 설명서 쪽 번호와 그림을 붙이고, PDF 원문으로 바로 확인할 수 있습니다.</p></div>
-        <div><h3>근거가 없으면 보류</h3><p>관련 근거가 기준에 못 미치면 추측하지 않고 "찾지 못했습니다"라고 답합니다.</p></div>
+        <div><h3>쪽 번호 · 그림 · 원문</h3><p>답변에 설명서 쪽 번호를 붙이고 맞는 그림이 있으면 함께 보여주며, PDF 원문으로 바로 확인할 수 있습니다.</p></div>
+        <div><h3>근거가 없으면 보류</h3><p>찾은 설명서 근거에 답이 없으면 추측하지 않고 "찾지 못했습니다"라고 답합니다.</p></div>
       </div>      </div>
     </section>
 
@@ -1001,17 +1001,17 @@ article[data-view] .glance b { font-size: 14px; font-weight: 600; line-height: 1
       <h2>확실한 질문은 DB가 바로 답하고, 나머지만 검색합니다</h2>
       </div>
       <div class="sec-body">
-      <p>에러코드나 "이 모델에 그 기능이 있나요?"처럼 답이 정해진 질문까지 AI 검색에 맡기면, 비슷한 다른 내용을 근거로 그럴듯하게 답할 위험이 있습니다. 그래서 질문이 들어오면 먼저 종류를 나누고, 답이 정해진 질문은 DB에서 바로 꺼내도록 흐름과 DB를 설계했습니다.</p>
+      <p>에러코드나 "이 모델에 그 기능이 있나요?"처럼 답이 정해진 질문까지 검색에 맡기면 틀릴 수 있습니다. 설명서 한 권이 여러 모델을 같이 다뤄서, 내 모델에 없는 기능도 있다고 답할 수 있기 때문입니다. 그래서 AI가 질문을 한 번 읽어 종류를 나누고, 답이 정해진 질문은 검색 없이 DB에서 바로 꺼내도록 흐름과 DB를 설계했습니다.</p>
       </div>
       <figure class="flowfig">
-        <img src="media/chatbot-flow.svg" alt="질문 처리 흐름도. 질문 입력 후 라우팅에서 에러코드가 있으면 에러코드 DB, 기능이 없는 모델이면 기능 표로 바로 답변 생성으로 가고, 그 외 질문은 벡터 검색 40개, 리랭킹 5개, 고장 챕터 보강을 거쳐 근거가 남았는지 판단한다. 근거가 없으면 찾지 못했다고 답하고, 있으면 답변을 생성한 뒤 위험 신호가 있으면 안전 경고를 붙이고 그림과 쪽 번호를 표시한다." loading="lazy">
+        <img src="media/chatbot-flow.svg" alt="질문 처리 흐름도. 질문이 들어오면 AI가 한 번 질문을 읽고, ① 고른 가전과 다른 종류의 가전 질문이면 검색 없이 안내 후 끝, ② 에러코드가 있으면 에러코드 DB, ③ 모델에 없는 기능이면 기능 표 결과로 바로 답변 생성으로 간다. 그 외 질문은 벡터 검색 40개와 리랭킹 5개를 거치고, 위험한 상황 질문이면 답변 앞에 안전 경고를 붙인다. 답변 AI가 근거에서 답을 못 찾으면 찾지 못했다고 답하고, 찾으면 쪽 번호와 그림을 표시한다." loading="lazy">
         <figcaption>질문 처리 흐름 · 파란 "내 담당" 표시가 제가 설계한 부분입니다</figcaption>
       </figure>
       <div class="flowtail">
       <div class="cards">
         <div><h3>에러코드 143개</h3><p>"CH05 떠요"처럼 코드를 물으면 정규식으로 코드를 뽑아 DB에서 원인과 조치를 바로 찾습니다. 찾는 단계에서는 AI를 쓰지 않습니다.</p></div>
-        <div><h3>모델별 기능 표 160행</h3><p>그 모델에 없는 기능을 물으면 추측하지 않고 "없습니다"로 확정합니다.</p></div>
-        <div><h3>모델 ↔ 설명서 92쌍</h3><p>등록한 가전의 설명서만 검색 범위로 묶어 다른 모델 정보가 섞이지 않게 합니다.</p></div>
+        <div><h3>모델별 기능 표 160행</h3><p>LG 에어컨 설명서 부록의 모델별 기능 표를 옮겼습니다. 그 모델에 없는 기능을 물으면 검색 없이 "없습니다"로 확정합니다.</p></div>
+        <div><h3>모델 ↔ 설명서 92쌍</h3><p>채팅방에서 고른 가전의 설명서만 검색 범위로 묶어 다른 설명서 내용이 섞이지 않게 합니다.</p></div>
       </div>
       <p class="note">4명이 각자 만든 파이프라인을 같은 900문항으로 비교했고, 이 DB와 질문 흐름은 최종 서비스에 그대로 들어갔습니다.</p>
       </div>
@@ -1065,13 +1065,14 @@ article[data-view] .glance b { font-size: 14px; font-weight: 600; line-height: 1
       <p class="note" style="margin-top:24px;font-size:16px;color:var(--body)"><b>배운 것.</b> AI가 판단하지 않아도 되는 건 AI에게 맡기지 않는 것이 신뢰를 지키는 가장 쉬운 방법이라는 걸 배웠습니다. 에러코드와 기능 유무를 DB로 확정한 이유입니다.</p>
       <div class="stack"><span>RAG</span><span>pgvector</span><span>BGE-m3-ko</span><span>gpt-4o-mini</span><span>FastAPI</span></div>      </div>
     </section>
-    <section class="glance glance-end" aria-label="정리" style="--n:7">
+    <section class="glance glance-end" aria-label="정리" style="--n:8">
       <p class="glance-t">정리</p>
       <ol>
         <li><button type="button" data-jump="c1-pb"><span class="n">01 문제</span><b>사용자는 증상만 알고, 설명서에서 답을 찾는 일은 혼자 해야 합니다</b></button></li>
-        <li><button type="button" data-jump="c1-dc"><span class="n">02 판단</span><b>검색·범용 AI·제조사 AI를 같은 기준으로 비교해 RAG를 골랐습니다</b></button></li>
+        <li><button type="button" data-jump="c1-dc"><span class="n">02 판단</span><b>검색·범용 AI·제조사 AI의 한계를 확인하고 RAG를 골랐습니다</b></button></li>
         <li><button type="button" data-jump="c1-ft"><span class="n">03 주요</span><b>증상만 말하면 탐색과 출처 확인은 찾아드림이 맡습니다</b></button></li>
         <li><button type="button" data-jump="c1-pl"><span class="n">04 기획</span><b>요구사항·기능·화면을 문서로 먼저 정의했습니다</b></button></li>
+        <li><button type="button" data-jump="c1-sc"><span class="n">05 화면</span><b>제품 등록부터 출처 확인까지 4단계로 보여줍니다</b></button></li>
         <li><button type="button" data-jump="c1-fl"><span class="n">06 흐름</span><b>확실한 질문은 DB가 바로 답하게 흐름을 나눴습니다</b></button></li>
         <li><button type="button" data-jump="c1-ds"><span class="n">07 청킹</span><b>설명서 목차와 증상 단위로 청크를 나눴습니다</b></button></li>
         <li><button type="button" data-jump="c1-rs"><span class="n">08 결과</span><b>900문항 평가에서 근거 없는 확신 답변 0건 (팀 결과)</b></button></li>

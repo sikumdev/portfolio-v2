@@ -1,144 +1,94 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1060" height="1192" viewBox="0 84 1060 1192" font-family="Noto Sans KR, Apple SD Gothic Neo, sans-serif">
-  <defs>
-    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
-      <path d="M0 0 L10 5 L0 10 z" fill="#8A94A3"/>
-    </marker>
-  </defs>
-
-  <rect y="84" width="1060" height="1192" fill="#FFFFFF"/>
-
-  <!-- ===== edges (drawn first, under nodes) ===== -->
-  <g fill="none" stroke="#8A94A3" stroke-width="1.6" marker-end="url(#arrow)">
-    <path d="M520 136 V176"/>
-    <path d="M520 240 V280"/>
-    <!-- router branches (conditional: dashed) -->
-    <path d="M520 344 V380 H150 V420" stroke-dasharray="6 5"/>
-    <path d="M520 344 V380 H390 V420" stroke-dasharray="6 5"/>
-    <path d="M520 344 V380 H660 V420" stroke-dasharray="6 5"/>
-    <!-- vector path -->
-    <path d="M660 492 V532"/>
-    <path d="M660 604 V644"/>
-    <path d="M660 716 V740"/>
-    <!-- decision: evidence? -->
-    <path d="M770 780 H840" stroke-dasharray="6 5"/>
-    <path d="M660 820 V880" stroke-dasharray="6 5"/>
-    <!-- DB routes into generation -->
-    <path d="M150 492 V918 H330"/>
-    <path d="M390 492 V880"/>
-    <!-- generation → safety -->
-    <path d="M520 956 V990"/>
-    <path d="M640 1030 H700" stroke-dasharray="6 5"/>
-    <path d="M520 1070 V1110" stroke-dasharray="6 5"/>
-    <path d="M790 1062 V1146 H710"/>
-    <!-- post → end -->
-    <path d="M520 1182 V1220"/>
-    <!-- no answer → end -->
-    <path d="M935 812 V1238 H580"/>
-  </g>
-
-  <!-- ===== edge labels ===== -->
-  <g font-size="12" font-weight="600" text-anchor="middle">
-    <rect x="102" y="391" width="96" height="20" rx="10" fill="#FFF6E0"/><text x="150" y="405" fill="#8A6100">에러코드 있음</text>
-    <rect x="352" y="391" width="76" height="20" rx="10" fill="#FFF6E0"/><text x="390" y="405" fill="#8A6100">기능 없음</text>
-    <rect x="618" y="391" width="84" height="20" rx="10" fill="#FFF6E0"/><text x="660" y="405" fill="#8A6100">그 외 질문</text>
-    <rect x="773" y="757" width="64" height="20" rx="10" fill="#FBE9E5"/><text x="805" y="771" fill="#C2412D">근거 없음</text>
-    <rect x="628" y="840" width="64" height="20" rx="10" fill="#E5F4EC"/><text x="660" y="854" fill="#1D8A5A">근거 있음</text>
-    <rect x="648" y="1007" width="44" height="20" rx="10" fill="#FBE9E5"/><text x="670" y="1021" fill="#C2412D">있음</text>
-    <rect x="498" y="1080" width="44" height="20" rx="10" fill="#E5F4EC"/><text x="520" y="1094" fill="#1D8A5A">없음</text>
-  </g>
-
-  <!-- ===== nodes ===== -->
-  <!-- start -->
-  <rect x="460" y="100" width="120" height="36" rx="18" fill="#1B2330"/>
-  <text x="520" y="123" font-size="13" font-weight="700" fill="#FFFFFF" text-anchor="middle">__start__</text>
-
-  <!-- input -->
-  <rect x="360" y="176" width="320" height="64" rx="12" fill="#FFFFFF" stroke="#CBD2DC" stroke-width="1.5"/>
-  <text x="520" y="203" font-size="15" font-weight="700" fill="#1B2330" text-anchor="middle">질문 입력</text>
-  <text x="520" y="223" font-size="12" fill="#5D6878" text-anchor="middle">사용자 질문 + 등록한 가전(설명서 id)</text>
-
-  <!-- router -->
-  <rect x="360" y="280" width="320" height="64" rx="12" fill="#FFF6E0" stroke="#C98420" stroke-width="1.5"/>
-  <text x="520" y="307" font-size="15" font-weight="700" fill="#1B2330" text-anchor="middle">라우팅 · 질문 종류 판별</text>
-  <text x="520" y="327" font-size="12" fill="#5D6878" text-anchor="middle">에러코드 → 기능 유무 → 일반 검색 순으로 확인</text>
-  <rect x="612" y="270" width="60" height="20" rx="6" fill="#2A62C9"/><text x="642" y="284" font-size="11" font-weight="700" fill="#FFFFFF" text-anchor="middle">내 담당</text>
-
-  <!-- error code -->
-  <rect x="40" y="420" width="220" height="72" rx="12" fill="#E8F5EE" stroke="#1D8A5A" stroke-width="1.5"/>
-  <text x="150" y="448" font-size="15" font-weight="700" fill="#1B2330" text-anchor="middle">에러코드 정확 매칭</text>
-  <text x="150" y="468" font-size="12" fill="#5D6878" text-anchor="middle">에러코드 DB 조회</text>
-  <text x="150" y="484" font-size="12" fill="#5D6878" text-anchor="middle">LLM 호출 0회</text>
-  <rect x="192" y="410" width="60" height="20" rx="6" fill="#2A62C9"/><text x="222" y="424" font-size="11" font-weight="700" fill="#FFFFFF" text-anchor="middle">내 담당</text>
-
-  <!-- feature absent -->
-  <rect x="280" y="420" width="220" height="72" rx="12" fill="#E8F5EE" stroke="#1D8A5A" stroke-width="1.5"/>
-  <text x="390" y="448" font-size="15" font-weight="700" fill="#1B2330" text-anchor="middle">기능 없음 확정</text>
-  <text x="390" y="468" font-size="12" fill="#5D6878" text-anchor="middle">모델별 기능 표 조회</text>
-  <text x="390" y="484" font-size="12" fill="#5D6878" text-anchor="middle">"이 모델엔 그 기능이 없습니다"</text>
-  <rect x="432" y="410" width="60" height="20" rx="6" fill="#2A62C9"/><text x="462" y="424" font-size="11" font-weight="700" fill="#FFFFFF" text-anchor="middle">내 담당</text>
-
-  <!-- vector search -->
-  <rect x="530" y="420" width="260" height="72" rx="12" fill="#FFFFFF" stroke="#CBD2DC" stroke-width="1.5"/>
-  <text x="660" y="448" font-size="15" font-weight="700" fill="#1B2330" text-anchor="middle">벡터 검색</text>
-  <text x="660" y="468" font-size="12" fill="#5D6878" text-anchor="middle">BGE-m3-ko · 내 모델 설명서만</text>
-  <text x="660" y="484" font-size="12" fill="#5D6878" text-anchor="middle">뜻이 가까운 후보 40개</text>
-
-  <!-- rerank -->
-  <rect x="530" y="532" width="260" height="72" rx="12" fill="#EEF3FD" stroke="#2A62C9" stroke-width="1.5"/>
-  <text x="660" y="560" font-size="15" font-weight="700" fill="#1B2330" text-anchor="middle">리랭킹 (listwise)</text>
-  <text x="660" y="580" font-size="12" fill="#5D6878" text-anchor="middle">후보 35개를 한 번에 보여주고</text>
-  <text x="660" y="596" font-size="12" fill="#5D6878" text-anchor="middle">순위 번호로 5개 선택</text>
-  <rect x="742" y="522" width="40" height="20" rx="6" fill="#6B4FD8"/><text x="762" y="536" font-size="11" font-weight="700" fill="#FFFFFF" text-anchor="middle">LLM</text>
-
-  <!-- structural boost (optional) -->
-  <rect x="530" y="644" width="260" height="72" rx="12" fill="#FFFFFF" stroke="#8A94A3" stroke-width="1.5" stroke-dasharray="5 4"/>
-  <text x="660" y="672" font-size="15" font-weight="700" fill="#1B2330" text-anchor="middle">고장 챕터 보강</text>
-  <text x="660" y="692" font-size="12" fill="#5D6878" text-anchor="middle">"에러 확인 방법" 같은 질문일 때만</text>
-  <text x="660" y="708" font-size="12" fill="#5D6878" text-anchor="middle">모델별 고장진단 챕터를 맨 앞에</text>
-
-  <!-- decision: evidence left? -->
-  <path d="M660 740 L770 780 L660 820 L550 780 Z" fill="#FFF6E0" stroke="#C98420" stroke-width="1.5"/>
-  <text x="660" y="785" font-size="14" font-weight="700" fill="#1B2330" text-anchor="middle">근거가 남았나?</text>
-
-  <!-- no answer -->
-  <rect x="840" y="748" width="190" height="64" rx="12" fill="#FBE9E5" stroke="#C2412D" stroke-width="1.5"/>
-  <text x="935" y="775" font-size="14" font-weight="700" fill="#1B2330" text-anchor="middle">"찾지 못했습니다"</text>
-  <text x="935" y="795" font-size="12" fill="#5D6878" text-anchor="middle">추측하지 않고 답 보류</text>
-
-  <!-- generate -->
-  <rect x="330" y="880" width="380" height="76" rx="12" fill="#EEF3FD" stroke="#2A62C9" stroke-width="1.5"/>
-  <text x="520" y="909" font-size="15" font-weight="700" fill="#1B2330" text-anchor="middle">답변 생성</text>
-  <text x="520" y="929" font-size="12" fill="#5D6878" text-anchor="middle">gpt-4o-mini · 규칙 8개 + 근거 + 최근 대화 4턴</text>
-  <text x="520" y="945" font-size="12" fill="#5D6878" text-anchor="middle">근거에 없으면 "찾지 못했습니다"라고만 답함</text>
-  <rect x="338" y="870" width="40" height="20" rx="6" fill="#6B4FD8"/><text x="358" y="884" font-size="11" font-weight="700" fill="#FFFFFF" text-anchor="middle">LLM</text>
-
-  <!-- safety decision -->
-  <path d="M520 990 L640 1030 L520 1070 L400 1030 Z" fill="#FFF6E0" stroke="#C98420" stroke-width="1.5"/>
-  <text x="520" y="1028" font-size="13.5" font-weight="700" fill="#1B2330" text-anchor="middle">질문에 위험 신호?</text>
-  <text x="520" y="1046" font-size="11" fill="#5D6878" text-anchor="middle">타는 냄새·연기·감전 등</text>
-
-  <!-- safety warning -->
-  <rect x="700" y="998" width="180" height="64" rx="12" fill="#FFFFFF" stroke="#CBD2DC" stroke-width="1.5"/>
-  <text x="790" y="1025" font-size="14" font-weight="700" fill="#1B2330" text-anchor="middle">안전 경고 붙이기</text>
-  <text x="790" y="1045" font-size="12" fill="#5D6878" text-anchor="middle">코드가 정해진 문구로</text>
-
-  <!-- post-process -->
-  <rect x="330" y="1110" width="380" height="72" rx="12" fill="#FFFFFF" stroke="#CBD2DC" stroke-width="1.5"/>
-  <text x="520" y="1138" font-size="15" font-weight="700" fill="#1B2330" text-anchor="middle">근거 표시</text>
-  <text x="520" y="1158" font-size="12" fill="#5D6878" text-anchor="middle">설명서 그림 매칭 · 쪽 번호 보정</text>
-  <text x="520" y="1174" font-size="12" fill="#5D6878" text-anchor="middle">출처 카드 + PDF 원문 링크 (코드가 처리)</text>
-
-  <!-- end -->
-  <rect x="460" y="1220" width="120" height="36" rx="18" fill="#1B2330"/>
-  <text x="520" y="1243" font-size="13" font-weight="700" fill="#FFFFFF" text-anchor="middle">__end__</text>
-
-  <!-- ===== legend ===== -->
-  <g font-size="12" fill="#5D6878">
-    <text x="40" y="1130" font-weight="700" fill="#1B2330">범례</text>
-    <line x1="40" y1="1152" x2="76" y2="1152" stroke="#8A94A3" stroke-width="1.6"/><text x="86" y="1156">항상 지나감</text>
-    <line x1="40" y1="1174" x2="76" y2="1174" stroke="#8A94A3" stroke-width="1.6" stroke-dasharray="6 5"/><text x="86" y="1178">조건에 따라 갈림</text>
-    <rect x="40" y="1188" width="36" height="16" rx="4" fill="#E8F5EE" stroke="#1D8A5A"/><text x="86" y="1201">DB 조회 (LLM 없음)</text>
-    <rect x="40" y="1212" width="36" height="16" rx="4" fill="#EEF3FD" stroke="#2A62C9"/><text x="86" y="1225">LLM 호출</text>
-    <rect x="40" y="1236" width="36" height="16" rx="4" fill="#FFF6E0" stroke="#C98420"/><text x="86" y="1249">갈림길</text>
-  </g>
+<svg xmlns="http://www.w3.org/2000/svg" width="1140" height="1074" viewBox="0 0 1140 1074" font-family="Noto Sans KR, Apple SD Gothic Neo, sans-serif">
+<defs><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#8A94A3"/></marker></defs>
+<rect width="1140" height="1074" fill="#FFFFFF"/>
+<rect x="20" y="92" width="900" height="380" rx="16" fill="#F3F7FE" stroke="#2A62C9" stroke-width="1.5" stroke-dasharray="7 5"/>
+<rect x="34" y="438" width="72" height="22" rx="6" fill="#2A62C9"/><text x="44" y="454" font-size="12" font-weight="700" fill="#FFFFFF">내 담당</text>
+<rect x="300" y="20" width="300" height="52" rx="12" fill="#FFFFFF" stroke="#CBD2DC" stroke-width="1.5"/>
+<text x="450.0" y="42.5" font-size="14" font-weight="700" fill="#1B2330" text-anchor="middle">질문 입력</text>
+<text x="450.0" y="60.5" font-size="11.5" fill="#5D6878" text-anchor="middle">질문 + 선택한 가전 제품 모델 정보</text>
+<path d="M450 72 V106" fill="none" stroke="#8A94A3" stroke-width="1.6" marker-end="url(#ar)"/>
+<rect x="330" y="110" width="240" height="56" rx="12" fill="#EEF3FD" stroke="#2A62C9" stroke-width="1.5"/>
+<text x="450.0" y="134.5" font-size="13.5" font-weight="700" fill="#1B2330" text-anchor="middle">질문 분류 (LLM 호출 1회)</text>
+<text x="450.0" y="152.5" font-size="11.5" fill="#5D6878" text-anchor="middle">질문 속 '다른 종류 가전'·'묻는 기능' 찾기</text>
+<rect x="522" y="100" width="40" height="20" rx="6" fill="#6B4FD8"/><text x="542" y="114" font-size="11" font-weight="700" fill="#FFFFFF" text-anchor="middle">LLM</text>
+<path d="M450 166 V176" fill="none" stroke="#8A94A3" stroke-width="1.6" marker-end="url(#ar)"/>
+<path d="M450 180 L590 214 L450 248 L310 214 Z" fill="#FFF6E0" stroke="#C98420" stroke-width="1.5"/>
+<text x="450" y="213" font-size="13" font-weight="700" fill="#1B2330" text-anchor="middle">① 다른 종류 가전 질문?</text><text x="450" y="229" font-size="10.5" fill="#5D6878" text-anchor="middle">에어컨 채팅방에서 "세탁기는요?"</text>
+<path d="M450 266 L590 300 L450 334 L310 300 Z" fill="#FFF6E0" stroke="#C98420" stroke-width="1.5"/>
+<text x="450" y="299" font-size="13" font-weight="700" fill="#1B2330" text-anchor="middle">② 에러코드 질문?</text><text x="450" y="315" font-size="10.5" fill="#5D6878" text-anchor="middle">"CH05 에러가 떠요"</text>
+<path d="M450 352 L590 386 L450 420 L310 386 Z" fill="#FFF6E0" stroke="#C98420" stroke-width="1.5"/>
+<text x="450" y="385" font-size="13" font-weight="700" fill="#1B2330" text-anchor="middle">③ 없는 기능 질문?</text><text x="450" y="401" font-size="10.5" fill="#5D6878" text-anchor="middle">"음성인식 돼요?" (없는 모델)</text>
+<path d="M450 248 V262" fill="none" stroke="#8A94A3" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#ar)"/>
+<rect x="476.0" y="246" width="48" height="20" rx="10" fill="#EEF1F5"/><text x="500" y="260" font-size="11" font-weight="700" fill="#5D6878" text-anchor="middle">아니오</text>
+<path d="M450 334 V348" fill="none" stroke="#8A94A3" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#ar)"/>
+<rect x="476.0" y="332" width="48" height="20" rx="10" fill="#EEF1F5"/><text x="500" y="346" font-size="11" font-weight="700" fill="#5D6878" text-anchor="middle">아니오</text>
+<path d="M310 214 H264" fill="none" stroke="#C2412D" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#ar)"/>
+<rect x="276.0" y="190" width="28" height="20" rx="10" fill="#FBE9E5"/><text x="290" y="204" font-size="11" font-weight="700" fill="#C2412D" text-anchor="middle">예</text>
+<rect x="60" y="188" width="200" height="52" rx="12" fill="#FBE9E5" stroke="#C2412D" stroke-width="1.5"/>
+<text x="160.0" y="210.5" font-size="13" font-weight="700" fill="#1B2330" text-anchor="middle">"등록된 제품이 아니에요"</text>
+<text x="160.0" y="228.5" font-size="11.5" fill="#5D6878" text-anchor="middle">검색·답변 없이 안내 후 끝</text>
+<path d="M590 300 H636" fill="none" stroke="#1D8A5A" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#ar)"/>
+<rect x="599.0" y="276" width="28" height="20" rx="10" fill="#E8F5EE"/><text x="613" y="290" font-size="11" font-weight="700" fill="#1D8A5A" text-anchor="middle">예</text>
+<rect x="640" y="274" width="220" height="52" rx="12" fill="#E8F5EE" stroke="#1D8A5A" stroke-width="1.5"/>
+<text x="750.0" y="296.5" font-size="13" font-weight="700" fill="#1B2330" text-anchor="middle">에러코드 DB 조회</text>
+<text x="750.0" y="314.5" font-size="11.5" fill="#5D6878" text-anchor="middle">원인·조치 · 검색 건너뜀</text>
+<path d="M590 386 H636" fill="none" stroke="#1D8A5A" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#ar)"/>
+<rect x="599.0" y="362" width="28" height="20" rx="10" fill="#E8F5EE"/><text x="613" y="376" font-size="11" font-weight="700" fill="#1D8A5A" text-anchor="middle">예</text>
+<rect x="640" y="360" width="220" height="52" rx="12" fill="#E8F5EE" stroke="#1D8A5A" stroke-width="1.5"/>
+<text x="750.0" y="382.5" font-size="13" font-weight="700" fill="#1B2330" text-anchor="middle">기능 표 '없음' 확정</text>
+<text x="750.0" y="400.5" font-size="11.5" fill="#5D6878" text-anchor="middle">검색 건너뜀</text>
+<path d="M450 420 V496" fill="none" stroke="#8A94A3" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#ar)"/>
+<rect x="446.0" y="472" width="120" height="20" rx="10" fill="#EEF1F5"/><text x="506" y="486" font-size="11" font-weight="700" fill="#5D6878" text-anchor="middle">아니오 · 그 외 질문</text>
+<rect x="330" y="500" width="240" height="60" rx="12" fill="#FFFFFF" stroke="#CBD2DC" stroke-width="1.5"/>
+<text x="450.0" y="518.0" font-size="13.5" font-weight="700" fill="#1B2330" text-anchor="middle">벡터 검색</text>
+<text x="450.0" y="536.0" font-size="11.5" fill="#5D6878" text-anchor="middle">BGE-m3-ko · 내 모델 설명서만</text>
+<text x="450.0" y="551.0" font-size="11.5" fill="#5D6878" text-anchor="middle">뜻이 가까운 후보 40개</text>
+<path d="M450 560 V580" fill="none" stroke="#8A94A3" stroke-width="1.6" marker-end="url(#ar)"/>
+<rect x="300" y="584" width="300" height="100" rx="12" fill="#EEF3FD" stroke="#2A62C9" stroke-width="1.5"/>
+<text x="450.0" y="606" font-size="13.5" font-weight="700" fill="#1B2330" text-anchor="middle">리랭킹 (listwise)</text>
+<text x="450.0" y="625" font-size="11.5" fill="#5D6878" text-anchor="middle">후보 35개를 한 번에 보여주고</text>
+<text x="450.0" y="640" font-size="11.5" fill="#5D6878" text-anchor="middle">순위 번호로 5개 선택</text>
+<text x="450.0" y="660" font-size="11.5" font-weight="700" fill="#2A62C9" text-anchor="middle">증상·고장 질문은 고장 챕터 조각 우선</text>
+<text x="450.0" y="675" font-size="11" fill="#5D6878" text-anchor="middle">예: "소리가 나요" · "에러 확인 방법 알려줘"</text>
+<rect x="552" y="574" width="40" height="20" rx="6" fill="#6B4FD8"/><text x="572" y="588" font-size="11" font-weight="700" fill="#FFFFFF" text-anchor="middle">LLM</text>
+<path d="M450 684 V700" fill="none" stroke="#8A94A3" stroke-width="1.6" marker-end="url(#ar)"/>
+<path d="M860 300 H900 V808" fill="none" stroke="#1D8A5A" stroke-width="1.6" marker-end="url(#ar)"/>
+<path d="M750 412 V808" fill="none" stroke="#1D8A5A" stroke-width="1.6" marker-end="url(#ar)"/>
+<path d="M450 704 L610 742 L450 780 L290 742 Z" fill="#FFF6E0" stroke="#C98420" stroke-width="1.5"/>
+<text x="450" y="740" font-size="13" font-weight="700" fill="#1B2330" text-anchor="middle">위험한 상황 질문?</text>
+<text x="450" y="756" font-size="10.5" fill="#5D6878" text-anchor="middle">"타는 냄새가 나요" · "연기 나요"</text>
+<path d="M290 742 H274" fill="none" stroke="#C2412D" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#ar)"/>
+<rect x="268" y="716" width="28" height="20" rx="10" fill="#FBE9E5"/><text x="282" y="730" font-size="11" font-weight="700" fill="#C2412D" text-anchor="middle">예</text>
+<rect x="60" y="714" width="210" height="56" rx="12" fill="#FFFFFF" stroke="#CBD2DC" stroke-width="1.5"/>
+<text x="165" y="737" font-size="13.5" font-weight="700" fill="#1B2330" text-anchor="middle">답변 앞에 "전원부터 차단하세요"</text>
+<text x="165" y="756" font-size="11.5" fill="#5D6878" text-anchor="middle">설명서에 안전 내용이 있을 때만</text>
+<path d="M165 770 V849 H296" fill="none" stroke="#8A94A3" stroke-width="1.6" marker-end="url(#ar)"/>
+<path d="M450 780 V808" fill="none" stroke="#8A94A3" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#ar)"/>
+<rect x="462" y="784" width="48" height="18" rx="9" fill="#EEF1F5"/><text x="486" y="797" font-size="11" font-weight="700" fill="#5D6878" text-anchor="middle">아니오</text>
+<rect x="300" y="812" width="760" height="74" rx="12" fill="#EEF3FD" stroke="#2A62C9" stroke-width="1.5"/>
+<text x="680" y="834" font-size="14" font-weight="700" fill="#1B2330" text-anchor="middle">답변 생성 (LLM)</text>
+<text x="680" y="853" font-size="11.5" fill="#5D6878" text-anchor="middle">근거 5개 + 규칙 8개 + 최근 대화 · 근거에 적힌 것만 답함</text>
+<text x="680" y="872" font-size="11" fill="#2A62C9" text-anchor="middle">AI가 근거를 읽고 맞는 내용이 없으면 "찾지 못했습니다" (프롬프트 규칙)</text>
+<rect x="1012" y="802" width="40" height="20" rx="6" fill="#6B4FD8"/><text x="1032" y="816" font-size="11" font-weight="700" fill="#FFFFFF" text-anchor="middle">LLM</text>
+<path d="M500 886 V910" fill="none" stroke="#C2412D" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#ar)"/>
+<rect x="510" y="889" width="90" height="20" rx="10" fill="#FBE9E5"/><text x="555" y="903" font-size="11" font-weight="700" fill="#C2412D" text-anchor="middle">근거에 답 없음</text>
+<rect x="400" y="914" width="200" height="52" rx="12" fill="#FBE9E5" stroke="#C2412D" stroke-width="1.5"/>
+<text x="500" y="936" font-size="13" font-weight="700" fill="#1B2330" text-anchor="middle">"찾지 못했습니다"</text>
+<text x="500" y="954" font-size="11.5" fill="#5D6878" text-anchor="middle">추측하지 않고 답 보류 → 끝</text>
+<path d="M840 886 V932" fill="none" stroke="#8A94A3" stroke-width="1.6" marker-end="url(#ar)"/>
+<rect x="620" y="936" width="440" height="56" rx="12" fill="#FFFFFF" stroke="#CBD2DC" stroke-width="1.5"/>
+<text x="840" y="959" font-size="14" font-weight="700" fill="#1B2330" text-anchor="middle">근거 표시</text>
+<text x="840" y="977" font-size="11.5" fill="#5D6878" text-anchor="middle">설명서 그림 매칭 · 쪽 번호 보정 · 출처 카드 + PDF 원문 링크</text>
+<path d="M840 992 V1016" fill="none" stroke="#8A94A3" stroke-width="1.6" marker-end="url(#ar)"/>
+<rect x="780" y="1020" width="120" height="34" rx="17" fill="#1B2330"/><text x="840" y="1042" font-size="13" font-weight="700" fill="#FFFFFF" text-anchor="middle">끝</text>
+<g font-size="12" fill="#5D6878">
+<text x="30" y="906" font-size="13" font-weight="700" fill="#1B2330">범례</text>
+<line x1="30" y1="926" x2="66" y2="926" stroke="#8A94A3" stroke-width="1.6"/><text x="76" y="930">항상 지나감</text>
+<line x1="30" y1="948" x2="66" y2="948" stroke="#8A94A3" stroke-width="1.6" stroke-dasharray="6 5"/><text x="76" y="952">조건에 따라 갈림</text>
+<path d="M48 962 L66 971 L48 980 L30 971 Z" fill="#FFF6E0" stroke="#C98420" stroke-width="1.3"/><text x="76" y="975">판단 (예 / 아니오)</text>
+<rect x="30" y="988" width="36" height="16" rx="4" fill="#EEF3FD" stroke="#2A62C9" stroke-width="1.3"/><text x="76" y="1001">LLM 호출</text>
+<rect x="30" y="1012" width="36" height="16" rx="4" fill="#E8F5EE" stroke="#1D8A5A" stroke-width="1.3"/><text x="76" y="1025">DB 조회 (AI 없음)</text>
+<rect x="30" y="1036" width="36" height="16" rx="4" fill="#FBE9E5" stroke="#C2412D" stroke-width="1.3"/><text x="76" y="1049">정해진 문장으로 답하고 끝</text>
+<rect x="190" y="988" width="36" height="16" rx="4" fill="#F3F7FE" stroke="#2A62C9" stroke-width="1.3" stroke-dasharray="4 3"/><text x="236" y="1001">내 담당</text>
+</g>
 </svg>
