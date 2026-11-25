@@ -58,6 +58,9 @@ h1, h2, h3 { text-wrap: balance; font-weight: 600; margin: 0; }
 .item.feature .thumb { aspect-ratio: 16 / 7; padding: 4% 9% 0; }
 .shot { flex: 1; min-width: 0; border-radius: 12px 12px 0 0; border: 1px solid var(--t-blue-l); border-bottom: 0; overflow: hidden; background: var(--surface); }
 .shot img { width: 100%; height: 100%; object-fit: cover; object-position: top left; }
+.thumb.fit { padding: 0 7%; align-items: center; }
+.thumb.fit .shot { flex: 1; border: 1px solid var(--t-sand-l); border-radius: 12px; box-shadow: 0 6px 18px rgba(143, 95, 73, .12); }
+.thumb.fit .shot img { height: auto; display: block; }
 .phones { flex: 1; display: flex; gap: 4%; justify-content: center; min-width: 0; }
 .phones img { width: 30%; height: auto; align-self: flex-start; border-radius: 14px 14px 0 0; border: 1px solid var(--t-green-l); border-bottom: 0; }
 .screen { flex: 1; background: var(--surface); border-radius: 12px 12px 0 0; border: 1px solid var(--t-sand-l); border-bottom: 0; padding: 20px; display: flex; flex-direction: column; gap: 11px; font-size: 12.5px; color: var(--body); min-width: 0; }
@@ -208,6 +211,12 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 .chips span.on { background: var(--t-sand-ink); border-color: var(--t-sand-ink); color: var(--surface); }
 .b ol { margin: 6px 0 0; padding-left: 20px; }
 .b li { font-size: 14px; line-height: 1.7; }
+.stage.plan { margin: 24px 0 0; padding: 24px; }
+.stage.plan figcaption { text-align: center; }
+.stage.sand video { border-color: var(--t-sand-l); }
+.gallery.sun { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px 20px; align-items: start; }
+.gallery.sun .shot { display: block; aspect-ratio: 5 / 4; border: 1px solid var(--line); border-radius: 10px; overflow: hidden; background: var(--surface); }
+.gallery.sun .shot img, .gallery.sun .shot video { display: block; width: 100%; border: 0; border-radius: 0; }
 
 /* QR캡처체리 리더기 분기 */
 .flow { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin-top: 24px; }
@@ -245,6 +254,7 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 @media (max-width: 460px) {
   .results { grid-template-columns: 1fr; }
   .gallery.phone { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .gallery.sun { grid-template-columns: minmax(0, 1fr); }
   .cap { flex-direction: column; gap: 2px; }
 }
 @media (prefers-reduced-motion: reduce) { .thumb { transition: none; } .card:hover .thumb { transform: none; } }
@@ -566,16 +576,7 @@ article[data-view] .glance b { font-size: 14px; font-weight: 600; line-height: 1
     </div>
     <div class="item">
       <a class="card" href="#sunscreen">
-        <div class="thumb sand" aria-hidden="true"><div class="screen">
-          <div class="meta">지성 · 백탁 싫어요 · 데일리</div>
-          <div style="font-weight:600;color:var(--ink)">추천 선크림</div>
-          <div class="bars">
-            <span>산뜻함</span><span class="bar"><i style="width:82%"></i></span>
-            <span>백탁</span><span class="bar"><i style="width:64%"></i></span>
-            <span>자극</span><span class="bar"><i style="width:72%"></i></span>
-          </div>
-          <div class="meta">리뷰 근거 보기 →</div>
-        </div></div>
+        <div class="thumb sand fit"><div class="shot"><img src="media/sun-card.jpg" alt="선크림 추천 챗봇 시연 화면: 건성·웜톤 맞춤 선크림 추천과 제품별 리뷰 언급 수·긍정률"></div></div>
         <div class="cap"><b>리뷰 7,500건을 근거로 보여주는 선크림 추천<small>RAG · LangGraph · 개인</small></b><span>올리브영 리뷰 · 2026</span></div>
       </a>
       <div class="links"><a class="lk" href="https://github.com/sikumdev/oliveyoung-review-insight-rag" target="_blank" rel="noopener">GitHub ↗</a></div>
@@ -1086,30 +1087,22 @@ article[data-view] .glance b { font-size: 14px; font-weight: 600; line-height: 1
 <article id="v-sunscreen" data-view hidden>
   <div class="casenav wrap"><nav class="pills" aria-label="목차">
     <a href="#">← Projects</a>
-    <button class="on" type="button" data-jump="c2-pb">문제</button><button type="button" data-jump="c2-ft">기능</button><button type="button" data-jump="c2-dt">데이터</button><button type="button" data-jump="c2-pl">예외 정책</button><a class="navlk" href="https://github.com/sikumdev/oliveyoung-review-insight-rag" target="_blank" rel="noopener">GitHub ↗</a>
+    <button class="on" type="button" data-jump="c2-pb">문제</button><button type="button" data-jump="c2-ft">기능</button><button type="button" data-jump="c2-sc">화면</button><button type="button" data-jump="c2-dt">데이터</button><button type="button" data-jump="c2-rk">추천 로직</button><button type="button" data-jump="c2-ts">문제 해결</button><button type="button" data-jump="c2-pl">예외 정책</button><a class="navlk" href="https://github.com/sikumdev/oliveyoung-review-insight-rag" target="_blank" rel="noopener">GitHub ↗</a>
   </nav></div>
   <div class="wrap">
     <header class="casehead">
-      <p class="eyebrow">올리브영 리뷰 기반 추천 · 개인 프로젝트 · 2026</p>
+      <p class="eyebrow">올리브영 리뷰 기반 추천 · 개인 프로젝트 · PoC · 2026</p>
       <h1>리뷰 7,500건을 근거로 보여주는 선크림 추천</h1>
       <p class="lede">"선크림이 수백 개인데, 리뷰를 다 읽지 않고 어떻게 내 피부에 맞는 걸 고를까?" 실구매 리뷰를 기준별로 수치화해, 추천과 함께 근거를 보여주는 챗봇을 만들었습니다.</p>
     </header>
     <figure class="stage sand" style="margin-inline:0">
-      <div class="convo" aria-label="화면 설계안: 대화 시나리오">
-        <div class="u">선크림 추천해줘</div>
-        <div class="node">ask_skin_type_node</div>
-        <div class="b">먼저 피부타입을 알려주시면 더 정확하게 추천드려요</div>
-        <div class="chips"><span>건성</span><span class="on">지성</span><span>복합성</span><span>민감성</span></div>
-        <div class="node">rec_subgraph → generate_answer_node</div>
-        <div class="b"><b>지성 피부에 끈적임 없는 선크림 TOP 3</b>
-          <ol><li>A 선크림 · "끈적임 없음" 언급 비율 · 신뢰도</li><li>B 선크림 · "산뜻한 발림성" 언급 비율 · 신뢰도</li><li>C 선크림 · 다양성 보너스 적용</li></ol></div>
-      </div>
-      <figcaption>화면 설계안 · LangGraph CLI로 구현해 화면 대신 기획 단계의 대화 시나리오를 옮겼습니다. 회색 글씨는 실제 노드 이름입니다.</figcaption>
+      <video src="media/sun-hero.mp4" poster="media/sun-hero.jpg" autoplay muted loop playsinline controls aria-label="‘촉촉한 거 추천해줘’에 피부타입을 되묻고, ‘건성이고 웜톤이에요’라는 답을 받아 리뷰 근거와 함께 추천하는 시연 영상"></video>
+      <figcaption>시연 · 피부타입을 모르면 먼저 되묻고, 답을 받으면 멈춘 곳부터 이어서 리뷰 근거와 함께 추천합니다. LangGraph Studio 실행 캡처를 이어 붙여 재구성한 영상입니다.</figcaption>
     </figure>
     <dl class="facts">
       <div><dt>역할</dt><dd><span class="chip">기획</span><span class="chip">데이터 가공</span><span class="chip">구현</span><span class="chip">품질 검증</span></dd></div>
-      <div><dt>기간</dt><dd><span class="chip">2026.03 – 04</span></dd></div>
-      <div><dt>팀</dt><dd><span class="chip">개인</span></dd></div>
+      <div><dt>기간</dt><dd><span class="chip">2026.03 – 04 구현</span><span class="chip">2026.11 순위 로직 개선</span></dd></div>
+      <div><dt>팀</dt><dd><span class="chip">개인 · 전체 코드 직접 작성</span><span class="chip">PoC · LangGraph Studio 실행</span></dd></div>
       <div><dt>데이터</dt><dd><span class="chip">선크림 30개</span><span class="chip">리뷰 7,500건</span></dd></div>
     </dl>
 
@@ -1130,10 +1123,37 @@ article[data-view] .glance b { font-size: 14px; font-weight: 600; line-height: 1
       <div class="sec-body">
       <div class="cards">
         <div><h3>정보가 부족하면 되묻기</h3><p>피부타입이나 비교 제품이 빠지면 검색하지 않고 먼저 묻습니다. 대답을 받으면 멈춘 지점부터 이어갑니다.</p></div>
-        <div><h3>DB 수치를 그대로 노출</h3><p>"끈적임 없음 80%" 같은 수치는 LLM이 아니라 집계 데이터에서 그대로 가져옵니다.</p></div>
-        <div><h3>3회 재검색 후 대안</h3><p>결과가 빈약하면 질문을 다시 써서 최대 3회 검색하고, 그래도 없으면 비슷한 조건의 대안을 보여줍니다.</p></div>
+        <div><h3>DB 수치를 그대로 노출</h3><p>"언급 40건 · 긍정률 90%" 같은 수치는 LLM이 쓰지 않습니다. 답변이 만들어진 뒤 코드가 집계 데이터에서 꺼내 그대로 끼워 넣습니다.</p></div>
+        <div><h3>근거가 없으면 먼저 밝히기</h3><p>찾은 리뷰가 3건 미만이면 질문을 다른 표현으로 바꿔 최대 3회 다시 찾습니다. 그래도 없으면 "관련 리뷰를 찾지 못했어요"를 먼저 말하고 일반 정보로 답합니다.</p></div>
         <div><h3>같은 제품 반복 방지</h3><p>이미 추천한 제품은 점수를 절반으로 낮춰 다른 제품도 함께 보여줍니다.</p></div>
-      </div>      </div>
+      </div>
+      <figure class="stage sand plan">
+      <div class="convo" aria-label="화면 설계안: 대화 시나리오">
+        <div class="u">선크림 추천해줘</div>
+        <div class="node">ask_skin_type_node</div>
+        <div class="b">먼저 피부타입을 알려주시면 더 정확하게 추천드려요</div>
+        <div class="chips"><span>건성</span><span class="on">지성</span><span>복합성</span><span>민감성</span></div>
+        <div class="node">rec_subgraph → generate_answer_node</div>
+        <div class="b"><b>지성 피부에 끈적임 없는 선크림 TOP 3</b>
+          <ol><li>A 선크림 · "끈적임 없음" 언급 비율 · 신뢰도</li><li>B 선크림 · "산뜻한 발림성" 언급 비율 · 신뢰도</li><li>C 선크림 · 다양성 보너스 적용</li></ol></div>
+      </div>
+      <figcaption>화면 설계안 · 기획 단계에서 그린 대화 시나리오입니다. 회색 글씨는 실제 노드 이름이고, 이 흐름대로 구현한 결과가 맨 위 시연 영상입니다. 별도 화면은 만들지 않아 빠른 응답 칩은 설계에만 있고, 실제로는 텍스트로 되묻습니다.</figcaption>
+      </figure>      </div>
+    </section>
+
+    <section class="sec" id="c2-sc">
+      <div class="sec-head">
+      <p class="label">화면 <span>· 실제 시연 화면</span></p>
+      <h2>물어보고, 이어가고, 근거를 붙입니다</h2>
+      </div>
+      <div class="sec-body">
+      <div class="gallery sun">
+        <figure><a class="shot" href="media/sun-ask-full.jpg" target="_blank" rel="noopener"><img src="media/sun-ask.jpg" alt="‘촉촉한 거 추천해줘’에 피부타입과 피부톤을 되묻는 화면" loading="lazy"></a><b>1 · 되묻기</b><figcaption>"촉촉한 거 추천해줘" → 피부타입부터 물어봅니다</figcaption></figure>
+        <figure><a class="shot" href="media/sun-resumed-full.jpg" target="_blank" rel="noopener"><video src="media/sun-resumed.mp4" poster="media/sun-resumed.jpg" autoplay muted loop playsinline aria-label="‘건성이고 웜톤이에요’라고 답하자 건성·웜톤 맞춤 선크림을 추천하는 화면"></video></a><b>2 · 이어서 추천</b><figcaption>"건성이고 웜톤" 답을 받고 멈춘 곳부터 이어갑니다</figcaption></figure>
+        <figure><a class="shot" href="media/sun-recommend-full.jpg" target="_blank" rel="noopener"><video src="media/sun-recommend.mp4" poster="media/sun-recommend.jpg" autoplay muted loop playsinline aria-label="지성·백탁 없는 조건으로 제품별 리뷰 언급 수와 긍정률을 보여주는 추천 화면"></video></a><b>3 · 조건 추천</b><figcaption>제품마다 리뷰 언급 수 · 긍정률을 그대로 보여줍니다</figcaption></figure>
+        <figure><a class="shot" href="media/sun-compare-full.jpg" target="_blank" rel="noopener"><video src="media/sun-compare.mp4" poster="media/sun-compare.jpg" autoplay muted loop playsinline aria-label="두 선크림을 밀림·보습력·자극 기준으로 비교한 표와 한 줄 결론"></video></a><b>4 · 두 제품 비교</b><figcaption>"뭐가 덜 밀려?" → 기준별 표와 한 줄 결론</figcaption></figure>
+      </div>
+      <p class="note">LangGraph Studio에서 실제로 실행한 화면입니다. 누르면 전체 화면을 원본 크기로 볼 수 있습니다.</p>      </div>
     </section>
 
     <section class="sec" id="c2-dt">
@@ -1146,35 +1166,75 @@ article[data-view] .glance b { font-size: 14px; font-weight: 600; line-height: 1
       <div class="cards">
         <div><h3>1 · 수집</h3><p>제품 30개 × 최대 250건. 피부타입 5종 × 40건 + 전체 50건을 유용순으로 수집하고 중복을 제거했습니다.</p></div>
         <div><h3>2 · 분류</h3><p>8개 기준별 긍정 · 부정 · 없음. 분모는 전체 리뷰가 아니라 그 기준을 언급한 리뷰 수입니다.</p></div>
-        <div><h3>3 · 활용</h3><p>언급이 5건 미만이면 표시하지 않고, 피부타입별 가중치를 더해 추천 점수를 계산합니다.</p></div>
+        <div><h3>3 · 활용</h3><p>질문마다 리뷰를 LLM에 읽히지 않도록 분류 결과를 DB 컬럼으로 저장했습니다. 언급이 5건 미만인 기준은 화면에 표시하지 않습니다.</p></div>
       </div>      </div>
+    </section>
+
+    <section class="sec" id="c2-rk">
+      <div class="sec-head">
+      <p class="label">추천 로직</p>
+      <h2>순위는 숫자로 정하고, LLM은 설명만 합니다</h2>
+      </div>
+      <div class="sec-body">
+      <p>같은 질문에 다른 순위가 나오면 왜 그 제품인지 설명할 수 없습니다. 그래서 순위 계산과 "리뷰가 충분한가" 판정에는 LLM을 쓰지 않았습니다. 예: "지성인데 백탁 없는 거 추천해줘"</p>
+      <div class="flow">
+        <div><span class="step">1 · 긍정률</span><h3>기준별 긍정률</h3><p>제품마다 "백탁을 언급한 리뷰 중 긍정 비율"을 꺼냅니다.</p></div>
+        <div><span class="step">2 · 적은 언급 보정</span><h3>2건 중 2건 = 100%?</h3><p>언급이 적을수록 전체 평균 쪽으로 끌어당겨, 우연히 높은 비율이 1위가 되지 않게 합니다.</p></div>
+        <div><span class="step">3 · 가중치</span><h3>사용자 조건 85%</h3><p>말한 조건(백탁)에 85%, 지성 피부가 중요하게 보는 기준들에 15%를 줘 점수를 냅니다.</p></div>
+        <div><span class="step">4 · 상위 5개</span><h3>작은 보정</h3><p>지성 사용자가 많이 쓴 제품 +0.05, 이미 추천한 제품은 점수 절반.</p></div>
+        <div><span class="step">5 · 근거 리뷰</span><h3>제품별로 고르게</h3><p>뽑힌 5개 제품에서 지성 사용자 리뷰를 제품마다 고르게 가져옵니다.</p></div>
+        <div><span class="step">6 · 답변</span><h3>LLM은 여기서만</h3><p>LLM이 리뷰를 읽고 설명을 쓰고, 수치는 코드가 DB 값으로 붙입니다.</p></div>
+      </div>      </div>
+    </section>
+
+    <section class="sec" id="c2-ts">
+      <div class="sec-head">
+      <p class="label">문제 해결</p>
+      <h2>무엇을 물어도 같은 제품이 1위였습니다</h2>
+      </div>
+      <div class="sec-body">
+      <p>지성 + 백탁 없음, 건성 + 보습, 민감성 + 순함. 조건을 바꿔도 1위는 항상 같은 제품이었습니다. 그런데 평가 점수는 100%였습니다.</p>
+      <div class="split">
+        <div><h3>원인</h3><p>점수에 "언급 수 ÷ 리뷰 수"를 곱하고 있었습니다. 그 제품은 리뷰 한 건에 기준을 평균 4.75개 언급했고(다른 제품 중앙값 2.53개), 리뷰가 길다는 이유만으로 모든 점수가 2배 가까이 부풀었습니다.</p></div>
+        <div class="good"><h3>해결</h3><p>언급 수는 점수에 곱하지 않고 "믿을 만한가"를 판단하는 데만 썼습니다. 기준별로 점수 범위를 맞추고, 사용자가 말한 조건의 비중을 60%에서 85%로 올렸습니다. 같은 함수에서 버그 3개도 함께 고쳤습니다.</p></div>
+      </div>
+      <div class="results">
+        <div><b>1개 → 5개</b><span>11개 조건에서 1위로 나온 서로 다른 제품 수</span></div>
+        <div><b>100% → 90%</b><span>평가 Hit@3 (20문항). 낮아졌지만 이제 믿을 수 있는 숫자</span></div>
+        <div><b>14 / 20</b><span>정답 라벨에 그 제품이 들어 있던 문항 수</span></div>
+      </div>
+      <p class="note">배운 점 · 정답 라벨을 시스템 결과를 보면서 만들면, 평가가 시스템을 검증하지 못합니다. 남은 과제: 비교·필터 5문항은 제품명 인식만 확인하는 문항이고, 라벨을 시스템 결과와 독립적으로 다시 만드는 것이 다음 단계입니다.</p>      </div>
     </section>
 
     <section class="sec" id="c2-pl">
       <div class="sec-head">
-      <p class="label">예외 정책 <span>· 기획 산출물</span></p>
-      <h2>어떤 상황에서도 서비스가 침묵하지 않게</h2>
+      <p class="label">예외 정책 <span>· 실제 동작 기준</span></p>
+      <h2>모르면 묻고, 근거가 없으면 없다고 말합니다</h2>
       </div>
       <div class="sec-body">
       <div class="tbl"><table>
-        <thead><tr><th scope="col">상황</th><th scope="col">사용자에게 보이는 메시지</th><th scope="col">시스템 동작</th></tr></thead>
+        <thead><tr><th scope="col">상황</th><th scope="col">사용자에게 보이는 메시지</th><th scope="col">시스템 동작</th><th scope="col">상태</th></tr></thead>
         <tbody>
-          <tr><th scope="row">피부타입 미지정</th><td>"먼저 피부타입을 알려주시면 더 정확하게 추천드려요" + 빠른 응답 칩 4개</td><td>되묻기 노드 진입 · 슬롯 저장</td></tr>
-          <tr><th scope="row">검색 결과 부족</th><td>"더 정확한 결과를 찾고 있어요…"</td><td>질문 재작성 · 최대 3회 · 조건 단계적 완화</td></tr>
-          <tr><th scope="row">3회 후에도 실패</th><td>"정확히 일치하는 제품은 없지만, 비슷한 조건의 인기 제품을 보여드릴게요"</td><td>신뢰도 기준 차순위 후보 반환</td></tr>
-          <tr><th scope="row">반복 추천</th><td>"이번엔 다른 스타일의 제품도 함께 보여드릴게요"</td><td>다양성 패널티 · 중복 제외</td></tr>
-          <tr><th scope="row">시스템 오류</th><td>"잠시 후 다시 시도해주세요" + 재시도 버튼</td><td>기술 용어 노출 금지 · 직전 입력 보존</td></tr>
+          <tr><th scope="row">피부타입 · 피부톤 없음</th><td>"피부타입과 피부톤을 알려주시면 더 정확하게 추천해드릴 수 있어요!"</td><td>그래프를 멈추고(interrupt) 답을 받으면 원래 질문으로 돌아가 이어서 추천</td><td>구현</td></tr>
+          <tr><th scope="row">비교 제품이 1개뿐</th><td>"'OO'와 비교할 다른 제품을 알려주세요!"</td><td>제품이 2개 모일 때까지 되묻기</td><td>구현</td></tr>
+          <tr><th scope="row">찾은 리뷰가 3건 미만</th><td>(따로 보이지 않음)</td><td>질문을 다른 표현으로 바꿔 다시 검색 · 최대 3회</td><td>구현</td></tr>
+          <tr><th scope="row">3회 후에도 부족</th><td>"관련 리뷰를 찾지 못했어요. 일반적인 정보를 바탕으로 답변드릴게요"</td><td>근거 없음을 먼저 밝히고 일반 지식으로 답변</td><td>구현</td></tr>
+          <tr><th scope="row">같은 대화에서 다시 추천</th><td>(따로 보이지 않음)</td><td>이미 추천한 제품 점수 × 0.5</td><td>구현</td></tr>
+          <tr><th scope="row">시스템 오류</th><td>"잠시 후 다시 시도해주세요" + 재시도 버튼</td><td>기술 용어 노출 금지 · 직전 입력 보존</td><td>설계만 · 화면 미구현</td></tr>
         </tbody>
       </table></div>
       <div class="stack"><span>LangGraph</span><span>PostgreSQL</span><span>pgvector</span><span>GPT-4o-mini</span><span>ko-sroberta</span></div>      </div>
     </section>
-    <section class="glance glance-end" aria-label="정리" style="--n:4">
+    <section class="glance glance-end" aria-label="정리" style="--n:7">
       <p class="glance-t">정리</p>
       <ol>
         <li><button type="button" data-jump="c2-pb"><span class="n">01 문제</span><b>리뷰가 수만 건이라 평점만으로는 내 피부 기준을 알 수 없습니다</b></button></li>
         <li><button type="button" data-jump="c2-ft"><span class="n">02 주요</span><b>정보가 부족하면 먼저 묻고, 수치는 지어내지 않습니다</b></button></li>
-        <li><button type="button" data-jump="c2-dt"><span class="n">03 데이터</span><b>리뷰 7,500건을 8개 기준으로 나눠 체감 비율로 집계했습니다</b></button></li>
-        <li><button type="button" data-jump="c2-pl"><span class="n">04 예외</span><b>어떤 상황에서도 서비스가 침묵하지 않게 예외 메시지를 정했습니다</b></button></li>
+        <li><button type="button" data-jump="c2-sc"><span class="n">03 화면</span><b>되묻기 → 이어서 추천 → 비교까지 실제로 돌려본 화면</b></button></li>
+        <li><button type="button" data-jump="c2-dt"><span class="n">04 데이터</span><b>리뷰 7,500건을 8개 기준으로 나눠 체감 비율로 집계했습니다</b></button></li>
+        <li><button type="button" data-jump="c2-rk"><span class="n">05 로직</span><b>순위는 숫자로 정하고, LLM은 설명만 합니다</b></button></li>
+        <li><button type="button" data-jump="c2-ts"><span class="n">06 해결</span><b>1위 쏠림을 고쳐 1위 제품이 1개 → 5개로 다양해졌습니다</b></button></li>
+        <li><button type="button" data-jump="c2-pl"><span class="n">07 예외</span><b>모르면 묻고, 근거가 없으면 없다고 먼저 말합니다</b></button></li>
       </ol>
     </section>
   </div>
@@ -1873,8 +1933,9 @@ article[data-view] .glance b { font-size: 14px; font-weight: 600; line-height: 1
       el.hidden = el.id !== 'v-' + target;
       if (el.hidden) el.querySelectorAll('video').forEach(function (v) { v.pause(); });
     });
-    var hero = document.querySelector('#v-' + target + ' .stage video');
-    if (hero && !matchMedia('(prefers-reduced-motion: reduce)').matches) { var p = hero.play(); if (p && p.catch) p.catch(function () {}); }
+    if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      document.querySelectorAll('#v-' + target + ' video[autoplay]').forEach(function (v) { var p = v.play(); if (p && p.catch) p.catch(function () {}); });
+    }
     window.scrollTo(0, 0);
   }
   window.addEventListener('hashchange', show);
