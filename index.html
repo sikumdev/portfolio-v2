@@ -577,7 +577,7 @@ article[data-view] .glance b { font-size: 14px; font-weight: 600; line-height: 1
     <div class="item">
       <a class="card" href="#sunscreen">
         <div class="thumb sand fit"><div class="shot"><img src="media/sun-card.jpg" alt="선크림 추천 챗봇 시연 화면: 건성·웜톤 맞춤 선크림 추천과 제품별 리뷰 언급 수·긍정률"></div></div>
-        <div class="cap"><b>리뷰 7,500건을 근거로 보여주는 선크림 추천<small>RAG · LangGraph · 개인</small></b><span>올리브영 리뷰 · 2026</span></div>
+        <div class="cap"><b>리뷰 6,000건을 근거로 보여주는 선크림 추천<small>RAG · LangGraph · 개인</small></b><span>올리브영 리뷰 · 2026</span></div>
       </a>
       <div class="links"><a class="lk" href="https://github.com/sikumdev/oliveyoung-review-insight-rag" target="_blank" rel="noopener">GitHub ↗</a></div>
     </div>
@@ -1092,7 +1092,7 @@ article[data-view] .glance b { font-size: 14px; font-weight: 600; line-height: 1
   <div class="wrap">
     <header class="casehead">
       <p class="eyebrow">올리브영 리뷰 기반 추천 · 개인 프로젝트 · PoC · 2026</p>
-      <h1>리뷰 7,500건을 근거로 보여주는 선크림 추천</h1>
+      <h1>리뷰 6,000건을 근거로 보여주는 선크림 추천</h1>
       <p class="lede">"선크림이 수백 개인데, 리뷰를 다 읽지 않고 어떻게 내 피부에 맞는 걸 고를까?" 실구매 리뷰를 기준별로 수치화해, 추천과 함께 근거를 보여주는 챗봇을 만들었습니다.</p>
     </header>
     <figure class="stage sand" style="margin-inline:0">
@@ -1103,7 +1103,7 @@ article[data-view] .glance b { font-size: 14px; font-weight: 600; line-height: 1
       <div><dt>역할</dt><dd><span class="chip">기획</span><span class="chip">데이터 가공</span><span class="chip">구현</span><span class="chip">품질 검증</span></dd></div>
       <div><dt>기간</dt><dd><span class="chip">2026.03 – 04 구현</span><span class="chip">2026.11 순위 로직 개선</span></dd></div>
       <div><dt>팀</dt><dd><span class="chip">개인 · 전체 코드 직접 작성</span><span class="chip">PoC · LangGraph Studio 실행</span></dd></div>
-      <div><dt>데이터</dt><dd><span class="chip">선크림 30개</span><span class="chip">리뷰 7,500건</span></dd></div>
+      <div><dt>데이터</dt><dd><span class="chip">선크림 30개</span><span class="chip">리뷰 5,999건</span></dd></div>
     </dl>
 
     <section class="sec" id="c2-pb">
@@ -1112,7 +1112,7 @@ article[data-view] .glance b { font-size: 14px; font-weight: 600; line-height: 1
       <h2>리뷰가 너무 많아 판단 근거가 되지 못합니다</h2>
       </div>
       <div class="sec-body">
-      <p>인기 제품은 리뷰가 수만 건입니다. 평점만으로는 "지성인데 끈적이지 않는지" 같은 내 기준을 알 수 없습니다. 리뷰 1,000건 이상인 선크림 30개를 골라, 피부타입별로 균등하게 샘플링해 7,500건을 모았습니다.</p>      </div>
+      <p>인기 제품은 리뷰가 수만 건입니다. 평점만으로는 "지성인데 끈적이지 않는지" 같은 내 기준을 알 수 없습니다. 리뷰 1,000건 이상인 선크림 30개를 골라, 피부타입별로 균등하게 샘플링했습니다. 제품당 최대 250건(최대 7,500건)을 모으고 중복을 빼니 5,999건이 남았습니다.</p>      </div>
     </section>
 
     <section class="sec" id="c2-ft">
@@ -1125,7 +1125,7 @@ article[data-view] .glance b { font-size: 14px; font-weight: 600; line-height: 1
         <div><h3>정보가 부족하면 되묻기</h3><p>피부타입이나 비교 제품이 빠지면 검색하지 않고 먼저 묻습니다. 대답을 받으면 멈춘 지점부터 이어갑니다.</p></div>
         <div><h3>DB 수치를 그대로 노출</h3><p>"언급 40건 · 긍정률 90%" 같은 수치는 LLM이 쓰지 않습니다. 답변이 만들어진 뒤 코드가 집계 데이터에서 꺼내 그대로 끼워 넣습니다.</p></div>
         <div><h3>근거가 없으면 먼저 밝히기</h3><p>찾은 리뷰가 3건 미만이면 질문을 다른 표현으로 바꿔 최대 3회 다시 찾습니다. 그래도 없으면 "관련 리뷰를 찾지 못했어요"를 먼저 말하고 일반 정보로 답합니다.</p></div>
-        <div><h3>같은 제품 반복 방지</h3><p>이미 추천한 제품은 점수를 절반으로 낮춰 다른 제품도 함께 보여줍니다.</p></div>
+        <div><h3>물은 기준부터 답하기</h3><p>"뭐가 덜 밀려?"라고 물으면 비교표 첫 줄과 결론 첫마디에 밀림을 둡니다. 질문에서 기준을 뽑을 때 사용자가 직접 물은 기준을 맨 앞에 놓습니다.</p></div>
       </div>
       <figure class="stage sand plan">
       <div class="convo" aria-label="화면 설계안: 대화 시나리오">
@@ -1181,7 +1181,7 @@ article[data-view] .glance b { font-size: 14px; font-weight: 600; line-height: 1
         <div><span class="step">1 · 긍정률</span><h3>기준별 긍정률</h3><p>제품마다 "백탁을 언급한 리뷰 중 긍정 비율"을 꺼냅니다.</p></div>
         <div><span class="step">2 · 적은 언급 보정</span><h3>2건 중 2건 = 100%?</h3><p>언급이 적을수록 전체 평균 쪽으로 끌어당겨, 우연히 높은 비율이 1위가 되지 않게 합니다.</p></div>
         <div><span class="step">3 · 가중치</span><h3>사용자 조건 85%</h3><p>말한 조건(백탁)에 85%, 지성 피부가 중요하게 보는 기준들에 15%를 줘 점수를 냅니다.</p></div>
-        <div><span class="step">4 · 상위 5개</span><h3>작은 보정</h3><p>지성 사용자가 많이 쓴 제품 +0.05, 이미 추천한 제품은 점수 절반.</p></div>
+        <div><span class="step">4 · 상위 5개</span><h3>작은 보정</h3><p>지성 사용자가 가장 많이 쓴 제품이면 +0.05.</p></div>
         <div><span class="step">5 · 근거 리뷰</span><h3>제품별로 고르게</h3><p>뽑힌 5개 제품에서 지성 사용자 리뷰를 제품마다 고르게 가져옵니다.</p></div>
         <div><span class="step">6 · 답변</span><h3>LLM은 여기서만</h3><p>LLM이 리뷰를 읽고 설명을 쓰고, 수치는 코드가 DB 값으로 붙입니다.</p></div>
       </div>      </div>
@@ -1201,7 +1201,7 @@ article[data-view] .glance b { font-size: 14px; font-weight: 600; line-height: 1
       <div class="results">
         <div><b>1개 → 5개</b><span>11개 조건에서 1위로 나온 서로 다른 제품 수</span></div>
         <div><b>100% → 90%</b><span>평가 Hit@3 (20문항). 낮아졌지만 이제 믿을 수 있는 숫자</span></div>
-        <div><b>14 / 20</b><span>정답 라벨에 그 제품이 들어 있던 문항 수</span></div>
+        <div><b>12 / 20</b><span>정답 라벨에 그 제품이 들어 있던 문항 수</span></div>
       </div>
       <p class="note">배운 점 · 정답 라벨을 시스템 결과를 보면서 만들면, 평가가 시스템을 검증하지 못합니다. 남은 과제: 비교·필터 5문항은 제품명 인식만 확인하는 문항이고, 라벨을 시스템 결과와 독립적으로 다시 만드는 것이 다음 단계입니다.</p>      </div>
     </section>
@@ -1219,7 +1219,6 @@ article[data-view] .glance b { font-size: 14px; font-weight: 600; line-height: 1
           <tr><th scope="row">비교 제품이 1개뿐</th><td>"'OO'와 비교할 다른 제품을 알려주세요!"</td><td>제품이 2개 모일 때까지 되묻기</td><td>구현</td></tr>
           <tr><th scope="row">찾은 리뷰가 3건 미만</th><td>(따로 보이지 않음)</td><td>질문을 다른 표현으로 바꿔 다시 검색 · 최대 3회</td><td>구현</td></tr>
           <tr><th scope="row">3회 후에도 부족</th><td>"관련 리뷰를 찾지 못했어요. 일반적인 정보를 바탕으로 답변드릴게요"</td><td>근거 없음을 먼저 밝히고 일반 지식으로 답변</td><td>구현</td></tr>
-          <tr><th scope="row">같은 대화에서 다시 추천</th><td>(따로 보이지 않음)</td><td>이미 추천한 제품 점수 × 0.5</td><td>구현</td></tr>
           <tr><th scope="row">시스템 오류</th><td>"잠시 후 다시 시도해주세요" + 재시도 버튼</td><td>기술 용어 노출 금지 · 직전 입력 보존</td><td>설계만 · 화면 미구현</td></tr>
         </tbody>
       </table></div>
@@ -1231,7 +1230,7 @@ article[data-view] .glance b { font-size: 14px; font-weight: 600; line-height: 1
         <li><button type="button" data-jump="c2-pb"><span class="n">01 문제</span><b>리뷰가 수만 건이라 평점만으로는 내 피부 기준을 알 수 없습니다</b></button></li>
         <li><button type="button" data-jump="c2-ft"><span class="n">02 주요</span><b>정보가 부족하면 먼저 묻고, 수치는 지어내지 않습니다</b></button></li>
         <li><button type="button" data-jump="c2-sc"><span class="n">03 화면</span><b>되묻기 → 이어서 추천 → 비교까지 실제로 돌려본 화면</b></button></li>
-        <li><button type="button" data-jump="c2-dt"><span class="n">04 데이터</span><b>리뷰 7,500건을 8개 기준으로 나눠 체감 비율로 집계했습니다</b></button></li>
+        <li><button type="button" data-jump="c2-dt"><span class="n">04 데이터</span><b>리뷰 5,999건을 8개 기준으로 나눠 체감 비율로 집계했습니다</b></button></li>
         <li><button type="button" data-jump="c2-rk"><span class="n">05 로직</span><b>순위는 숫자로 정하고, LLM은 설명만 합니다</b></button></li>
         <li><button type="button" data-jump="c2-ts"><span class="n">06 해결</span><b>1위 쏠림을 고쳐 1위 제품이 1개 → 5개로 다양해졌습니다</b></button></li>
         <li><button type="button" data-jump="c2-pl"><span class="n">07 예외</span><b>모르면 묻고, 근거가 없으면 없다고 먼저 말합니다</b></button></li>
