@@ -1097,11 +1097,11 @@ article[data-view] .glance b { font-size: 14px; font-weight: 600; line-height: 1
     </header>
     <figure class="stage sand" style="margin-inline:0">
       <video src="media/sun-hero.mp4" poster="media/sun-hero.jpg" autoplay muted loop playsinline controls aria-label="‘촉촉한 거 추천해줘’에 피부타입을 되묻고, ‘건성이고 웜톤이에요’라는 답을 받아 리뷰 근거와 함께 추천하는 시연 영상"></video>
-      <figcaption>시연 · 피부타입을 모르면 먼저 되묻고, 답을 받으면 멈춘 곳부터 이어서 리뷰 근거와 함께 추천합니다. LangGraph Studio에서 실제로 입력하고 실행한 화면을 녹화했습니다. 답변을 기다리는 구간만 빠르게 재생합니다.</figcaption>
+      <figcaption>시연 · 피부타입을 모르면 먼저 되묻고, 답을 받으면 멈춘 곳부터 이어서 리뷰 근거와 함께 추천합니다. LangGraph Studio에서 실제로 실행한 화면을 녹화했습니다. 질문은 스크립트로 한 글자씩 자동 타이핑했고, 답변을 기다리는 구간만 빠르게 재생합니다.</figcaption>
     </figure>
     <dl class="facts">
       <div><dt>역할</dt><dd><span class="chip">기획</span><span class="chip">데이터 가공</span><span class="chip">구현</span><span class="chip">품질 검증</span></dd></div>
-      <div><dt>기간</dt><dd><span class="chip">2026.03 – 04 구현</span><span class="chip">2026.11 순위 로직 개선</span></dd></div>
+      <div><dt>기간</dt><dd><span class="chip">2026.03 구현</span><span class="chip">2026.11 순위 로직 개선</span></dd></div>
       <div><dt>팀</dt><dd><span class="chip">개인 · 전체 코드 직접 작성</span><span class="chip">PoC · LangGraph Studio 실행</span></dd></div>
       <div><dt>데이터</dt><dd><span class="chip">선크림 30개</span><span class="chip">리뷰 5,999건</span></dd></div>
     </dl>
@@ -1123,7 +1123,7 @@ article[data-view] .glance b { font-size: 14px; font-weight: 600; line-height: 1
       <div class="sec-body">
       <div class="cards">
         <div><h3>정보가 부족하면 되묻기</h3><p>피부타입이나 비교 제품이 빠지면 검색하지 않고 먼저 묻습니다. 대답을 받으면 멈춘 지점부터 이어갑니다.</p></div>
-        <div><h3>DB 수치를 그대로 노출</h3><p>"언급 40건 · 긍정률 90%" 같은 수치는 LLM이 쓰지 않습니다. 답변이 만들어진 뒤 코드가 집계 데이터에서 꺼내 그대로 끼워 넣고, 두 제품 비교의 승자와 표 숫자도 코드가 긍정률로 정합니다.</p></div>
+        <div><h3>DB 수치를 그대로 노출</h3><p>"언급 40건 · 긍정률 90%" 같은 수치는 LLM이 쓰지 않습니다. 답변이 만들어진 뒤 코드가 집계 데이터에서 꺼내 그대로 끼워 넣고, 두 제품 비교도 DB에 있는 기준은 승자와 표 숫자를 코드가 긍정률로 정합니다.</p></div>
         <div><h3>근거가 없으면 먼저 밝히기</h3><p>찾은 리뷰가 3건 미만이면 질문을 다른 표현으로 바꿔 최대 3회 다시 찾습니다. 그래도 없으면 "관련 리뷰를 찾지 못했어요"를 먼저 말하고 일반 정보로 답합니다.</p></div>
         <div><h3>물은 기준부터 답하기</h3><p>"뭐가 덜 밀려?"라고 물으면 비교표 첫 줄과 결론 첫마디에 밀림을 둡니다. 질문에서 기준을 뽑을 때 사용자가 직접 물은 기준을 맨 앞에 놓습니다.</p></div>
       </div>
@@ -1153,7 +1153,7 @@ article[data-view] .glance b { font-size: 14px; font-weight: 600; line-height: 1
         <figure><a class="shot" href="media/sun-recommend-full.jpg" target="_blank" rel="noopener"><video src="media/sun-recommend.mp4" poster="media/sun-recommend.jpg" autoplay muted loop playsinline aria-label="지성·백탁 없는 조건으로 제품마다 백탁없음 언급 수와 긍정률을 맨 위에 보여주는 추천 화면"></video></a><b>3 · 조건 추천</b><figcaption>물은 기준(백탁)의 언급 수 · 긍정률을 제품마다 맨 위에 붙입니다</figcaption></figure>
         <figure><a class="shot" href="media/sun-compare-full.jpg" target="_blank" rel="noopener"><video src="media/sun-compare.mp4" poster="media/sun-compare.jpg" autoplay muted loop playsinline aria-label="두 선크림을 밀림·보습력·자극·발림성·지속력 기준으로 DB 긍정률을 넣어 비교한 표와 한 줄 결론"></video></a><b>4 · 두 제품 비교</b><figcaption>"뭐가 덜 밀려?" → DB 긍정률로 채운 비교표와 한 줄 결론</figcaption></figure>
       </div>
-      <p class="note">LangGraph Studio에서 실제로 실행한 화면입니다(2026.11 재녹화). 답변을 기다리는 구간은 빠르게 재생합니다. 누르면 전체 화면을 원본 크기로 볼 수 있습니다.</p>      </div>
+      <p class="note">LangGraph Studio에서 실제로 실행한 화면입니다(2026.11 재녹화). 질문은 자동 타이핑으로 입력했고, 답변을 기다리는 구간은 빠르게 재생합니다. 누르면 전체 화면을 원본 크기로 볼 수 있습니다.</p>      </div>
     </section>
 
     <section class="sec" id="c2-dt">
@@ -1162,7 +1162,7 @@ article[data-view] .glance b { font-size: 14px; font-weight: 600; line-height: 1
       <h2>리뷰를 8개 기준으로 나눠 체감 비율로 집계</h2>
       </div>
       <div class="sec-body">
-      <p>키워드 매칭은 "끈적이지 않아요"를 "끈적임"으로 잘못 분류합니다. 그래서 LLM으로 리뷰마다 8개 기준(산뜻함 · 끈적임 · 보습 · 자극 · 백탁 · 밀림 · 지속력 · 눈시림)을 긍정 · 부정 · 언급 없음으로 분류했습니다.</p>
+      <p>키워드 매칭은 "끈적이지 않아요"를 "끈적임"으로 잘못 분류할 수 있습니다. 그래서 LLM으로 리뷰마다 8개 기준(산뜻함 · 끈적임 · 보습 · 자극 · 백탁 · 밀림 · 지속력 · 눈시림)을 긍정 · 부정 · 언급 없음으로 분류했습니다.</p>
       <div class="cards">
         <div><h3>1 · 수집</h3><p>제품 30개 × 최대 250건. 피부타입 5종 × 40건 + 전체 50건을 유용순으로 수집하고 중복을 제거했습니다.</p></div>
         <div><h3>2 · 분류</h3><p>8개 기준별 긍정 · 부정 · 없음. 분모는 전체 리뷰가 아니라 그 기준을 언급한 리뷰 수입니다.</p></div>
@@ -1180,8 +1180,8 @@ article[data-view] .glance b { font-size: 14px; font-weight: 600; line-height: 1
       <div class="flow">
         <div><span class="step">1 · 긍정률</span><h3>기준별 긍정률</h3><p>제품마다 "백탁을 언급한 리뷰 중 긍정 비율"을 꺼냅니다.</p></div>
         <div><span class="step">2 · 적은 언급 보정</span><h3>2건 중 2건 = 100%?</h3><p>언급이 적을수록 전체 평균 쪽으로 끌어당겨, 우연히 높은 비율이 1위가 되지 않게 합니다.</p></div>
-        <div><span class="step">3 · 가중치</span><h3>사용자 조건 85%</h3><p>말한 조건(백탁)에 85%, 지성 피부가 중요하게 보는 기준들에 15%를 줘 점수를 냅니다.</p></div>
-        <div><span class="step">4 · 상위 5개</span><h3>작은 보정</h3><p>올리브영 통계에서 요청한 피부타입(예: 건성)이 그 제품의 최다 사용자층이면 +0.05.</p></div>
+        <div><span class="step">3 · 가중치</span><h3>사용자 조건 85%</h3><p>말한 조건(백탁)에 85%, 나머지 15%는 지성 사용자 리뷰에서 각 기준이 언급된 비율대로 나눠 점수를 냅니다.</p></div>
+        <div><span class="step">4 · 보정 후 상위 5개</span><h3>평점 · 피부톤 반영</h3><p>상위 15개 후보에 평점 · 리뷰 수 10%, 피부타입 +0.05를 더합니다. 피부톤을 말하면 그 톤 사용자 리뷰 수를 40% 반영합니다(인기 제품 쪽으로 기울 수 있음).</p></div>
         <div><span class="step">5 · 근거 리뷰</span><h3>제품별로 고르게</h3><p>뽑힌 5개 제품에서 지성 사용자 리뷰를 제품마다 고르게 가져옵니다.</p></div>
         <div><span class="step">6 · 답변</span><h3>LLM은 여기서만</h3><p>LLM이 리뷰를 읽고 설명을 쓰고, 수치는 코드가 DB 값으로 붙입니다.</p></div>
       </div>      </div>
@@ -1199,7 +1199,7 @@ article[data-view] .glance b { font-size: 14px; font-weight: 600; line-height: 1
         <div class="good"><h3>해결</h3><p>언급 수는 점수에 곱하지 않고 "믿을 만한가"를 판단하는 데만 썼습니다. 기준별로 점수 범위를 맞추고, 사용자가 말한 조건의 비중을 60%에서 85%로 올렸습니다. 같은 함수에서 버그 3개도 함께 고쳤습니다.</p></div>
       </div>
       <div class="results">
-        <div><b>1개 → 5개</b><span>11개 조건에서 1위로 나온 서로 다른 제품 수</span></div>
+        <div><b>1개 → 5개</b><span>피부타입 4종 × 조건 6종, 24개 조건에서 1위로 나온 서로 다른 제품 수</span></div>
         <div><b>100% → 86.7%</b><span>평가 Hit@3 (순위 15문항). 낮아졌지만 이제 믿을 수 있는 숫자</span></div>
         <div><b>12 / 15</b><span>정답 라벨에 그 제품이 들어 있던 문항 수</span></div>
       </div>
@@ -1219,7 +1219,7 @@ article[data-view] .glance b { font-size: 14px; font-weight: 600; line-height: 1
       </div>
       <div class="results">
         <div><b>패배 → 승리</b><span>보습 긍정률 94% 제품의 보습력 판정 (상대 제품 71%)</span></div>
-        <div><b>LLM → 코드</b><span>비교 승자와 표 숫자를 정하는 주체</span></div>
+        <div><b>LLM → 코드</b><span>비교 승자와 표 숫자를 정하는 주체 (DB에 있는 8개 기준)</span></div>
       </div>
       <p class="note">배운 점 · 프롬프트의 "지시"는 지켜진다는 보장이 없습니다. 틀리면 안 되는 숫자와 판정은 코드가 정하고, LLM에게는 설명만 맡깁니다.</p>      </div>
     </section>
@@ -1248,7 +1248,7 @@ article[data-view] .glance b { font-size: 14px; font-weight: 600; line-height: 1
         <li><button type="button" data-jump="c2-pb"><span class="n">01 문제</span><b>리뷰가 수만 건이라 평점만으로는 내 피부 기준을 알 수 없습니다</b></button></li>
         <li><button type="button" data-jump="c2-ft"><span class="n">02 주요</span><b>정보가 부족하면 먼저 묻고, 수치는 지어내지 않습니다</b></button></li>
         <li><button type="button" data-jump="c2-sc"><span class="n">03 화면</span><b>되묻기 → 이어서 추천 → 비교까지 실제로 돌려본 화면</b></button></li>
-        <li><button type="button" data-jump="c2-dt"><span class="n">04 데이터</span><b>리뷰 5,999건을 8개 기준으로 나눠 체감 비율로 집계했습니다</b></button></li>
+        <li><button type="button" data-jump="c2-dt"><span class="n">04 데이터</span><b>리뷰 약 6,000건을 8개 기준으로 나눠 체감 비율로 집계했습니다</b></button></li>
         <li><button type="button" data-jump="c2-rk"><span class="n">05 로직</span><b>순위는 숫자로 정하고, LLM은 설명만 합니다</b></button></li>
         <li><button type="button" data-jump="c2-ts"><span class="n">06 해결</span><b>1위 쏠림을 고쳐 1위 제품이 1개 → 5개로 다양해졌습니다</b></button></li>
         <li><button type="button" data-jump="c2-ts2"><span class="n">07 재점검</span><b>비교 승자를 LLM 대신 DB 긍정률로 정하게 바꿨습니다</b></button></li>
