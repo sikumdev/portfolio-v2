@@ -562,7 +562,7 @@ article[data-view] .glance b { font-size: 14px; font-weight: 600; line-height: 1
         <div class="thumb blue"><div class="shot"><img src="media/chatbot-general.jpg" alt="찾아드림 실제 서비스 화면: 등록한 에어컨 모델의 설명서 그림과 함께 필터 청소 방법을 답하는 모습"></div></div>
         <div class="cap"><b>근거가 없으면 답하지 않는 가전 챗봇<small>RAG · 서비스 기획 · 웹 바이브 코딩</small></b><span>찾아드림 · 2026</span></div>
       </a>
-      <div class="links"><a class="lk" href="https://github.com/Broogun/ask-my-appliance" target="_blank" rel="noopener">GitHub ↗</a></div>
+      <div class="links"><a class="lk" href="https://github.com/sikumdev/ask-my-appliance-planning" target="_blank" rel="noopener">GitHub ↗</a></div>
     </div>
     <div class="item">
       <a class="card" href="#sunscreen">
@@ -895,7 +895,7 @@ article[data-view] .glance b { font-size: 14px; font-weight: 600; line-height: 1
 <article id="v-chatbot" data-view hidden>
   <div class="casenav wrap"><nav class="pills" aria-label="목차">
     <a href="#">← Projects</a>
-    <button class="on" type="button" data-jump="c1-pb">문제</button><button type="button" data-jump="c1-dc">판단</button><button type="button" data-jump="c1-ft">기능</button><button type="button" data-jump="c1-pl">기획</button><button type="button" data-jump="c1-sc">화면</button><button type="button" data-jump="c1-fl">흐름</button><button type="button" data-jump="c1-ds">청킹</button><button type="button" data-jump="c1-rs">결과</button><a class="navlk" href="https://github.com/Broogun/ask-my-appliance" target="_blank" rel="noopener">GitHub ↗</a>
+    <button class="on" type="button" data-jump="c1-pb">문제</button><button type="button" data-jump="c1-dc">판단</button><button type="button" data-jump="c1-ft">기능</button><button type="button" data-jump="c1-pl">기획</button><button type="button" data-jump="c1-sc">화면</button><button type="button" data-jump="c1-fl">흐름</button><button type="button" data-jump="c1-ds">청킹</button><button type="button" data-jump="c1-rs">결과</button><a class="navlk" href="https://github.com/sikumdev/ask-my-appliance-planning" target="_blank" rel="noopener">GitHub ↗</a>
   </nav></div>
   <div class="wrap">
     <header class="casehead">
@@ -1037,7 +1037,7 @@ article[data-view] .glance b { font-size: 14px; font-weight: 600; line-height: 1
         <div><h3>브랜드별 파서 2개</h3><p>LG와 삼성은 설명서 양식이 달랐습니다. 표가 없는 삼성 에어컨은 글씨 크기로 증상 줄을 찾았습니다.</p></div>
         <div><h3>목차 없는 PDF</h3><p>목차가 없는 구형 설명서는 번호 소제목이나 글자 크기 차이로 제목을 찾았습니다.</p></div>
       </div>
-      <p class="note">4명이 같은 900문항으로 비교한 결과, 최종 서비스에는 같은 목차 기반이면서 긴 절을 700자 단위로 나누는 팀원의 청킹이 채택됐습니다.</p>
+      <p class="note">4명이 같은 900문항으로 비교했고, 실사용 점검을 거쳐 최종 서비스에는 같은 목차 기반이면서 긴 절을 700자 단위로 나누는 팀원의 청킹이 채택됐습니다.</p>
       </div>
     </section>
 
@@ -1049,7 +1049,7 @@ article[data-view] .glance b { font-size: 14px; font-weight: 600; line-height: 1
       <div class="sec-body">
       <div class="results">
         <div><b>0건</b><span>근거 없는 확신 답변 (900문항, AI 채점)</span></div>
-        <div><b>84.6% → 92.3%</b><span>리랭킹 후 Top-5 적중 (104문항)</span></div>
+        <div><b>84.6% → 92.3%</b><span>Top-5 적중 · 벡터 검색만 → 리랭킹 후 (104문항, AI 채점)</span></div>
         <div><b>0 / 9</b><span>실제 사용자 질문에서 지어낸 원인 (23건)</span></div>
       </div>
       <div class="tbl"><table>
@@ -1061,7 +1061,7 @@ article[data-view] .glance b { font-size: 14px; font-weight: 600; line-height: 1
           <tr><th scope="row">근거 없이 확신</th><td class="num hl">0</td><td class="num hl">0</td><td class="num hl">0</td></tr>
         </tbody>
       </table></div>
-      <p class="note">5문항 × 60개 가전제품 모델 × 3라운드. 설명서에 없는 내용을 묻는 경우도 있어 정답률 대신 4가지로 분류했고, 판정은 AI 채점관(gpt-4o-mini)이 했습니다. 실제 사용자 질문은 지식iN·카페 질문 23건으로 따로 확인했습니다.</p>
+      <p class="note">5문항 × 60개 가전제품 모델 × 3라운드. 설명서에 없는 내용을 묻는 경우도 있어 정답률 대신 4가지로 분류했고, 판정은 AI 채점관(gpt-4o-mini)이 했습니다. Top-5 적중은 설명서에 답이 있는 104문항에서 정답 청크가 최종 5개 안에 드는지를 AI(Claude)가 판정했고, 사람이 따로 검증하지는 않았습니다. 실제 사용자 질문은 지식iN·카페 질문 23건으로 따로 확인했습니다.</p>
       <p class="note" style="margin-top:24px;font-size:16px;color:var(--body)"><b>배운 것.</b> AI가 판단하지 않아도 되는 건 AI에게 맡기지 않는 것이 신뢰를 지키는 가장 쉬운 방법이라는 걸 배웠습니다. 에러코드와 기능 유무를 DB로 확정한 이유입니다.</p>
       <div class="stack"><span>RAG</span><span>pgvector</span><span>BGE-m3-ko</span><span>gpt-4o-mini</span><span>FastAPI</span></div>      </div>
     </section>
