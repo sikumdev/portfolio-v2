@@ -280,6 +280,8 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 .exp .who .tag { font-size: 11px; font-weight: 600; letter-spacing: .08em; color: var(--muted); }
 .exp .who b { font-size: 17px; line-height: 1.3; }
 .exp .who span { font-size: 13px; color: var(--muted); }
+.exp .who .who-lk { align-self: flex-start; margin-top: 8px; font-size: 12.5px; font-weight: 600; color: var(--ink); text-decoration: none; background: var(--surface); border: 1px solid var(--line); padding: 5px 10px; border-radius: 999px; }
+.exp .who .who-lk:hover { border-color: var(--accent); }
 .exp .hits { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); }
 .exp .hits a { display: flex; flex-direction: column; justify-content: center; gap: 4px; padding: 22px 24px; border-left: 1px solid var(--line); text-decoration: none; color: var(--ink); }
 .exp .hits a:hover { background: var(--pill); }
@@ -328,7 +330,7 @@ article[data-view] .glance b { font-size: 14px; font-weight: 600; line-height: 1
 
 /* ---- mockup: JD focus strip ---- */
 .focus { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; margin: 0 0 64px; }
-.exp { margin-bottom: 16px !important; }
+.exp { margin-bottom: 88px !important; }
 .fx { --tone: var(--accent); --tone-l: var(--t-blue-l); display: flex; flex-direction: column; gap: 12px; padding: 20px; border-radius: 18px; border: 1px solid var(--tone-l); min-width: 0; }
 .fx.green { --tone: var(--t-green-ink); --tone-l: var(--t-green-l); }
 .fx.sand { --tone: var(--t-sand-ink); --tone-l: var(--t-sand-l); }
@@ -457,9 +459,67 @@ article[data-view] .glance b { font-size: 14px; font-weight: 600; line-height: 1
 .sw-track > [aria-hidden="true"] { opacity: .25; }
 .sw-divider { display: flex; align-items: center; gap: 14px; margin: 64px 0 28px; font-size: 14px; font-weight: 500; color: var(--muted); }
 .sw-divider::before, .sw-divider::after { content: ""; height: 1px; background: var(--line); }
+.sw-divider.first { margin-top: 0; }
 .sw-divider::before { width: 24px; }
 .sw-divider::after { flex: 1; }
 @media (prefers-reduced-motion: reduce) { .sw-knob, .sw-track, .sw-view { transition: none; } }
+/* 반폭 카드용 SQL 그림: 위→아래로 쌓기 */
+.item:not(.feature) .screen.sqlviz { flex-direction: column; align-items: stretch; gap: 6px; padding: 18px 20px; }
+.item:not(.feature) .sv-col { flex-direction: row; flex-wrap: wrap; align-items: center; gap: 6px; }
+.item:not(.feature) .sv-k { width: 100%; }
+.item:not(.feature) .sv-note { display: none; }
+.item:not(.feature) .sv-r { flex: 1; padding: 7px 10px; }
+.item:not(.feature) .sv-q { font-size: 12.5px; padding: 6px 10px; }
+.item:not(.feature) .sv-json { padding: 6px 10px; font-size: 12.5px; }
+.item:not(.feature) .sv-arr { transform: rotate(90deg); align-self: center; font-size: 13px; line-height: 1; }
+
+/* ======== 경력 · 카드 정리 ======== */
+.r { margin: 0 0 128px; }
+.r-h { font-size: 15px; font-weight: 600; color: var(--ink); padding-bottom: 16px; border-bottom: 1px solid var(--line); margin-bottom: 0; }
+.r-link { font-size: 14px; font-weight: 500; color: var(--muted); text-decoration: none; }
+.r-link:hover { color: var(--ink); }
+.r1-row { display: grid; grid-template-columns: 200px minmax(0,1fr); gap: 32px; padding-top: 28px; }
+.r1-date { font-size: 14px; color: var(--muted); font-variant-numeric: tabular-nums; display: flex; flex-direction: column; gap: 2px; }
+.r1-date span { font-size: 13px; color: #9aa0a8; }
+.r1-title { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+.r1-title b { font-size: 18px; font-weight: 600; }
+.r1-title span { font-size: 15px; color: var(--muted); }
+.r1-desc { margin: 6px 0 20px; font-size: 15px; color: var(--body); line-height: 1.7; }
+@media (max-width: 760px) {
+  .r1-row { grid-template-columns: 1fr; gap: 8px; }
+}
+/* 공통: 카드 캡션·버튼 정리 */
+.cap { flex-direction: column; gap: 4px; padding-top: 16px; }
+.cap span { order: -1; font-size: 13px; }
+.cap b { font-size: 17px; font-weight: 600; line-height: 1.45; }
+.links { margin-top: 12px; gap: 16px; }
+.lk { padding: 0; border: 0; background: none; font-size: 14px; font-weight: 500; color: var(--muted); }
+.lk.primary { background: none; color: var(--ink); font-weight: 600; }
+.lk:hover { color: var(--accent); filter: none; }
+.sw-divider { color: var(--ink); font-weight: 600; }
+
+/* 경력: 펼쳐보기 */
+.r1-acc { margin: 0 0 18px; border-bottom: 1px solid var(--line); }
+.r1-acc details { border-top: 1px solid var(--line); }
+.r1-acc summary { list-style: none; cursor: pointer; display: grid; grid-template-columns: 150px 150px minmax(0,1fr) 20px; align-items: baseline; gap: 16px; padding: 14px 0; }
+.r1-acc summary::-webkit-details-marker { display: none; }
+.r1-acc .k { font-size: 14.5px; color: var(--muted); }
+.r1-acc summary b { font-size: 17px; font-weight: 600; }
+.r1-acc .d { font-size: 14.5px; color: var(--body); }
+.r1-acc summary i { width: 10px; height: 10px; border-right: 1.5px solid var(--muted); border-bottom: 1.5px solid var(--muted); transform: rotate(45deg); align-self: center; transition: transform .25s; }
+.r1-acc details[open] summary i { transform: rotate(-135deg); }
+.r1-acc summary:hover b { color: var(--accent); }
+.acc-body { display: flex; align-items: flex-end; max-width: 760px; justify-content: space-between; gap: 24px; margin: 0 0 18px 166px; padding: 18px 20px; border-radius: 14px; background: var(--surface); border: 1px solid var(--line); }
+.acc-body dl { margin: 0; display: grid; gap: 8px; }
+.acc-body dl div { display: grid; grid-template-columns: 44px 1fr; gap: 12px; font-size: 14.5px; line-height: 1.6; }
+.acc-body dt { color: var(--muted); font-weight: 600; font-size: 13px; padding-top: 1px; }
+.acc-body dd { margin: 0; color: var(--body); }
+.acc-btn { flex: none; font-size: 13.5px; font-weight: 600; color: #fff; background: var(--ink); padding: 9px 14px; border-radius: 10px; text-decoration: none; }
+.acc-btn:hover { background: var(--accent); }
+@media (max-width: 760px) {
+  .r1-acc summary { grid-template-columns: minmax(0,1fr) 20px; gap: 4px 12px; }
+  .r1-acc summary > :not(i) { grid-column: 1; } .r1-acc summary i { grid-column: 2; grid-row: 1 / span 3; } .acc-body { margin-left: 0; flex-direction: column; align-items: stretch; }
+}
 </style>
 </head>
 <body>
@@ -478,40 +538,28 @@ article[data-view] .glance b { font-size: 14px; font-weight: 600; line-height: 1
     <p class="sub">협회 IT정보센터에서 1년 5개월간 비개발 사용자의 문의를 직접 받으며 회원사 업무 시스템을 운영했고, 지금은 그 경험에서 나온 기준으로 n8n · LangGraph · SQL 에이전트를 직접 만듭니다.</p>
   </section>
 
-  <section class="exp" aria-label="경력">
-    <div class="who">
-      <span class="tag">EXPERIENCE</span>
-      <b>한국감정평가사협회<br>IT정보센터 · 사원</b>
-      <span>2024.05 – 2025.10 · 1년 5개월</span>
-      <span>회원사 업무 시스템 6종 운영 · 연간 문의 약 4,500건 중 60% 처리</span>
-    </div>
-    <div class="hits">
-      <a href="#work-aitool"><span class="k">사내 AI 툴 사용자</span><b>5명 → 20명</b><span class="ba"><i class="bar-b" style="--w:25%"></i><em>5명</em><i class="bar-a" style="--w:100%"></i><em>20명</em></span><span class="nt">관리 대장·신청 절차로 확산, 비용은 실사용 기준</span><small>상세 보기 →</small></a>
-      <a href="#work-data"><span class="k">반복 문의 · 4,500건 분석</span><b>10% ↓</b><span class="ba"><i class="bar-b" style="--w:100%"></i><em>이전</em><i class="bar-a" style="--w:90%"></i><em>개선 후</em></span><span class="nt">오류 메시지에 해결 링크를 붙여 스스로 해결</span><small>상세 보기 →</small></a>
-      <a href="#work-root"><span class="k">전자서명 오류 문의</span><b>월 10건 → 1~2건</b><span class="ba"><i class="bar-b" style="--w:100%"></i><em>10건</em><i class="bar-a" style="--w:15%"></i><em>1~2건</em></span><span class="nt">시스템 수정 없이 안내 문구 한 줄로</span><small>상세 보기 →</small></a>
+  <section class="r r1" aria-label="경력">
+    <h2 class="r-h">경력</h2>
+    <div class="r1-row">
+      <div class="r1-date">2024.05 — 2025.10<span>1년 5개월</span></div>
+      <div class="r1-body">
+        <div class="r1-title"><b>한국감정평가사협회 IT정보센터</b><span>사원</span></div>
+        <p class="r1-desc">회원사 업무 시스템 6종을 운영하며 연간 문의 약 4,500건 중 60%를 직접 처리했습니다.</p>
+        <div class="r1-acc">
+          <details open><summary><span class="k">사내 AI 툴 사용자</span><b>5명 → 20명</b><span class="d">관리 대장·신청 절차를 만들어 확산</span><i aria-hidden="true"></i></summary>
+            <div class="acc-body"><dl><div><dt>문제</dt><dd>요청마다 결제만 해서, 누가 무엇을 쓰는지 정리가 안 됐고 안 쓰는 계정도 결제됐습니다.</dd></div><div><dt>한 일</dt><dd>수요 설문 후 관리 대장과 신청 절차를 만들고, 미사용 계정을 해지했습니다.</dd></div><div><dt>결과</dt><dd>아낀 비용으로 사용자를 5명에서 약 20명으로 늘렸습니다.</dd></div></dl><a class="acc-btn" href="#work-aitool">상세 보기 →</a></div>
+          </details>
+          <details><summary><span class="k">반복 문의</span><b>10% 감소</b><span class="d">문의 4,500건을 분석해 오류 메시지에 해결 링크 연결</span><i aria-hidden="true"></i></summary>
+            <div class="acc-body"><dl><div><dt>문제</dt><dd>기관마다 접수 절차가 달라, 사용자는 막힐 때마다 전화로 물어야 했습니다.</dd></div><div><dt>한 일</dt><dd>문의 4,500건을 분석해 원인(FAQ가 프로그램 안에서 안 보임)을 찾고, 오류 메시지에 해결 링크를 붙였습니다.</dd></div><div><dt>결과</dt><dd>반복 문의가 약 10% 줄었습니다.</dd></div></dl><a class="acc-btn" href="#work-data">상세 보기 →</a></div>
+          </details>
+          <details><summary><span class="k">전자서명 오류 문의</span><b>월 10건 → 1~2건</b><span class="d">시스템 수정 없이 안내 문구 한 줄로</span><i aria-hidden="true"></i></summary>
+            <div class="acc-body"><dl><div><dt>문제</dt><dd>"전자서명이 안 돼요" 문의가 매달 약 10건 왔지만 재현이 안 됐습니다.</dd></div><div><dt>한 일</dt><dd>원인(허용되지 않은 접속 환경)을 찾아 재현하고, 오류 팝업에 조건을 안내하게 했습니다.</dd></div><div><dt>결과</dt><dd>시스템 수정 없이 월 10건 → 1~2건으로 줄었습니다.</dd></div></dl><a class="acc-btn" href="#work-root">상세 보기 →</a></div>
+          </details>
+        </div>
+        <a class="r-link" href="dashboard.html">문의 분석 대시보드 ↗</a>
+      </div>
     </div>
   </section>
-  <div class="focus" aria-label="할 수 있는 일">
-      <div class="fx blue">
-        <div class="fx-h"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l1.8 4.7L18.5 9.5l-4.7 1.8L12 16l-1.8-4.7L5.5 9.5l4.7-1.8z"/><path d="M18 15l.9 2.1L21 18l-2.1.9L18 21l-.9-2.1L15 18l2.1-.9z"/></svg></span><span class="n">01</span></div>
-        <b>전사 AI 도입 · 업무 자동화</b>
-        <div class="fx-v fx-flow"><span>반복 업무</span><i>→</i><span>규칙·에이전트</span><i>→</i><span>자동화</span></div>
-        <div class="fx-l"><a href="#weather">캘린더 에이전트</a></div>
-      </div>
-      <div class="fx green">
-        <div class="fx-h"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg></span><span class="n">02</span></div>
-        <b>데이터 수집 · 보고 자동화</b>
-        <div class="fx-v fx-flow"><span>수집</span><i>→</i><span>요약</span><i>→</i><span>보고</span></div>
-        <div class="fx-l"><a href="#sqlagent">SQL 리포트</a><a href="#news">뉴스 리포트</a></div>
-      </div>
-      <div class="fx sand">
-        <div class="fx-h"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/></svg></span><span class="n">03</span></div>
-        <b>사내 IT 운영 · 헬프데스크</b>
-        <div class="fx-v fx-flow"><span>문의</span><i>→</i><span>원인 찾기</span><i>→</i><span>재발 방지</span></div>
-        <div class="fx-l"><a href="dashboard.html">문의 분석 대시보드</a></div>
-      </div>
-    </div>
-
   <div class="sw-head">
     <h2 class="sectitle">프로젝트 모아보기</h2>
     <div class="sw" role="tablist" aria-label="프로젝트 종류">
@@ -523,6 +571,7 @@ article[data-view] .glance b { font-size: 14px; font-weight: 600; line-height: 1
   <div class="sw-view">
     <div class="sw-track">
       <div class="sw-panel" id="panel-ai" role="tabpanel" aria-labelledby="tab-ai">
+    <div class="sw-divider first"><span>AI 서비스</span></div>
     <section class="grid">
     <div class="item feature">
       <a class="card" href="#chatbot">
@@ -564,8 +613,10 @@ article[data-view] .glance b { font-size: 14px; font-weight: 600; line-height: 1
     </div>
   </section>
     </div>
-      <section class="grid" id="panel-auto" role="tabpanel" aria-labelledby="tab-auto">
-    <div class="item feature">
+      <div class="sw-panel" id="panel-auto" role="tabpanel" aria-labelledby="tab-auto">
+    <div class="sw-divider first"><span>데이터 수집 · 보고</span></div>
+    <section class="grid">
+    <div class="item">
       <a class="card" href="#sqlagent">
         <div class="thumb sand" role="img" aria-label="자연어 질문을 받아 실행 가능하면 SQL을 실행해 리포트를 만들고, 데이터 변경 요청은 사유와 함께 거부하는 흐름"><div class="screen sqlviz">
           <div class="sv-col">
@@ -605,6 +656,9 @@ article[data-view] .glance b { font-size: 14px; font-weight: 600; line-height: 1
       </a>
       <div class="links"><a class="lk primary" href="#news">상세 보기 →</a><a class="lk" href="https://github.com/sikumdev/n8n-it-news-slack-digest" target="_blank" rel="noopener">GitHub ↗</a></div>
     </div>
+    </section>
+    <div class="sw-divider"><span>에이전트 · 자동화 설계</span></div>
+    <section class="grid">
     <div class="item">
       <a class="card" href="#weather">
         <div class="thumb blue" role="img" aria-label="자연어 요청을 Weather Agent가 날짜와 날씨 조건으로 판정하고, Calendar Agent가 충돌을 확인한 뒤 일정을 만드는 흐름"><div class="screen mini wx">
@@ -638,7 +692,8 @@ article[data-view] .glance b { font-size: 14px; font-weight: 600; line-height: 1
       </a>
       <div class="links"><a class="lk primary" href="#playbook">상세 보기 →</a><a class="lk" href="https://github.com/sikumdev/n8n-automation-workflows" target="_blank" rel="noopener">GitHub ↗</a></div>
     </div>
-  </section>
+    </section>
+    </div>
     </div>
   </div>
   <footer class="site">
