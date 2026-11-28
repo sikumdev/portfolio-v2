@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>문의 분석 대시보드 · 김시연</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
 <style>
 :root {
   --bg: #fafafa; --surface: #ffffff; --ink: #111418; --body: #3d434c; --muted: #646b75; --line: #e4e6ea; --grid: #ecebe6;
@@ -193,15 +193,98 @@ h1 { font-size: clamp(26px, 3.6vw, 34px); letter-spacing: -.6px; margin: 0 0 10p
   .dlist { width: 100%; }
   .tbl .hide-sm { display: none; }
 }
+
+/* ===== Toss-style overrides ===== */
+:root { --bg:#f2f4f6; --surface:#fff; --ink:#191f28; --body:#4e5968; --muted:#8b95a1; --line:#e5e8eb; --grid:#f2f4f6; --pill:#f2f4f6;
+  --accent:#3182f6; --accent-soft:#e8f3ff; --hi:#1b64da; --hi-bg:#e8f3ff; --mid-bg:#f2f4f6;
+  --font:'Pretendard','Pretendard Variable',-apple-system,BlinkMacSystemFont,'Apple SD Gothic Neo',sans-serif; }
+body { background:var(--bg); }
+.tbar { position:sticky; top:0; z-index:20; background:rgba(242,244,246,.86); backdrop-filter:saturate(180%) blur(12px); -webkit-backdrop-filter:saturate(180%) blur(12px); }
+.tbar-in { max-width:1080px; margin:0 auto; padding:14px 24px; display:flex; align-items:center; justify-content:space-between; }
+.tbar .back { display:inline-flex; align-items:center; gap:4px; margin:0; font-size:15px; font-weight:600; color:var(--body); padding:6px 10px 6px 4px; border-radius:10px; }
+.tbar .back:hover { background:#e5e8eb; color:var(--ink); }
+.tbar-t { font-size:14px; font-weight:600; color:var(--muted); }
+.wrap { padding-top:28px; }
+.chip { display:inline-block; font-size:14px; font-weight:600; color:var(--accent); background:var(--accent-soft); padding:6px 12px; border-radius:8px; margin-bottom:16px; }
+h1 { font-size:clamp(28px,4.2vw,40px); font-weight:700; letter-spacing:-1px; line-height:1.3; margin:0 0 14px; }
+.sum { font-size:17px; line-height:1.7; color:var(--body); }
+.sum b { color:var(--ink); }
+.mask { background:#fff; color:var(--muted); font-size:13px; padding:7px 12px; border-radius:10px; margin-top:16px; }
+.kpis { gap:12px; margin:36px 0 12px; }
+.kpi, .card { border:0; border-radius:24px; box-shadow:none; }
+.kpi { padding:22px 24px; }
+.kpi .l { font-size:14px; font-weight:600; color:var(--muted); }
+.kpi .v { font-size:32px; letter-spacing:-1px; margin:4px 0 2px; }
+.kpi .s { font-size:13.5px; color:var(--muted); }
+.row { gap:12px; margin-bottom:12px; }
+.card { padding:28px; margin-bottom:12px !important; }
+.card h2 { font-size:21px; font-weight:700; letter-spacing:-.5px; margin:0 0 6px; }
+.card .a { font-size:15px; color:var(--muted); margin-bottom:20px; }
+.ax text, .donut-c2 { fill:#8b95a1; }
+.tip { background:#191f28; border-radius:12px; padding:10px 12px; font-size:13px; box-shadow:0 8px 24px rgba(0,0,0,.12); }
+.segc { background:#f2f4f6; border-radius:12px; padding:4px; }
+.segc button { font-size:14px; font-weight:600; padding:7px 14px; border-radius:9px; color:var(--muted); }
+.segc button.on { box-shadow:0 1px 3px rgba(0,0,0,.08); }
+.legend button, .ttabs button, .tfilters button { border:0; background:#f2f4f6; font-size:13.5px; font-weight:600; color:var(--body); padding:7px 13px 7px 10px; }
+.ttabs button.on, .tfilters button.on { background:var(--accent); color:#fff; }
+.tfilters button.on em { color:#cfe2ff; }
+.tfilters { background:#f9fafb; border:0; border-radius:16px; padding:16px; }
+.tfrow .lb { font-size:13.5px; color:var(--body); }
+.dlist .d { font-size:14.5px; }
+/* ratio cards: big number + progress bar */
+#c-rings { background:transparent; padding:0; margin-top:40px; }
+#c-why { margin-top:28px; }
+#c-rings h2, #c-rings > .a { padding:0 4px; }
+.wrow { gap:12px; }
+.waf { background:#fff; border-radius:24px; padding:24px; }
+.waf b { font-size:15px; font-weight:600; color:var(--body); }
+.waf .big { font-size:40px; letter-spacing:-1.2px; margin:6px 0 14px; color:var(--accent); }
+.waf:nth-child(2) .big { color:#f76b15; }
+.waf:nth-child(3) .big { color:#0ea867; }
+.pbar { height:10px; border-radius:999px; background:#f2f4f6; overflow:hidden; margin-bottom:14px; }
+.pbar i { display:block; height:100%; border-radius:999px; background:var(--accent); }
+.waf:nth-child(2) .pbar i { background:#ff8a3d; }
+.waf:nth-child(3) .pbar i { background:#15c47e; }
+.waf span { font-size:13.5px; color:var(--muted); }
+/* why -> fix */
+.vc .head { font-size:13px; }
+.vc .head span:first-child { color:var(--body); }
+.vc .cause { background:#f9fafb; border-radius:18px; padding:18px 20px; font-size:14.5px; }
+.vc .cause b { color:var(--ink); font-size:16px; margin-bottom:4px; }
+.vc .cause .ev { border-top:1px solid #eceef1; color:var(--muted); font-size:13px; line-height:1.65; }
+.vc .fixes div { background:#f9fafb; border-radius:18px; padding:16px 20px; font-size:14.5px; }
+.vc .fixes div b { color:var(--ink); font-size:15.5px; }
+.vc .fixes div.done { background:var(--accent-soft); box-shadow:none; }
+.vc .fixes div.done b { color:var(--ink); }
+.vc .fixes div strong { color:var(--accent); }
+.vc .fixes div .st { border:0; background:#e5e8eb; color:var(--body); font-size:12px; padding:2px 8px; }
+.vc .fixes div .st.ok { background:var(--accent); color:#fff; }
+.vc .fixes div .st.hold { background:#fff1e6; color:#d4640f; }
+.vc .arrow { color:#b0b8c1; }
+.divider { display:flex; align-items:center; gap:14px; margin:44px 4px 18px; font-size:15px; font-weight:700; color:var(--muted); }
+.divider::after { content:""; flex:1; height:1px; background:#dfe3e8; }
+/* table */
+.seg { height:12px; border-radius:999px; gap:3px; }
+.tbl th { font-size:13px; color:var(--muted); border-bottom:1px solid var(--line); padding:10px 12px; }
+.tbl td { font-size:14.5px; padding:14px 12px; border-bottom:1px solid #f2f4f6; }
+.tbl tbody tr:hover td { background:#f9fafb; }
+.dc { background:var(--accent-soft); color:var(--accent); border-radius:6px; font-size:12px; padding:2px 8px; }
+.dc.none { background:#ffeeee; color:#e42939; }
+.tg.msg { background:#e5f8ee; color:#0d8a4f; }
+.fq { border-radius:8px; font-size:12.5px; padding:3px 8px; }
+.fq.l { border:0; background:#f9fafb; }
+.tfoot button { font-size:14px; font-weight:600; }
+.foot { font-size:13px; color:var(--muted); padding:0 4px; }
+@media (max-width:520px) { .card { padding:22px 18px; border-radius:20px; } .waf { padding:20px; } .tbar-t { display:none; } }
 </style>
 </head>
 <body>
+<header class="tbar"><div class="tbar-in"><a class="back" href="index.html#work-data"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>문의 4,500건 분석으로</a><span class="tbar-t">문의 분석 대시보드</span></div></header>
 <main class="wrap">
-  <a class="back" href="index.html#work-data">← 문의 4,500건 분석으로</a>
-  <p class="kicker">문의 분석 대시보드</p>
-  <h1>12개월 문의 <span id="s-total">—</span>건, 어디서 반복되는가</h1>
+  <span class="chip">문의 분석 대시보드 · 2024.06–2025.05</span>
+  <h1>12개월 동안 문의 <span id="s-total">—</span>건,<br>어디서 반복됐을까요?</h1>
   <p class="sum">회원사 업무 시스템 사용자 지원 문의를 2024년 6월부터 2025년 5월까지 업무구분별로 집계했습니다. 가장 많았던 달은 <b id="s-peak">—</b>입니다.</p>
-  <span class="mask">보안상 시스템명과 의뢰처명은 시스템 A·B, 의뢰처 A·B·C로 바꿔 표기했습니다.</span>
+  <span class="mask">🔒 보안상 시스템명과 의뢰처명은 시스템 A·B, 의뢰처 A·B·C로 바꿔 표기했어요.</span>
 
   <section class="kpis" aria-label="핵심 지표">
     <div class="kpi" id="k1"><div class="l">총 문의</div><div class="v"><span id="k-total">—</span><small>건</small></div><div class="s">12개월 합계 · 월별 추이</div><div class="chart spark" id="spark-total"></div></div>
@@ -210,61 +293,15 @@ h1 { font-size: clamp(26px, 3.6vw, 34px); letter-spacing: -.6px; margin: 0 0 10p
     <div class="kpi ring"><div class="chart" id="ring-hi" style="width:76px"></div><div class="txt"><div class="l">반복 문의 유형</div><div class="v"><span id="k-faq">—</span><small>개</small></div><div class="s">빈도 '상' <span id="k-faq-hi">—</span>개</div></div></div>
   </section>
 
-  <div class="row r21">
-    <section class="card" id="c-monthly">
-      <h2>어느 달이 가장 바빴나</h2>
-      <p class="a" id="m-sub">—</p>
-      <div class="segc" id="bar-mode" role="group" aria-label="보기 방식"><button type="button" class="on" data-m="stack">업무구분별</button><button type="button" data-m="total">합계</button></div>
-      <div class="chart" id="chart-bars"></div>
-      <div class="legend" id="legend"></div>
-    </section>
-    <section class="card" id="c-share">
-      <h2>어떤 업무 문의가 가장 많나</h2>
-      <p class="a" id="r-sub">—</p>
-      <div class="donut-wrap">
-        <div class="chart" id="donut"></div>
-        <div class="dlist" id="dlist"></div>
-      </div>
-    </section>
-  </div>
-
-  <section class="card" id="c-heat" style="margin-bottom:16px">
-    <h2>언제, 어디에 몰렸나</h2>
-    <p class="a" id="h-sub">월 × 업무구분별 문의 건수. 진할수록 많습니다.</p>
-    <div class="chart" id="heat"></div>
-    <div class="hm-scale"><span class="bar"></span><span>각 업무구분 안에서 적음 → 많음</span><span class="pk"></span><span>그 업무구분의 최대 월</span></div>
-  </section>
-
-  <section class="card" id="c-trend" style="margin-bottom:16px">
-      <h2>업무구분별 추이</h2>
-      <p class="a" id="t-sub">—</p>
-      <div class="ttabs" id="t-tabs" role="group" aria-label="강조할 업무구분"></div>
-      <div class="chart" id="sm"></div>
-      <div class="tsum" id="t-sum"></div>
-  </section>
-
   <section class="card" id="c-rings" style="margin-bottom:16px">
-    <h2>비율로 보면</h2>
-    <p class="a">점 100개 중 칠해진 만큼이 비율입니다.</p>
+    <h2>숫자로 먼저 볼게요</h2>
+    <p class="a">반복 문의의 원인을 가리키는 세 가지 비율이에요.</p>
     <div class="wrow" id="rings"></div>
   </section>
 
-  <section class="card" id="c-faq" style="margin-bottom:16px">
-    <h2>무엇을 반복해서 묻나</h2>
-    <p class="a" id="faq-sub">—</p>
-    <div class="seg" id="seg" role="img"></div>
-    <div class="seg-l" id="seg-l"></div>
-    <div class="tfilters" id="tf" role="group" aria-label="반복 문의 필터"></div>
-    <table class="tbl">
-      <thead><tr><th class="hide-sm">업무구분</th><th>문의 내용</th><th style="width:112px">안내 자료</th><th style="width:56px">빈도</th></tr></thead>
-      <tbody id="tbody"></tbody>
-    </table>
-    <div class="tfoot"><p class="count" id="tcount"></p><button type="button" id="treset" hidden>필터 해제</button></div>
-  </section>
-
   <section class="card vc" id="c-why" style="margin-bottom:16px">
-    <h2>왜 반복되고, 무엇을 바꿨나</h2>
-    <p class="a">원인마다 그에 맞는 개선안. <b>실행</b>한 것과 <b>제안</b>에 그친 것을 구분했습니다.</p>
+    <h2>왜 반복됐고, 무엇을 바꿨을까요?</h2>
+    <p class="a">원인마다 개선안을 붙였어요. <b>실행</b>한 것과 <b>제안</b>에 그친 것을 나눠 표시했어요.</p>
     <div class="head"><span>원인</span><span></span><span>개선안</span></div>
     <div class="pair">
       <div class="cause"><b>01 · 답은 이미 FAQ에 있다</b>자주 오는 문의 다수는 FAQ에 안내글이 있지만, 사용자가 찾지 않고 전화한다.<span class="ev">근거: 반복 문의 <span id="ev-cov">—</span>는 FAQ나 매뉴얼에 이미 안내가 있었고, 빈도 '상' 유형도 <span id="ev-covhi">—</span>가 마찬가지였습니다. 문의 원인 분석 문서에도 안내글이 "거의 조회되지 않았고, 모르면 전화하는 게 더 편해서" 전화한다는 기록이 있습니다.</span></div>
@@ -283,6 +320,59 @@ h1 { font-size: clamp(26px, 3.6vw, 34px); letter-spacing: -.6px; margin: 0 0 10p
     </div>
   </section>
 
+  <div class="divider"><span>자세히 보기</span></div>
+
+
+  <div class="row r21">
+    <section class="card" id="c-monthly">
+      <h2>어느 달이 가장 바빴을까요?</h2>
+      <p class="a" id="m-sub">—</p>
+      <div class="segc" id="bar-mode" role="group" aria-label="보기 방식"><button type="button" class="on" data-m="stack">업무구분별</button><button type="button" data-m="total">합계</button></div>
+      <div class="chart" id="chart-bars"></div>
+      <div class="legend" id="legend"></div>
+    </section>
+    <section class="card" id="c-share">
+      <h2>어떤 업무 문의가 가장 많았을까요?</h2>
+      <p class="a" id="r-sub">—</p>
+      <div class="donut-wrap">
+        <div class="chart" id="donut"></div>
+        <div class="dlist" id="dlist"></div>
+      </div>
+    </section>
+  </div>
+
+  <section class="card" id="c-heat" style="margin-bottom:16px">
+    <h2>언제, 어디에 몰렸을까요?</h2>
+    <p class="a" id="h-sub">월 × 업무구분별 문의 건수예요. 진할수록 많아요.</p>
+    <div class="chart" id="heat"></div>
+    <div class="hm-scale"><span class="bar"></span><span>각 업무구분 안에서 적음 → 많음</span><span class="pk"></span><span>그 업무구분의 최대 월</span></div>
+  </section>
+
+  <section class="card" id="c-trend" style="margin-bottom:16px">
+      <h2>업무구분별로 따로 보면</h2>
+      <p class="a" id="t-sub">—</p>
+      <div class="ttabs" id="t-tabs" role="group" aria-label="강조할 업무구분"></div>
+      <div class="chart" id="sm"></div>
+      <div class="tsum" id="t-sum"></div>
+  </section>
+
+  
+
+  <section class="card" id="c-faq" style="margin-bottom:16px">
+    <h2>무엇을 반복해서 물었을까요?</h2>
+    <p class="a" id="faq-sub">—</p>
+    <div class="seg" id="seg" role="img"></div>
+    <div class="seg-l" id="seg-l"></div>
+    <div class="tfilters" id="tf" role="group" aria-label="반복 문의 필터"></div>
+    <table class="tbl">
+      <thead><tr><th class="hide-sm">업무구분</th><th>문의 내용</th><th style="width:112px">안내 자료</th><th style="width:56px">빈도</th></tr></thead>
+      <tbody id="tbody"></tbody>
+    </table>
+    <div class="tfoot"><p class="count" id="tcount"></p><button type="button" id="treset" hidden>필터 해제</button></div>
+  </section>
+
+  
+
 
   <p class="foot">자료: 월별 업무구분별 문의 집계표(2024.06–2025.05), 자주 오는 문의 정리, 의뢰처별 문의 원인 분석 문서 3종, 개선안 자료. 총 문의는 다섯 업무구분의 합입니다.</p>
 </main>
@@ -291,11 +381,11 @@ h1 { font-size: clamp(26px, 3.6vw, 34px); letter-spacing: -.6px; margin: 0 0 10p
 (function () {
   // ---------- data (masked) ----------
   var CATS = [
-    { key: 'sysA', name: '시스템 A', color: '#2a78d6' },
-    { key: 'orgA', name: '의뢰처 A', color: '#eb6834' },
-    { key: 'sysB', name: '시스템 B', color: '#1baf7a' },
-    { key: 'orgB', name: '의뢰처 B', color: '#eda100' },
-    { key: 'orgC', name: '의뢰처 C', color: '#e87ba4' }
+    { key: 'sysA', name: '시스템 A', color: '#3182f6' },
+    { key: 'orgA', name: '의뢰처 A', color: '#ff8a3d' },
+    { key: 'sysB', name: '시스템 B', color: '#15c47e' },
+    { key: 'orgB', name: '의뢰처 B', color: '#ffc342' },
+    { key: 'orgC', name: '의뢰처 C', color: '#a98bfa' }
   ];
   // month, sysA, orgA, sysB, orgB, orgC, orgC(법인)
   var RAW = [
@@ -416,9 +506,9 @@ h1 { font-size: clamp(26px, 3.6vw, 34px); letter-spacing: -.6px; margin: 0 0 10p
     var y = function (v) { return H - pad - (v - min) / (max - min || 1) * (H - 2 * pad); };
     var s = svgIn(box, W, H, opts.label);
     if (opts.band) el('line', { x1: 0, x2: W, y1: y(opts.band), y2: y(opts.band), stroke: '#c3c2b7', 'stroke-dasharray': '3 3', 'stroke-width': 1 }, s);
-    el('path', { d: values.map(function (v, i) { return (i ? 'L' : 'M') + x(i) + ' ' + y(v); }).join(' '), fill: 'none', stroke: '#9aa0a8', 'stroke-width': 2, 'stroke-linejoin': 'round', 'stroke-linecap': 'round' }, s);
+    el('path', { d: values.map(function (v, i) { return (i ? 'L' : 'M') + x(i) + ' ' + y(v); }).join(' '), fill: 'none', stroke: '#b0b8c1', 'stroke-width': 2, 'stroke-linejoin': 'round', 'stroke-linecap': 'round' }, s);
     var pi = values.indexOf(max);
-    el('circle', { cx: x(pi), cy: y(max), r: 4, fill: '#2a78d6', stroke: '#fff', 'stroke-width': 2 }, s);
+    el('circle', { cx: x(pi), cy: y(max), r: 4, fill: '#3182f6', stroke: '#fff', 'stroke-width': 2 }, s);
     var tip = tipFor(box);
     values.forEach(function (v, i) {
       var r = el('rect', { x: x(i) - (W / values.length) / 2, y: 0, width: W / values.length, height: H, fill: 'transparent' }, s);
@@ -476,7 +566,7 @@ h1 { font-size: clamp(26px, 3.6vw, 34px); letter-spacing: -.6px; margin: 0 0 10p
       hit.addEventListener('mouseleave', tip.hide);
     });
     var sAvg = sums.reduce(function (a, b) { return a + b; }, 0) / sums.length, ya = ih - sAvg / top * ih;
-    el('line', { x1: 0, x2: iw, y1: ya, y2: ya, stroke: '#111418', 'stroke-dasharray': '4 4', 'stroke-width': 1.2, opacity: 0.55, 'pointer-events': 'none' }, g);
+    el('line', { x1: 0, x2: iw, y1: ya, y2: ya, stroke: '#191f28', 'stroke-dasharray': '4 4', 'stroke-width': 1.2, opacity: 0.55, 'pointer-events': 'none' }, g);
     el('text', { x: iw + 6, y: ya - 3, 'class': 'blab2' }, g).textContent = '월평균';
     el('text', { x: iw + 6, y: ya + 11, 'class': 'blab2' }, g).textContent = fmt(Math.round(sAvg));
     var pi = sums.indexOf(max);
@@ -510,7 +600,7 @@ h1 { font-size: clamp(26px, 3.6vw, 34px); letter-spacing: -.6px; margin: 0 0 10p
     var bw = iw / MONTHS.length, pad = Math.min(14, bw * 0.3), tip = tipFor(box);
     MONTHS.forEach(function (d, i) {
       var hh = d.total / top * ih, isPeak = d === peak;
-      el('rect', { x: m.l + i * bw + pad / 2, y: m.t + ih - hh, width: bw - pad, height: hh, rx: 4, fill: isPeak ? '#2a78d6' : '#c9ced6' }, s);
+      el('rect', { x: m.l + i * bw + pad / 2, y: m.t + ih - hh, width: bw - pad, height: hh, rx: 4, fill: isPeak ? '#3182f6' : '#d1d6db' }, s);
       if (i % (W < 480 ? 2 : 1) === 0 || isPeak) el('text', { x: i * bw + bw / 2, y: ih + 16, 'text-anchor': 'middle' }, ax).textContent = short(d.month, i === 0);
       var hit = el('rect', { x: m.l + i * bw, y: m.t, width: bw, height: ih, fill: 'transparent' }, s);
       hit.addEventListener('mouseenter', function () {
@@ -521,7 +611,7 @@ h1 { font-size: clamp(26px, 3.6vw, 34px); letter-spacing: -.6px; margin: 0 0 10p
       hit.addEventListener('mouseleave', tip.hide);
     });
     var ya = ih - avg / top * ih;
-    el('line', { x1: 0, x2: iw, y1: ya, y2: ya, stroke: '#111418', 'stroke-dasharray': '4 4', 'stroke-width': 1.2, opacity: 0.55 }, g);
+    el('line', { x1: 0, x2: iw, y1: ya, y2: ya, stroke: '#191f28', 'stroke-dasharray': '4 4', 'stroke-width': 1.2, opacity: 0.55 }, g);
     el('text', { x: iw + 6, y: ya - 3, 'class': 'blab2' }, g).textContent = '월평균';
     el('text', { x: iw + 6, y: ya + 11, 'class': 'blab2' }, g).textContent = fmt(Math.round(avg));
     var pi = MONTHS.indexOf(peak);
@@ -562,7 +652,7 @@ h1 { font-size: clamp(26px, 3.6vw, 34px); letter-spacing: -.6px; margin: 0 0 10p
       p.addEventListener('mouseleave', function () { tip.hide(); Object.keys(drows).forEach(function (k) { drows[k].classList.remove('dim'); }); });
       var rm = (r0 + r1) / 2, pct = Math.round(r.n / total * 100);
       if ((a1 - a) * rm > 22) {
-        var lt = el('text', { x: cx + rm * Math.sin(mid), y: cx - rm * Math.cos(mid), 'text-anchor': 'middle', 'dominant-baseline': 'central', 'class': 'donut-pct', fill: r.c.color === '#eda100' ? '#0b0b0b' : '#ffffff' }, s);
+        var lt = el('text', { x: cx + rm * Math.sin(mid), y: cx - rm * Math.cos(mid), 'text-anchor': 'middle', 'dominant-baseline': 'central', 'class': 'donut-pct', fill: r.c.color === '#ffc342' ? '#0b0b0b' : '#ffffff' }, s);
         lt.textContent = pct + '%';
       }
       a = a1;
@@ -573,7 +663,7 @@ h1 { font-size: clamp(26px, 3.6vw, 34px); letter-spacing: -.6px; margin: 0 0 10p
 
   // ---------- heatmap: each row on its own scale, row max outlined, totals in the margins ----------
   function heatColor(t) {
-    var stops = [[230, 239, 251], [42, 120, 214], [24, 79, 149]];
+    var stops = [[232, 243, 255], [49, 130, 246], [27, 100, 218]];
     var seg = t < 0.65 ? 0 : 1, u = seg ? (t - 0.65) / 0.35 : t / 0.65;
     return 'rgb(' + stops[seg].map(function (v, i) { return Math.round(v + (stops[seg + 1][i] - v) * u); }).join(',') + ')';
   }
@@ -595,8 +685,8 @@ h1 { font-size: clamp(26px, 3.6vw, 34px); letter-spacing: -.6px; margin: 0 0 10p
     // month totals on top
     MONTHS.forEach(function (m, ci) {
       var bh = m.total / peak.total * (topH - 14), x = lw + ci * cw + 3;
-      var r = el('rect', { x: x, y: topH - 6 - bh, width: cw - 6, height: bh, rx: 3, fill: '#c9ced6' }, s);
-      tip2(r, mlabel(m.month) + ' 합계', [{ name: '문의', color: '#c9ced6', value: fmt(m.total) + '건' }], x + cw / 2, topH - 6 - bh);
+      var r = el('rect', { x: x, y: topH - 6 - bh, width: cw - 6, height: bh, rx: 3, fill: '#d1d6db' }, s);
+      tip2(r, mlabel(m.month) + ' 합계', [{ name: '문의', color: '#d1d6db', value: fmt(m.total) + '건' }], x + cw / 2, topH - 6 - bh);
     });
     el('text', { x: lw - 8, y: topH - 10, 'text-anchor': 'end' }, ax).textContent = '월 합계';
     if (!narrow) el('text', { x: W - rw + 8, y: topH - 10 }, ax).textContent = '12개월 합계';
@@ -608,7 +698,7 @@ h1 { font-size: clamp(26px, 3.6vw, 34px); letter-spacing: -.6px; margin: 0 0 10p
       MONTHS.forEach(function (m, ci) {
         var v = m[c.key], t = (v - mn) / (mx - mn || 1), x = lw + ci * cw + 1;
         var r = el('rect', { x: x, y: y + 1, width: cw - 2, height: rowH - 2, rx: 4, fill: heatColor(t) }, s);
-        if (v === mx) el('rect', { x: x + 1, y: y + 2, width: cw - 4, height: rowH - 4, rx: 3, fill: 'none', stroke: '#111418', 'stroke-width': 2, 'pointer-events': 'none' }, s);
+        if (v === mx) el('rect', { x: x + 1, y: y + 2, width: cw - 4, height: rowH - 4, rx: 3, fill: 'none', stroke: '#191f28', 'stroke-width': 2, 'pointer-events': 'none' }, s);
         if (cw > 30) el('text', { x: x + (cw - 2) / 2, y: y + rowH / 2, 'text-anchor': 'middle', 'dominant-baseline': 'central', style: 'font-size:11px;font-family:inherit;pointer-events:none;font-weight:' + (v === mx ? 700 : 400), fill: t > 0.6 ? '#ffffff' : '#0b0b0b' }, s).textContent = v;
         tip2(r, c.name + ' · ' + mlabel(m.month), [{ name: '문의', color: c.color, value: fmt(v) + '건' }, { name: '이 업무 최대 대비', color: 'transparent', value: Math.round(v / mx * 100) + '%' }], x + cw / 2, y);
       });
@@ -656,13 +746,13 @@ h1 { font-size: clamp(26px, 3.6vw, 34px); letter-spacing: -.6px; margin: 0 0 10p
     var x = function (i) { return m.l + i * iw / (MONTHS.length - 1); }, y = function (v) { return m.t + ih - v / top * ih; };
     var s = svgIn(box, W, H, '업무구분별 월별 문의 꺾은선 그래프, ' + c.name + ' 강조'), tip = tipFor(box), ax = el('g', { 'class': 'ax' }, s);
     for (var v = 0; v <= top; v += 50) {
-      el('line', { x1: m.l, x2: W - m.r, y1: y(v), y2: y(v), stroke: '#ecebe6' }, s);
+      el('line', { x1: m.l, x2: W - m.r, y1: y(v), y2: y(v), stroke: '#f2f4f6' }, s);
       el('text', { x: m.l - 8, y: y(v), 'text-anchor': 'end', 'dominant-baseline': 'central' }, ax).textContent = v;
     }
     MONTHS.forEach(function (mm, i) { if (narrow && i % 2) return; el('text', { x: x(i), y: H - 6, 'text-anchor': 'middle' }, ax).textContent = short(mm.month, i === 0); });
     CATS.slice().sort(function (a, b) { return (a.key === tFocus) - (b.key === tFocus); }).forEach(function (cc) {
       var on = cc.key === tFocus, vv = MONTHS.map(function (mm) { return mm[cc.key]; });
-      el('path', { d: vv.map(function (v, i) { return (i ? 'L' : 'M') + x(i) + ' ' + y(v); }).join(' '), fill: 'none', stroke: on ? cc.color : '#d5d8dd', 'stroke-width': on ? 3 : 2, 'stroke-linejoin': 'round', 'stroke-linecap': 'round' }, s);
+      el('path', { d: vv.map(function (v, i) { return (i ? 'L' : 'M') + x(i) + ' ' + y(v); }).join(' '), fill: 'none', stroke: on ? cc.color : '#e5e8eb', 'stroke-width': on ? 3 : 2, 'stroke-linejoin': 'round', 'stroke-linecap': 'round' }, s);
       if (on) {
         var mi = vv.indexOf(mx);
         vv.forEach(function (v, i) { el('circle', { cx: x(i), cy: y(v), r: i === mi ? 5 : 3, fill: cc.color, stroke: '#fff', 'stroke-width': 2 }, s); });
@@ -673,9 +763,9 @@ h1 { font-size: clamp(26px, 3.6vw, 34px); letter-spacing: -.6px; margin: 0 0 10p
     for (var i = 1; i < labs.length; i++) if (labs[i].y - labs[i - 1].y < 14) labs[i].y = labs[i - 1].y + 14;
     labs.forEach(function (l) {
       var on = l.c.key === tFocus;
-      el('text', { x: W - m.r + 8, y: l.y, 'dominant-baseline': 'central', style: 'font-size:11.5px;font-family:inherit;font-weight:' + (on ? 700 : 500) + ';fill:' + (on ? (l.c.color === '#eda100' ? '#9a6a00' : l.c.color) : '#a3a9b2') }, s).textContent = l.c.name;
+      el('text', { x: W - m.r + 8, y: l.y, 'dominant-baseline': 'central', style: 'font-size:11.5px;font-family:inherit;font-weight:' + (on ? 700 : 500) + ';fill:' + (on ? (l.c.color === '#ffc342' ? '#9a6a00' : l.c.color) : '#a3a9b2') }, s).textContent = l.c.name;
     });
-    var cross = el('line', { y1: m.t, y2: m.t + ih, stroke: '#111418', opacity: 0, 'pointer-events': 'none' }, s);
+    var cross = el('line', { y1: m.t, y2: m.t + ih, stroke: '#191f28', opacity: 0, 'pointer-events': 'none' }, s);
     MONTHS.forEach(function (mm, i) {
       var r = el('rect', { x: x(i) - iw / 22, y: m.t, width: iw / 11, height: ih, fill: 'transparent' }, s);
       r.addEventListener('mouseenter', function () {
@@ -692,9 +782,9 @@ h1 { font-size: clamp(26px, 3.6vw, 34px); letter-spacing: -.6px; margin: 0 0 10p
   var orgTypes = FAQ.filter(function (f) { return /의뢰처|자동연계/.test(f[0]); }).length;
   var orgAll = catTotals.filter(function (x) { return x.c.key.indexOf('org') === 0; }).reduce(function (s, x) { return s + x.n; }, 0);
   var RINGS = [
-    { frac: hiCount / FAQ.length, color: '#2a78d6', track: '#cde2fb', center: Math.round(hiCount / FAQ.length * 100) + '%', title: "반복 문의 중 빈도 '상'", sub: FAQ.length + '개 유형 중 ' + hiCount + '개 · FAQ 재구성의 우선순위' },
-    { frac: orgAll / total, color: '#eb6834', track: '#fbdccd', center: Math.round(orgAll / total * 100) + '%', title: '의뢰처 관련 문의', sub: '전체 ' + fmt(total) + '건 중 ' + fmt(orgAll) + '건 · 원인 02의 근거' },
-    { frac: FAQ.filter(function (f) { return f.cover; }).length / FAQ.length, color: '#1baf7a', track: '#d1efe3', center: '', title: '이미 안내 자료가 있던 유형', sub: FAQ.length + '개 유형 중 ' + FAQ.filter(function (f) { return f.cover; }).length + '개 · 원인 01의 근거' }
+    { frac: hiCount / FAQ.length, color: '#3182f6', track: '#e8f3ff', center: Math.round(hiCount / FAQ.length * 100) + '%', title: "반복 문의 중 빈도 '상'", sub: FAQ.length + '개 유형 중 ' + hiCount + '개 · FAQ를 고칠 때 먼저 볼 것' },
+    { frac: orgAll / total, color: '#ff8a3d', track: '#fbdccd', center: Math.round(orgAll / total * 100) + '%', title: '의뢰처 관련 문의', sub: '전체 ' + fmt(total) + '건 중 ' + fmt(orgAll) + '건 · 원인 02의 근거' },
+    { frac: FAQ.filter(function (f) { return f.cover; }).length / FAQ.length, color: '#15c47e', track: '#d1efe3', center: '', title: '이미 안내 자료가 있던 유형', sub: FAQ.length + '개 유형 중 ' + FAQ.filter(function (f) { return f.cover; }).length + '개 · 원인 01의 근거' }
   ];
   var covered = FAQ.filter(function (f) { return f.cover; }).length;
   var hiAll = FAQ.filter(function (f) { return f[2] === '상'; }), hiCovered = hiAll.filter(function (f) { return f.cover; }).length;
@@ -707,21 +797,21 @@ h1 { font-size: clamp(26px, 3.6vw, 34px); letter-spacing: -.6px; margin: 0 0 10p
   $('ev-orgtype').textContent = Math.round(orgTypes / FAQ.length * 100) + '%';
   $('ev-orga').textContent = Math.round(catTotals.filter(function (x) { return x.c.key === 'orgA'; })[0].n / 12);
   // 100-dot grids: filled dots = the ratio (rounded to whole percent)
-  var INK = { '#2a78d6': '#2a78d6', '#eb6834': '#c2521f', '#1baf7a': '#14825b' }; // darker text steps for the % figure
+  var INK = { '#3182f6': '#3182f6', '#ff8a3d': '#c2521f', '#15c47e': '#14825b' }; // darker text steps for the % figure
   RINGS.forEach(function (r) {
-    var w = h('div', 'waf'), n = Math.round(r.frac * 100), g = h('div', 'grid');
-    for (var k = 0; k < 100; k++) { var dot = h('i'); if (k < n) dot.style.background = r.color; g.appendChild(dot); }
-    g.setAttribute('role', 'img'); g.setAttribute('aria-label', r.title + ': 점 100개 중 ' + n + '개');
-    var big = h('div', 'big', n + '%'); big.style.color = INK[r.color];
+    var w = h('div', 'waf'), n = Math.round(r.frac * 100), g = h('div', 'pbar'), fill = h('i');
+    fill.style.width = n + '%'; g.appendChild(fill);
+    g.setAttribute('role', 'img'); g.setAttribute('aria-label', r.title + ': ' + n + '%');
+    var big = h('div', 'big', n + '%');
     w.append(h('b', null, r.title), big, g, h('span', null, r.sub));
     $('rings').appendChild(w);
   });
   function drawRings() {
-    ring($('ring-hi'), hiCount / FAQ.length, 76, '#2a78d6', '#cde2fb', Math.round(hiCount / FAQ.length * 100) + '%');
+    ring($('ring-hi'), hiCount / FAQ.length, 76, '#3182f6', '#e8f3ff', Math.round(hiCount / FAQ.length * 100) + '%');
   }
 
   // ---------- frequency segmented bar + table ----------
-  var FQ = [{ k: '상', color: '#8f5f49' }, { k: '중', color: '#b9a08f' }, { k: '하', color: '#dcd3cb' }];
+  var FQ = [{ k: '상', color: '#3182f6' }, { k: '중', color: '#90c2ff' }, { k: '하', color: '#d4e6ff' }];
   FQ.forEach(function (q) {
     var n = FAQ.filter(function (f) { return f[2] === q.k; }).length;
     var seg = h('i'); seg.style.flex = n; seg.style.background = q.color; seg.title = '빈도 ' + q.k + ' ' + n + '개'; $('seg').appendChild(seg);
